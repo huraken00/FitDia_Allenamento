@@ -20,3 +20,42 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+exports.register = async (req, res) => {
+  const { username, nome, cognome, email, password } = req.body;
+
+  try {
+    // Controlla se l'utente esiste già
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Hash della password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Crea un nuovo utente
+    const newUser = new User({
+      username,
+      nome,
+      cognome,
+      email,
+      password: hashedPassword,
+      scadenza_abbonamento: new Date("2025-11-11")
+    });
+
+    // Salva l'utente nel database
+    await newUser.save();
+
+    // Genera un token JWT
+    const token = jwt.sign(
+      { id: newUser._id, email: newUser.email },
+      process.env.SECRET_KEY,
+      { expiresIn: "1h" }
+    );
+
+    res.status(201).json({ message: "User registered successfully", token });
+  } catch (err) {
+    res.status(500).json({ message: "SONO GAY", error: err.message });
+  }
+};

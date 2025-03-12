@@ -2,13 +2,13 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
-  username: { type: String, unique: true, required: true }, // Chiave primaria
+  username: { type: String, unique: true, required: false }, // Chiave primaria
   nome: { type: String, required: true },
   cognome: { type: String, required: true },
   email: { type: String, unique: true, required: true, match: /^[^\s@]+@[^\s@]+.[^\s@]+$/ }, // Validazione email
   password: { type: String, required: true, minlength: 8 }, // Andrà criptata
   scadenza_abbonamento: { type: Date, required: true }
-});
+},{versionKey: false});
 
 // Hash password before saving
 userSchema.pre("save", async function (next) {

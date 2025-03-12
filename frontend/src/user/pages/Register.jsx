@@ -1,9 +1,9 @@
-import React from 'react';
-import { useState } from "react";
+import React, { useState } from 'react';
 import validateForm from "../../shared/utils/validateForm";
 
 function Register() {
   const [formData, setFormData] = useState({
+    username: "",
     nome: "",
     cognome: "",
     email: "",
@@ -11,18 +11,35 @@ function Register() {
   });
 
   const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm(formData);
     
     if (Object.keys(validationErrors).length === 0) {
-      alert("Registrazione avvenuta con successo!");
-      // Qui puoi aggiungere la logica per inviare i dati a un server
+      try {
+        const response = await fetch("http://localhost:3001/api/user/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          setMessage("Registrazione avvenuta con successo!");
+        } else {
+          setMessage(data.message || "Errore nella registrazione");
+        }
+      } catch (error) {
+        setMessage("Errore di connessione al server");
+      }
     } else {
       setErrors(validationErrors);
     }
@@ -31,7 +48,14 @@ function Register() {
   return (
     <div>
       <h2>Registrati su FitDia</h2>
+      {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
+        <div>
+          <label>Username:</label>
+          <input type="text" name="username" value={formData.username} onChange={handleChange} />
+          {errors.username && <p>{errors.username}</p>}
+        </div>
+
         <div>
           <label>Nome:</label>
           <input type="text" name="nome" value={formData.nome} onChange={handleChange} />
