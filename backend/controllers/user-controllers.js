@@ -2,7 +2,14 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await User.find();  // Recupera tutti gli utenti
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ message: "Errore del server" });
+  }
+};
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {

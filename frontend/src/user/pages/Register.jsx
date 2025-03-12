@@ -20,7 +20,7 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm(formData);
-    
+
     if (Object.keys(validationErrors).length === 0) {
       try {
         const response = await fetch("http://localhost:3001/api/user/register", {
@@ -82,6 +82,8 @@ function Register() {
 
         <button type="submit">Registrati</button>
       </form>
+
+      {serverResponse && <p>{serverResponse}</p>}
     </div>
   );
 }
