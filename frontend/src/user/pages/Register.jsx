@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from "react";
+import React, { useState } from "react";
 import validateForm from "../../shared/utils/validateForm";
 
 function Register() {
@@ -11,18 +10,36 @@ function Register() {
   });
 
   const [errors, setErrors] = useState({});
+  const [serverResponse, setServerResponse] = useState(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm(formData);
-    
+
     if (Object.keys(validationErrors).length === 0) {
-      alert("Registrazione avvenuta con successo!");
-      // Qui puoi aggiungere la logica per inviare i dati a un server
+      try {
+        const response = await fetch("http://localhost:3001/api/user/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          setServerResponse("Registrazione avvenuta con successo!");
+        } else {
+          setServerResponse(data.message || "Errore durante la registrazione.");
+        }
+      } catch (error) {
+        setServerResponse("Errore di connessione al server.");
+      }
     } else {
       setErrors(validationErrors);
     }
@@ -58,6 +75,8 @@ function Register() {
 
         <button type="submit">Registrati</button>
       </form>
+
+      {serverResponse && <p>{serverResponse}</p>}
     </div>
   );
 }

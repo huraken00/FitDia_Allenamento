@@ -6,7 +6,7 @@ import Register from "./user/pages/Register";
 import Login from "./user/pages/Login";
 import LoginDirettore from "./director/pages/login";
 import LoginUser from "./user/pages/Login";
-
+import RegisterUser from "./user/pages/Register";
 function App() {
   return (
     <Router>
@@ -16,6 +16,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/loginDirettore" element={<LoginDirettore />} />
        < Route path="/loginUser" element={<LoginUser />} />
+       < Route path="/registerUser" element={<RegisterUser />} />
       </Routes>
     </Router>
   );

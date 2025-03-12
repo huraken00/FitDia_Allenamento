@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   cognome: { type: String, required: true },
   email: { type: String, unique: true, required: true, match: /^[^\s@]+@[^\s@]+.[^\s@]+$/ }, // Validazione email
   password: { type: String, required: true, minlength: 8 }, // Andrà criptata
-  scadenza_abbonamento: { type: Date, required: true }
+  scadenza_abbonamento: { type: Date, required: false }
 });
 
 // Hash password before saving
