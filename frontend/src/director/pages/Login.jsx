@@ -10,6 +10,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    
     try {
       const res = await fetch("http://localhost:3001/api/direttore/login", {
         method: "POST",

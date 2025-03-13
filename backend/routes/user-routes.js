@@ -1,12 +1,10 @@
 const express = require("express");
-const { login } = require("../controllers/user-controllers");
-const { register } = require("../controllers/user-controllers");
+const { check } = require("express-validator");
+const { login, register } = require("../controllers/user-controllers");
+
 const router = express.Router();
 
-router.post("/register", register);
-router.post("/login", login);
-
-// Registrazione utente
+// Registrazione utente con validazione
 router.post(
   "/register",
   [
@@ -15,10 +13,10 @@ router.post(
     check("email").normalizeEmail().isEmail(),
     check("password").isLength({ min: 6 }),
   ],
-  usersController.register
+  register
 );
 
 // Login utente
-router.post("/login", usersController.login);
+router.post("/login", login);
 
 module.exports = router;

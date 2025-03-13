@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import validateForm from "../../shared/utils/validateForm";
 
+console.log("Register component is rendering!");
 function Register() {
   const [formData, setFormData] = useState({
     username: "",
@@ -83,7 +84,8 @@ function Register() {
         <button type="submit">Registrati</button>
       </form>
 
-      {serverResponse && <p>{serverResponse}</p>}
+      {message && <p>{message}</p>}
+
     </div>
   );
 }

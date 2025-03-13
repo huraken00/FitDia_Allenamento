@@ -10,6 +10,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    console.log("Credenziali inviate:", { email, password }); // Debug
     try {
       const res = await fetch("http://localhost:3001/api/user/login", {
         method: "POST",

@@ -13,12 +13,21 @@ exports.getUsers = async (req, res) => {
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
+    console.log("Dati ricevuti dal frontend:", req.body);
+
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: "User not found" });
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+   const isMatch = await bcrypt.compare(password, user.password);
+       if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+       const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1); // Data di un mese fa 
+    //controllo della data scadenza abbonamento
+    if (new Date(user.scadenza_abbonamento) < oneMonthAgo) {
+      return res.status(403).json({ message: "Subscription expired. Please renew your subscription." });
+    }
 
+    
     // Genera il token JWT
     const token = jwt.sign({ id: user._id, email: user.email }, process.env.SECRET_KEY, { expiresIn: "1h" });
 
@@ -28,8 +37,10 @@ exports.login = async (req, res) => {
   }
 };
 
+
 exports.register = async (req, res) => {
   const { username, nome, cognome, email, password } = req.body;
+  
 
   try {
     // Controlla se l'utente esiste già
@@ -41,6 +52,10 @@ exports.register = async (req, res) => {
     // Hash della password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    //calcolo di scadenza_abbonamento
+    const dataScadenzaAbbonamento= new Date();
+    dataScadenzaAbbonamento.setMonth(dataScadenzaAbbonamento.getMonth()+1);
+
     // Crea un nuovo utente
     const newUser = new User({
       username,
@@ -48,9 +63,11 @@ exports.register = async (req, res) => {
       cognome,
       email,
       password: hashedPassword,
-      scadenza_abbonamento: new Date("2025-11-11")
+      scadenza_abbonamento: dataScadenzaAbbonamento, 
+
     });
 
+   
     // Salva l'utente nel database
     await newUser.save();
 
