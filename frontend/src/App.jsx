@@ -2,8 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css'
 import HomePage from "./Homepage";
-import Register from "./user/pages/Register";
-import Login from "./user/pages/Login";
 import LoginDirettore from "./director/pages/login";
 import LoginUser from "./user/pages/Login";
 import RegisterUser from "./user/pages/Register";
@@ -12,11 +10,9 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/loginDirettore" element={<LoginDirettore />} />
        < Route path="/loginUser" element={<LoginUser />} />
        < Route path="/registerUser" element={<RegisterUser />} />
+       <Route path="/loginDirettore" element={<LoginDirettore />} />
       </Routes>
     </Router>
   );

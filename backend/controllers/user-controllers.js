@@ -19,12 +19,18 @@ exports.login = async (req, res) => {
     if (!user) return res.status(400).json({ message: "User not found" });
 
    const isMatch = await bcrypt.compare(password, user.password);
+
        if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
-       const oneMonthAgo = new Date();
-    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1); // Data di un mese fa 
+
+       const currentDate = new Date();
+       console.log("Data odierna", currentDate);
+       console.log("Data utente", user.scadenza_abbonamento);
+     
     //controllo della data scadenza abbonamento
-    if (new Date(user.scadenza_abbonamento) < oneMonthAgo) {
+    if (new Date(user.scadenza_abbonamento) < currentDate )
+   {
       return res.status(403).json({ message: "Subscription expired. Please renew your subscription." });
+      
     }
 
     
