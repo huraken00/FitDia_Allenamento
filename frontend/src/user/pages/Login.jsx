@@ -1,28 +1,34 @@
-import { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../shared/context/auth-context";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate(); 
+  const auth = useContext(AuthContext); // Usa il contesto
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    console.log("Credenziali inviate:", { email, password }); // Debug
+
     try {
       const res = await fetch("http://localhost:3001/api/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
-      
-      localStorage.setItem("token", data.token);
 
-      //navigate("/home");
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message);
+      }
+
+      // Salva i dati nel contesto
+      auth.login(data.userId, data.token)
+      navigate("/dashboard"); // Dopo il login, reindirizza alla dashboard
     } catch (err) {
       setError(err.message);
     }
