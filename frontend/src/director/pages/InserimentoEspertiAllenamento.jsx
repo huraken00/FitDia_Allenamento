@@ -24,6 +24,7 @@ const InserimentoEspertiAllenamento = () => {
         });
 
         if (!authRes.ok) {
+          console.log("accesso non autorizzato");
           throw new Error("Accesso non autorizzato");
         }
 

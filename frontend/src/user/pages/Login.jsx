@@ -21,13 +21,14 @@ const Login = () => {
       });
 
       const data = await res.json();
-
+      
       if (!res.ok) {
         throw new Error(data.message);
       }
 
       // Salva i dati nel contesto
-      auth.login(data.userId, data.token)
+      auth.login(data.id,data.token);
+     
       navigate("/dashboard"); // Dopo il login, reindirizza alla dashboard
     } catch (err) {
       setError(err.message);

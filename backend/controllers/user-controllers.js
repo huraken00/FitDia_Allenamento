@@ -10,34 +10,26 @@ exports.getUsers = async (req, res) => {
     res.status(500).json({ message: "Errore del server" });
   }
 };
+
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
     console.log("Dati ricevuti dal frontend:", req.body);
-
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: "User not found" });
-
-   const isMatch = await bcrypt.compare(password, user.password);
-
-       if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
-
-       const currentDate = new Date();
-       console.log("Data odierna", currentDate);
-       console.log("Data utente", user.scadenza_abbonamento);
-     
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    const currentDate = new Date(); 
     //controllo della data scadenza abbonamento
     if (new Date(user.scadenza_abbonamento) < currentDate )
    {
       return res.status(403).json({ message: "Subscription expired. Please renew your subscription." });
       
     }
-
-    
     // Genera il token JWT
     const token = jwt.sign({ id: user._id, email: user.email }, process.env.SECRET_KEY, { expiresIn: "1h" });
-
-    res.status(200).json({ message: "Login successful", token });
+    const id = user._id;
+    res.status(200).json({ message: "Login successful", token , id });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
@@ -72,18 +64,6 @@ exports.register = async (req, res) => {
       scadenza_abbonamento: dataScadenzaAbbonamento, 
 
     });
-
-    // Controller per ottenere solo nome, cognome e scadenza abbonamento degli utenti
-    const getUsers = async (req, res) => {
-      try {
-        const users = await User.find({}, "nome cognome scadenza_abbonamento"); // Seleziona solo i campi richiesti
-        res.status(200).json(users);
-      } catch (error) {
-        res.status(500).json({ message: "Errore nel recupero degli utenti", error });
-      }
-    };
-    
-    exports.getUsers = getUsers;
    
     // Salva l'utente nel database
     await newUser.save();
@@ -98,5 +78,19 @@ exports.register = async (req, res) => {
     res.status(201).json({ message: "User registered successfully", token });
   } catch (err) {
     res.status(500).json({ message: "SONO GAY", error: err.message });
+  }
+};
+
+// controller per la gestione del profilo
+exports.getUser = async (req, res) => {
+  const id = req.params.uid;
+  try {
+    console.log("id utente",id)
+    // restituisce il nome e il cognome 
+    const user = await User.findOne({ _id: id });  
+    res.status(200).json(user);
+
+  } catch (error) {
+    res.status(500).json({ message: "Errore nel recupero", error });
   }
 };

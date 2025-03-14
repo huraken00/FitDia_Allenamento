@@ -1,51 +1,30 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Card from "../../components/ui/card";
-
-
-  const handleCardClick = () => {
-    console.log('Card clicked!');
-  }
 
 // Dashboard Component
 const Dashboard = () => {
+  const navigate = useNavigate(); // Hook per la navigazione
+
+  const handleCardClick = (path) => {
+    navigate(path); // Esegue la navigazione
+  };
 
   return (
     <div>
       <h1>Dashboard Fitness</h1>
-      
+
       <Card 
-        title = "Alimentazione"
+        title="Alimentazione"
         description="Visualizza le informazioni nutrizionali"
-        onClick={handleCardClick}
+        onClick={() => handleCardClick("/alimentazione")}
       />
-       <Card 
-        title = "Allenamento"
+      <Card 
+        title="Allenamento"
         description="Gestisci i tuoi allenamenti"
-        onClick={handleCardClick}
+        onClick={() => handleCardClick("/DashboardAllenamento")}
       />
       
-    </div>
-  );
-};
-
-
-// Alimentazione Component
-const Alimentazione = () => {
-  return (
-    <div>
-      <h1>Sezione Alimentazione</h1>
-      <p>Qui puoi monitorare le tue calorie, macronutrienti e altro.</p>
-    </div>
-  );
-};
-
-// Allenamento Component
-const Allenamento = () => {
-  return (
-    <div>
-      <h1>Sezione Allenamento</h1>
-      <p>Qui puoi gestire i tuoi allenamenti e monitorare i progressi.</p>
     </div>
   );
 };

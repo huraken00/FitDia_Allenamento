@@ -49,7 +49,6 @@ function Register() {
   return (
     <div>
       <h2>Registrati su FitDia</h2>
-      {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Username:</label>
