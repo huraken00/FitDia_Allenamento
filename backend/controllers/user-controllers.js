@@ -73,6 +73,17 @@ exports.register = async (req, res) => {
 
     });
 
+    // Controller per ottenere solo nome, cognome e scadenza abbonamento degli utenti
+    const getUsers = async (req, res) => {
+      try {
+        const users = await User.find({}, "nome cognome scadenza_abbonamento"); // Seleziona solo i campi richiesti
+        res.status(200).json(users);
+      } catch (error) {
+        res.status(500).json({ message: "Errore nel recupero degli utenti", error });
+      }
+    };
+    
+    exports.getUsers = getUsers;
    
     // Salva l'utente nel database
     await newUser.save();

@@ -1,6 +1,6 @@
 const express = require("express");
 const { check } = require("express-validator");
-const { login, register } = require("../controllers/user-controllers");
+const { login, register, getUsers } = require("../controllers/user-controllers");
 
 const router = express.Router();
 
@@ -18,5 +18,7 @@ router.post(
 
 // Login utente
 router.post("/login", login);
+// Rotta per ottenere la lista degli utenti con nome, cognome e scadenza abbonamento
+router.get("/", getUsers);
 
 module.exports = router;

@@ -6,6 +6,10 @@ import LoginDirettore from "./director/pages/login";
 import LoginUser from "./user/pages/Login";
 import RegisterUser from "./user/pages/Register";
 import Dashboard from "./user/pages/Dashboard"; // Pagina protetta
+import HomePageDirettore from "./director/pages/Homepage";
+import ListaUtenti from "./director/pages/ListaUtenti";
+import EspertiAllenamento from "./director/pages/EspertiAllenamento"
+import InserimentoEspertiAllenamento from "./director/pages/InserimentoEspertiAllenamento"
 
 const PrivateRoute = ({ children }) => {
   const { isLoggedIn } = useContext(AuthContext);
@@ -24,6 +28,11 @@ const App = () => {
 
           {/* Protezione delle pagine private */}
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+
+          <Route path="/homepage-direttore" element={<PrivateRoute><HomePageDirettore /></PrivateRoute>} />
+          <Route path="/lista-utenti" element={<PrivateRoute><ListaUtenti /></PrivateRoute>} />
+          <Route path="/esperti-allenamento" element={<PrivateRoute><EspertiAllenamento /></PrivateRoute>} />
+          <Route path="/inserimento-esperti-allenamento" element={<PrivateRoute><InserimentoEspertiAllenamento /></PrivateRoute>} />
 
           {/* Se non è loggato, viene reindirizzato al login */}
           <Route path="*" element={<Navigate to="/loginUser" replace />} />
