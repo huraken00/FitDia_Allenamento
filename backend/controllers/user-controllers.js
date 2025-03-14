@@ -94,3 +94,26 @@ exports.getUser = async (req, res) => {
     res.status(500).json({ message: "Errore nel recupero", error });
   }
 };
+
+exports.setUser = async (req, res) => {
+  const id = req.params.uid;
+  const updatedData = req.body; // Dati aggiornati dal client
+
+  try {
+
+    // Trova e aggiorna l'utente nel database
+    const user = await User.findOneAndUpdate(
+      { _id: id },
+      { $set: updatedData },
+      { new: true, runValidators: true } // Restituisce il nuovo documento aggiornato
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "Utente non trovato" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Errore nell'aggiornamento", error });
+  }
+};
