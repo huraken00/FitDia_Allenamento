@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 
 export const AuthContext = createContext({
   isLoggedIn: false,
@@ -26,18 +26,9 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("userId");
   };
 
-  useEffect(() => {
-    // Controlla se il token esiste nel localStorage al primo caricamento
-    const storedToken = localStorage.getItem("token");
-    const storedUserId = localStorage.getItem("userId");
-    
-    if (storedToken && storedUserId) {
-      setToken(storedToken);
-      setUserId(storedUserId);
-    }
-  }, []);
-  console.log("Current Token:", token); 
+  
   return (
+    
     <AuthContext.Provider value={{ isLoggedIn: !!token, token, userId, login, logout }}>
       {children}
     </AuthContext.Provider>
