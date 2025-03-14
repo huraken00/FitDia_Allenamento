@@ -2,11 +2,11 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../shared/context/auth-context";
 
-const Login = () => {
+const LoginUser = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const auth = useContext(AuthContext); // Usa il contesto
+  const auth = useContext(AuthContext); // Usa il contesto 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -26,10 +26,10 @@ const Login = () => {
         throw new Error(data.message);
       }
 
-      // Salva i dati nel contesto
-      auth.login(data.id,data.token);
+      // Salva i dati nel contesto con il ruolo
+      auth.login(data.id, data.token, "utente");
      
-      navigate("/dashboard"); // Dopo il login, reindirizza alla dashboard
+      navigate("/dashboard"); // Reindirizza alla dashboard utente
     } catch (err) {
       setError(err.message);
     }
@@ -60,4 +60,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginUser;

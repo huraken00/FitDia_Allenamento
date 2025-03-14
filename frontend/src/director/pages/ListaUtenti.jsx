@@ -6,23 +6,12 @@ const UserList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login-direttore");
-      return;
-    }
+    fetchData();
+  }, []); 
 
     const fetchData = async () => {
       try {
-        // Verifica dell'autenticazione del direttore
-        const authRes = await fetch("http://localhost:3001/api/direttore/check-auth", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!authRes.ok) {
-          throw new Error("Accesso non autorizzato");
-        }
-
+       
         // Recupero della lista utenti solo se l'autenticazione ha avuto successo
         const res = await fetch("http://localhost:3001/api/user");
         if (!res.ok) throw new Error("Errore nel recupero degli utenti");
@@ -41,8 +30,6 @@ const UserList = () => {
       }
     };
 
-    fetchData();
-  }, [navigate]);
 
   return (
     <div>

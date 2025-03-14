@@ -1,32 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const InserimentoEspertiAllenamento = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
-  // Controllo dell'autenticazione all'esterno di handleSubmit
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login-direttore");
-    }
-  }, [navigate]);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
     try {
-        // Verifica dell'autenticazione del direttore
-        const authRes = await fetch("http://localhost:3001/api/direttore/check-auth", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!authRes.ok) {
-          console.log("accesso non autorizzato");
-          throw new Error("Accesso non autorizzato");
-        }
+      
 
       const res = await fetch("http://localhost:3001/api/esperti-allenamento", {
         method: "POST",

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext, AuthProvider } from "./shared/context/auth-context";
 import HomePage from "./Homepage";
-import LoginDirettore from "./director/pages/login";
+import LoginDirettore from "./director/pages/Login";
 import LoginUser from "./user/pages/Login";
 import RegisterUser from "./user/pages/Register";
 import Dashboard from "./user/pages/Dashboard"; // Pagina protetta
@@ -13,11 +13,21 @@ import InserimentoEspertiAllenamento from "./director/pages/InserimentoEspertiAl
 import DashboardAllenamento from "./user/pages/DashboardAllenamento";
 import Profilo from "./components/profilo";
 
-const PrivateRoute = ({ children }) => {
-  const { isLoggedIn } = useContext(AuthContext);
-  return isLoggedIn ? children : <Navigate to="/loginUser" replace />;
-};
+const PrivateRoute = ({ children, requiredRole }) => {
+  const { isLoggedIn, role } = useContext(AuthContext);
 
+  if (!isLoggedIn) {
+    // Se l'utente non è loggato, reindirizza in base al ruolo previsto
+    return <Navigate to={requiredRole === "direttore" ? "/login-direttore" : "/loginUser"} replace />;
+  }
+
+  if (requiredRole && role !== requiredRole) {
+    // Se il ruolo non è corretto, reindirizza alla home
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+}
 const App = () => {
   return (
     <AuthProvider>
@@ -27,15 +37,17 @@ const App = () => {
           <Route path="/loginUser" element={<LoginUser />} />
           <Route path="/registerUser" element={<RegisterUser />} />
           <Route path="/login-direttore" element={<LoginDirettore />} />
-          <Route path="/homepage-direttore" element={<PrivateRoute><HomePageDirettore /></PrivateRoute>} />
-          <Route path="/lista-utenti" element={<PrivateRoute><ListaUtenti /></PrivateRoute>} />
-          <Route path="/esperti-allenamento" element={<PrivateRoute><EspertiAllenamento /></PrivateRoute>} />
-          <Route path="/inserimento-esperti-allenamento" element={<PrivateRoute><InserimentoEspertiAllenamento /></PrivateRoute>} />
 
-          {/* Protezione delle pagine private */}
-          <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-          <Route path="/DashboardAllenamento" element={<PrivateRoute><DashboardAllenamento /></PrivateRoute>} />
-          <Route path="/Profilo" element={<PrivateRoute><Profilo /></PrivateRoute>} />
+          {/* Pagine accessibili solo ai direttori */}
+          <Route path="/homepage-direttore" element={<PrivateRoute requiredRole="direttore"><HomePageDirettore /></PrivateRoute>} />
+          <Route path="/lista-utenti" element={<PrivateRoute requiredRole="direttore"><ListaUtenti /></PrivateRoute>} />
+          <Route path="/esperti-allenamento" element={<PrivateRoute requiredRole="direttore"><EspertiAllenamento /></PrivateRoute>} />
+          <Route path="/inserimento-esperti-allenamento" element={<PrivateRoute requiredRole="direttore"><InserimentoEspertiAllenamento /></PrivateRoute>} />
+
+          {/* Pagine accessibili solo agli utenti */}
+          <Route path="/dashboard" element={<PrivateRoute requiredRole="utente"><Dashboard /></PrivateRoute>} />
+          <Route path="/DashboardAllenamento" element={<PrivateRoute requiredRole="utente"><DashboardAllenamento /></PrivateRoute>} />
+          <Route path="/Profilo" element={<PrivateRoute requiredRole="utente"><Profilo /></PrivateRoute>} />
          
           {/* Se non è loggato, viene reindirizzato al login */}
           <Route path="*" element={<Navigate to="/loginUser" replace />} />
@@ -43,6 +55,5 @@ const App = () => {
       </Router>
     </AuthProvider>
   );
-};
-
-export default App;
+}
+export default App

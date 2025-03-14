@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const EspertiAllenamento = () => {
@@ -6,43 +6,33 @@ const EspertiAllenamento = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login-direttore");
-      return;
-    }
+    fetchData();
+  }, []); // L'array vuoto fa sì che la funzione venga eseguita solo al montaggio
 
-    const fetchData = async () => {
-      try {
-        // Verifica dell'autenticazione del direttore
-        const authRes = await fetch("http://localhost:3001/api/direttore/check-auth", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+  const fetchData = async () => {
+    try {
+      const res = await fetch("http://localhost:3001/api/esperti-allenamento", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Invia il token per autenticazione
+        },
+      });
 
-        if (!authRes.ok) {
-          throw new Error("Accesso non autorizzato");
-        }
-
-        // Recupero della lista esperti solo se l'autenticazione ha avuto successo
-        const res = await fetch("http://localhost:3001/api/esperti-allenamento");
-        if (!res.ok) throw new Error("Errore nel recupero degli esperti");
-
-        const data = await res.json();
-        setEsperti(data);
-      } catch (err) {
-        if (err.message === "Accesso non autorizzato") {
-          // Solo in caso di errore di autenticazione, rimuoviamo il token
+      if (!res.ok) {
+        if (res.status === 401) {
+          // Accesso non autorizzato: rimuovi il token e reindirizza
           localStorage.removeItem("token");
           navigate("/login-direttore");
-        } else {
-          // Se l'errore riguarda il recupero dei dati, non rimuoviamo il token
-          console.error("Errore nel recupero degli esperti:", err);
+          return;
         }
+        throw new Error("Errore nel recupero degli esperti");
       }
-    };
 
-    fetchData();
-  }, [navigate]);
+      const data = await res.json();
+      setEsperti(data);
+    } catch (err) {
+      console.error("Errore nel recupero degli esperti:", err);
+    }
+  };
 
   return (
     <div>
@@ -61,7 +51,7 @@ const EspertiAllenamento = () => {
           ))}
         </tbody>
       </table>
-      <Link to ="/inserimento-esperti-allenamento">Inserisci un nuovo esperto</Link>
+      <Link to="/inserimento-esperti-allenamento">Inserisci un nuovo esperto</Link>
     </div>
   );
 };
