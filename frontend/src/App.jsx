@@ -22,32 +22,27 @@ import Profilo from "./components/profilo";
 
 const PrivateRoute = ({ children, requiredRole }) => {
   const { isLoggedIn, role } = useContext(AuthContext);
-  const navigate = useNavigate();
 
+  // Se l'utente non è loggato, reindirizza alla pagina di login appropriata
   if (!isLoggedIn) {
-    // Se l'utente non è loggato, reindirizza in base al ruolo previsto
-    switch (role) {
-      case "direttore":
-        return <Navigate to="/login-direttore" replace />;
-      case "utente":
-        return <Navigate to="/login-utente" replace />;
-      case "esperto":
-        return <Navigate to="/login-esperto" replace />;
-      default:
-        return <Navigate to="/" replace />;
+    let loginPath = "/login-utente"; // Default
+
+    if (requiredRole === "direttore") {
+      loginPath = "/login-direttore";
+    } else if (requiredRole === "esperto") {
+      loginPath = "/login-esperto";
     }
 
+    return <Navigate to={loginPath} replace />;
   }
-   //l'utente non loggato non può accedere alle pagine riservate
+
+  // Se l'utente è loggato ma non ha il ruolo richiesto, reindirizza alla home
   if (requiredRole && role !== requiredRole) {
-    // Se il ruolo non è corretto, reindirizza alla home
     return <Navigate to="/" replace />;
   }
 
-  
-
   return children;
-}
+};
 const App = () => {
   return (
     <AuthProvider>
