@@ -1,12 +1,9 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
 
-const EsercioSchema = new mongoose.Schema({
-  nome: { type: String, required: true, unique: true },
+const EsercizioSchema = new mongoose.Schema({
+  nome: { type: String, required: true },
   descrizione: { type: String, required: true },
-  sport: { type: String, required: true },
-  parametro: { type: String, required: true },
-
+  id_esperto: { type: mongoose.Schema.Types.ObjectId, ref: "Esperto", required: true }
 });
 
-module.exports = mongoose.model("Direttore", DirectorSchema, "Direttore");
+module.exports = mongoose.model("Esercizio", EsercizioSchema, "esercizi");
