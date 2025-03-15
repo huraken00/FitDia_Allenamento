@@ -1,6 +1,7 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Card from "../../components/ui/card";
+
 
 // Dashboard Component
 const Dashboard = () => {
@@ -12,6 +13,7 @@ const Dashboard = () => {
 
   return (
     <div>
+     
       <h1>Dashboard Fitness</h1>
 
       <Card 
@@ -22,7 +24,7 @@ const Dashboard = () => {
       <Card 
         title="Allenamento"
         description="Gestisci i tuoi allenamenti"
-        onClick={() => handleCardClick("/DashboardAllenamento")}
+        onClick={() => handleCardClick("/dashboard-allenamento")}
       />
       
     </div>

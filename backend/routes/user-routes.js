@@ -18,9 +18,14 @@ router.post(
 
 // Login utente
 router.post("/login", login);
+
 // Rotta per ottenere la lista degli utenti con nome, cognome e scadenza abbonamento
 router.get("/", getUsers);
+
+// Rotta per ottenere l'id dell'utente 
 router.get("/:uid", getUser);
+
+// Rotta per impostare i valori dell' utente
 router.put("/:uid",setUser);
 
 module.exports = router;

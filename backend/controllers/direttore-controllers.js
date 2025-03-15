@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 
-const login = async (req, res) => {
+exports.login = async (req, res) => {
   const { username, password } = req.body;
   try {
     const director = await Director.findOne({ username });
@@ -15,10 +15,10 @@ const login = async (req, res) => {
     // Genera il token JWT
     const token = jwt.sign({ id: director._id, username: director.username }, process.env.SECRET_KEY, { expiresIn: "1h" });
 
-    res.status(200).json({ message: "Login successful", token });
+    const id = director._id;
+    res.status(200).json({ message: "Login successful", token,id });
+
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
 };
-
-exports.login = login;

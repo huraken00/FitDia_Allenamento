@@ -21,13 +21,13 @@ const LoginDirettore = () => {
       });
 
       const data = await res.json();
-
+      console.log("data",data)
       if (!res.ok) {
         throw new Error(data.message);
       }
-
+      console.log("id login",data.id)
       // Salva i dati nel contesto con il ruolo
-      auth.login(data.id, data.token, "direttore");
+      auth.login( data.id,data.token, "direttore");
 
       navigate("/homepage-direttore"); // Reindirizza alla homepage direttore
     } catch (err) {

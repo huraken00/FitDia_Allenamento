@@ -2,7 +2,7 @@ const Esperto = require("../models/esperto-allenamento");
 const bcrypt = require("bcryptjs");
 
 // controller per usernames degli esperti
-const getEsperti = async (req, res) => {
+exports.getEsperti = async (req, res) => {
   try {
     // Ottieni solo gli username degli esperti
     const esperti = await Esperto.find({}, "username"); // Seleziona solo il campo "username"
@@ -13,7 +13,7 @@ const getEsperti = async (req, res) => {
 };
 
 //controller per inserire un nuovo esperto
-const inserimentoEsperti = async (req, res) => {
+exports.inserimentoEsperti = async (req, res) => {
   try {
     const { username, password } = req.body;
 
@@ -40,6 +40,3 @@ const inserimentoEsperti = async (req, res) => {
     res.status(500).json({ error: "Errore interno del server" });
   }
 };
-
-exports.getEsperti = getEsperti;
-exports.inserimentoEsperti = inserimentoEsperti;
