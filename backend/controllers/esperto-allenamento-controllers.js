@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const Esperto = require("../models/esperto-allenamento");
 const bcrypt = require("bcryptjs");
 
@@ -38,5 +39,29 @@ exports.inserimentoEsperti = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Errore interno del server" });
+  }
+};
+
+exports.loginEsperto = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    console.log("Dati ricevuti dal frontend:", req.body);
+    const esperto = await Esperto.findOne({ username });
+
+    if (!esperto) return res.status(400).json({ message: "User not found" });
+    const isMatch = await bcrypt.compare(password, esperto.password);
+
+    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    const currentDate = new Date();
+
+    
+
+    // Genera il token JWT
+    const token = jwt.sign({ id: esperto._id, email: esperto.email }, process.env.SECRET_KEY, { expiresIn: "1h" });
+    const id = esperto._id;
+
+    res.status(200).json({ message: "Login successful", token, id });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
   }
 };
