@@ -29,7 +29,7 @@ const LoginEsperto = () => {
       // Salva i dati nel contesto con il ruolo
       auth.login(data.id, data.token, "esperto");
      
-    //  navigate("/dashboard"); // Reindirizza alla dashboard utente
+      navigate("/homepage-esperto"); // Reindirizza alla dashboard esperto
     } catch (err) {
       setError(err.message);
     }
