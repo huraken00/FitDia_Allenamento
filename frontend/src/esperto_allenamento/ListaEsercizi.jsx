@@ -30,29 +30,29 @@ const Esercizi = () => {
   return (
     <div>
       <h2>Lista di tutti gli esercizi</h2>
-      <table>
+      <table border="1">
         <thead>
           <tr>
             <th>Nome</th>
             <th>Descrizione</th>
-            <th>Esperto</th>
-            <th>Sport</th>
             <th>Parametri</th>
           </tr>
         </thead>
         <tbody>
-          {esercizi.map((esercizio, index) => (
-            <tr key={index}>
+          {esercizi.map((esercizio) => (
+            <tr key={esercizio._id}>
               <td>{esercizio.nome}</td>
               <td>{esercizio.descrizione}</td>
-              <td>{esercizio.id_esperto.username}</td>
-              <td>{esercizio.sport ? esercizio.sport.nome : "N/A"}</td>
               <td>
-                {esercizio.parametri && esercizio.parametri.length > 0
-                  ? esercizio.parametri.map((parametro, idx) => (
-                      <span key={idx}>{parametro.tipo}</span>
-                    ))
-                  : "N/A"}
+                {esercizio.parametri && esercizio.parametri.length > 0 ? (
+                  <ul>
+                    {esercizio.parametri.map((parametro) => (
+                      <li key={parametro._id}>{parametro.nome}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <span>Nessun parametro</span>
+                )}
               </td>
             </tr>
           ))}

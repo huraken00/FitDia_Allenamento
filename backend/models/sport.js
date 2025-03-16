@@ -4,4 +4,4 @@ const SportSchema = new mongoose.Schema({
   nome: { type: String, required: true, unique: true }
 });
 
-module.exports = mongoose.model("Sport", SportSchema, "sport");
+module.exports = mongoose.model("Sport", SportSchema, "Sport");

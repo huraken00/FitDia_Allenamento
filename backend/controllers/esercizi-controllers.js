@@ -7,31 +7,41 @@ const ParametroEsercizio = require("../models/parametro_esercizio");
 // Funzione per ottenere tutti gli esercizi con i dettagli di sport e parametri
 exports.getAllEsercizi = async (req, res) => {
   try {
-    // Recupera tutti gli esercizi e popola i riferimenti a sport e parametri
-    const esercizi = await Esercizio.find()
-      .populate("id_esperto", "username")
-      .populate({
-        path: "sport",
-        model: "Sport", // Popola il campo 'sport' con i dati relativi al modello 'Sport'
-        select: "nome", // Seleziona solo il campo 'nome' dello sport
-      })
-      .populate({
-        path: "parametri",
-        model: "Parametro", // Popola il campo 'parametri' con i dati relativi al modello 'Parametro'
-        select: "tipo", // Seleziona solo il campo 'tipo' del parametro
-      });
+    const esercizi = await Esercizio.aggregate([
+      {
+        $lookup: {
+          from: "EsercizioParametro",  // Collezione da unire
+          localField: "_id",           // Campo della collezione "Esercizio" per il join
+          foreignField: "esercizio_id", // Campo della collezione "EsercizioParametro" per il join
+          as: "relazioni"              // Alias per memorizzare i risultati del lookup
+        }
+      },
+      {
+        $lookup: {
+          from: "Parametro",              // Collezione "Parametro"
+          localField: "relazioni.parametri", // Array di ObjectId nella collezione "EsercizioParametro"
+          foreignField: "_id",            // Campo corrispondente nella collezione "Parametro"
+          as: "parametri"                 // Alias per i parametri trovati
+        }
+      },
+      {
+        $project: {                      // Rimuovere il campo 'relazioni' dal risultato finale
+          nome: 1,
+          descrizione: 1,
+          parametri: 1
+        }
+      }
+    ]);
 
-    // Se non vengono trovati esercizi
-    if (!esercizi || esercizi.length === 0) {
-      return res.status(404).json({ message: "Nessun esercizio trovato." });
-    }
+    // Restituisci il risultato in formato JSON
+    return res.status(200).json(esercizi);
 
-    return res.json(esercizi); // Risponde con tutti gli esercizi, inclusi sport e parametri
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Errore nel recupero degli esercizi." });
+  } catch (err) {
+    return res.status(500).json({ message: "Errore nel recupero degli esercizi", error: err });
   }
 };
+
+
 
 // Funzione per inserire un nuovo esercizio
  exports.addEsercizio = async (req, res) => {

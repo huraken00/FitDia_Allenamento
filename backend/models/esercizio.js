@@ -6,4 +6,9 @@ const EsercizioSchema = new mongoose.Schema({
   id_esperto: { type: mongoose.Schema.Types.ObjectId, ref: "Esperto", required: true }
 });
 
-module.exports = mongoose.model("Esercizio", EsercizioSchema, "esercizi");
+//modifica fatta 
+//prima
+//module.exports = mongoose.model("Esercizio", EsercizioSchema, "esercizi");
+
+//dopo
+module.exports = mongoose.model("Esercizio", EsercizioSchema, "Esercizio");
