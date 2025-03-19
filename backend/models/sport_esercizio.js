@@ -5,4 +5,4 @@ const SportEsercizioSchema = new mongoose.Schema({
   id_esercizio: { type: mongoose.Schema.Types.ObjectId, ref: "Esercizio", required: true }
 });
 
-module.exports = mongoose.model("SportEsercizio", SportEsercizioSchema, "sport_esercizio");
+module.exports = mongoose.model("SportEsercizio", SportEsercizioSchema, "SportEsercizio");

@@ -36,6 +36,7 @@ const Esercizi = () => {
             <th>Nome</th>
             <th>Descrizione</th>
             <th>Parametri</th>
+            <th>Sport</th> {/* Colonna per visualizzare gli sport */}
           </tr>
         </thead>
         <tbody>
@@ -54,6 +55,19 @@ const Esercizi = () => {
                   <span>Nessun parametro</span>
                 )}
               </td>
+              <td>
+  {esercizio.sport && esercizio.sport.length > 0 ? (
+    <ul>
+      {esercizio.sport.map((sport) => (
+        <li key={sport._id}>{sport.nome}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>Nessuno sport associato</span>
+  )}
+</td>
+
+
             </tr>
           ))}
         </tbody>
@@ -64,3 +78,4 @@ const Esercizi = () => {
 };
 
 export default Esercizi;
+

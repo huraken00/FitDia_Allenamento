@@ -10,32 +10,47 @@ exports.getAllEsercizi = async (req, res) => {
     const esercizi = await Esercizio.aggregate([
       {
         $lookup: {
-          from: "EsercizioParametro",  // Collezione da unire
-          localField: "_id",           // Campo della collezione "Esercizio" per il join
-          foreignField: "esercizio_id", // Campo della collezione "EsercizioParametro" per il join
-          as: "relazioni"              // Alias per memorizzare i risultati del lookup
+          from: "SportEsercizio", // La collezione che unisce sport e esercizi
+          localField: "_id",      // Riferimento all'ID dell'esercizio
+          foreignField: "esercizio_id", // Campo nella collezione "SportEsercizio" che fa riferimento all'esercizio
+          as: "sport_relazione"   // Alias per i risultati
         }
       },
       {
         $lookup: {
-          from: "Parametro",              // Collezione "Parametro"
-          localField: "relazioni.parametri", // Array di ObjectId nella collezione "EsercizioParametro"
-          foreignField: "_id",            // Campo corrispondente nella collezione "Parametro"
-          as: "parametri"                 // Alias per i parametri trovati
+          from: "Sport",          // La collezione degli sport
+          localField: "sport_relazione.sport_id", // Riferimento all'ID dello sport associato
+          foreignField: "_id",    // Riferimento all'ID nella collezione "Sport"
+          as: "sport"             // Alias per gli sport trovati
         }
       },
       {
-        $project: {                      // Rimuovere il campo 'relazioni' dal risultato finale
+        $lookup: {
+          from: "EsercizioParametro",  // Collezione per i parametri
+          localField: "_id",           // Riferimento all'ID dell'esercizio
+          foreignField: "esercizio_id", // Campo nella collezione EsercizioParametro che fa riferimento all'esercizio
+          as: "relazioni"              // Alias per le relazioni trovate
+        }
+      },
+      {
+        $lookup: {
+          from: "Parametro",           // La collezione dei parametri
+          localField: "relazioni.parametri", // Array di ObjectId dei parametri
+          foreignField: "_id",         // Riferimento all'ID dei parametri nella collezione "Parametro"
+          as: "parametri"              // Alias per i parametri trovati
+        }
+      },
+      {
+        $project: {
           nome: 1,
           descrizione: 1,
-          parametri: 1
+          sport: 1,                // Includiamo gli sport associati
+          parametri: 1             // Includiamo i parametri associati
         }
       }
     ]);
 
-    // Restituisci il risultato in formato JSON
     return res.status(200).json(esercizi);
-
   } catch (err) {
     return res.status(500).json({ message: "Errore nel recupero degli esercizi", error: err });
   }
@@ -43,19 +58,19 @@ exports.getAllEsercizi = async (req, res) => {
 
 
 
+
+
 // Funzione per inserire un nuovo esercizio
- exports.addEsercizio = async (req, res) => {
-  const { nome, descrizione, id_esperto, id_sport, id_parametro } = req.body; // Ottieni i dati inviati nel corpo della richiesta
+exports.addEsercizio = async (req, res) => {
+  const { nome, descrizione, id_esperto, id_sport, id_parametro } = req.body;
 
   try {
-    // Crea un nuovo esercizio
     const nuovoEsercizio = new Esercizio({
       nome,
       descrizione,
       id_esperto,
     });
 
-    // Salva l'esercizio nel database
     const esercizioSalvato = await nuovoEsercizio.save();
 
     // Associa l'esercizio al suo sport
@@ -78,4 +93,3 @@ exports.getAllEsercizi = async (req, res) => {
     return res.status(500).json({ message: "Errore nell'inserimento dell'esercizio." });
   }
 };
-
