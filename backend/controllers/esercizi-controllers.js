@@ -69,6 +69,8 @@ exports.addEsercizio = async (req, res) => {
       nome,
       descrizione,
       id_esperto,
+      id_sport,
+      id_parametro
     });
 
     const esercizioSalvato = await nuovoEsercizio.save();

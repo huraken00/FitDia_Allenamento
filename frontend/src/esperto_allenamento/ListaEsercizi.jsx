@@ -72,7 +72,7 @@ const Esercizi = () => {
           ))}
         </tbody>
       </table>
-      <Link to="/inserimento-esercizio">Inserisci un nuovo esercizio</Link>
+      <Link to="/inserimento-esercizi">Inserisci un nuovo esercizio</Link>
     </div>
   );
 };
