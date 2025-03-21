@@ -19,6 +19,7 @@ import InserimentoEspertiAllenamento from "./director/pages/InserimentoEspertiAl
 import Dashboard from "./user/pages/Dashboard"; 
 import DashboardAllenamento from "./user/pages/DashboardAllenamento";
 import Profilo from "./components/profilo";
+import VariantiEsercizi from "./user/pages/VariantiEsercizi";
 
 //Routes esperti
 import HomePageEsperto from "./esperto_allenamento/Homepage";

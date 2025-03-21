@@ -74,17 +74,17 @@ const VariantiEsercizi = () => {
       />
       {/* Tendina con le proposte */}
       {showDropdown && (
-        <ul className="dropdown-list">
-          {filteredExercises.map((exercise) => (
-            <li
-              key={exercise._id}
-              onClick={() => handleSelectExercise(exercise)}
-            >
-              {exercise.nome}
-            </li>
-          ))}
-        </ul>
-      )}
+  <ul className="dropdown-list">
+    {filteredExercises.map((exercise) => (
+      <li
+        key={exercise._id}
+        onMouseDown={() => handleSelectExercise(exercise)}
+      >
+        {exercise.nome}
+      </li>
+    ))}
+    </ul>
+    )}
     </div>
   );
 };
