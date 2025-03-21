@@ -24,6 +24,7 @@ import Profilo from "./components/profilo";
 import HomePageEsperto from "./esperto_allenamento/Homepage";
 import ListaEsercizi from "./esperto_allenamento/ListaEsercizi"
 import InserimentoEsercizi from "./esperto_allenamento/InserimentoEsercizi";
+import VariantiEsercizi from "./user/pages/VariantiEsercizi";
 
 const PrivateRoute = ({ children, requiredRole }) => {
   const { isLoggedIn, role } = useContext(AuthContext);
@@ -69,7 +70,8 @@ const App = () => {
           <Route path="/dashboard" element={<PrivateRoute requiredRole="utente"><Dashboard /></PrivateRoute>} />
           <Route path="/dashboard-allenamento" element={<PrivateRoute requiredRole="utente"><DashboardAllenamento /></PrivateRoute>} />
           <Route path="/profilo" element={<PrivateRoute requiredRole="utente"><Profilo /></PrivateRoute>} />
-         
+          <Route path="/dashboard-allenamento" element={<PrivateRoute requiredRole="utente"><DashboardAllenamento /></PrivateRoute>} /><Route path="/varianti-esercizi" element={<PrivateRoute requiredRole="utente"><VariantiEsercizi /></PrivateRoute>} />
+
          {/* Pagine accessibili solo agli esperti */}
          <Route path="/homepage-esperto" element={<PrivateRoute requiredRole="esperto"><HomePageEsperto /></PrivateRoute>} />
          <Route path="/lista-esercizi" element={<PrivateRoute requiredRole="esperto"><ListaEsercizi /></PrivateRoute>} />
