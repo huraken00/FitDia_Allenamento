@@ -8,6 +8,7 @@ const user_routes = require("./routes/user-routes")
 const esperto_routes = require("./routes/esperto-allenamento-routes");
 const esercizi_routes = require("./routes/esercizi-routes");
 const sport_routes = require("./routes/sport-routes");
+const parametro_routes = require("./routes/parametri-routes")
 
 const app = express();
 app.use(cors());
@@ -24,6 +25,7 @@ app.use("/api/esperti-allenamento", esperto_routes);
 
 app.use("/api/esercizi",esercizi_routes);
 app.use("/api/sport",sport_routes);
+app.use("/api/parametri",parametro_routes);
 
 
 

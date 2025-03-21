@@ -1,8 +1,7 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const sportController = require('../controllers/sport_controller');
+const { getAllSports } = require("../controllers/sport_controller");
 
-// Route to get all sports
-router.get('/api/sport', sportController.getAllSports);
+router.get("/", getAllSports);
 
 module.exports = router;

@@ -95,3 +95,54 @@ exports.addEsercizio = async (req, res) => {
     return res.status(500).json({ message: "Errore nell'inserimento dell'esercizio." });
   }
 };
+exports.getEsercizioById = async (req, res) => {
+  try {
+    const esercizio = await Esercizio.findById(req.params.id);
+    if (!esercizio) {
+      return res.status(404).json({ message: "Esercizio non trovato" });
+    }
+    return res.status(200).json(esercizio);
+  } catch (err) {
+    return res.status(500).json({ message: "Errore nel recupero dell'esercizio", error: err });
+  }
+};
+
+// Funzione per aggiornare un esercizio
+exports.updateEsercizio = async (req, res) => {
+  const { id } = req.params;
+  const { nome, descrizione, id_sport, id_parametri } = req.body;
+
+  try {
+      const esercizio = await Esercizio.findByIdAndUpdate(id, { nome, descrizione }, { new: true });
+
+      if (!esercizio) {
+          return res.status(404).json({ message: "Esercizio non trovato." });
+      }
+
+      // Aggiorna Sport
+      await SportEsercizio.deleteMany({ id_esercizio: id });
+      await SportEsercizio.insertMany(id_sport.map(sport_id => ({ id_esercizio: id, id_sport: sport_id })));
+
+      // Aggiorna Parametri
+      await ParametroEsercizio.deleteMany({ id_esercizio: id });
+      await ParametroEsercizio.insertMany(id_parametri.map(parametro_id => ({ id_esercizio: id, id_parametro: parametro_id })));
+
+      return res.status(200).json({ message: "Esercizio aggiornato con successo." });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Errore nell'aggiornamento dell'esercizio." });
+  }
+};
+
+// Funzione per eliminare un esercizio
+exports.deleteEsercizio = async (req, res) => {
+  try {
+    const esercizioEliminato = await Esercizio.findByIdAndDelete(req.params.id);
+    if (!esercizioEliminato) {
+      return res.status(404).json({ message: "Esercizio non trovato" });
+    }
+    return res.status(200).json({ message: "Esercizio eliminato con successo" });
+  } catch (err) {
+    return res.status(500).json({ message: "Errore nella cancellazione dell'esercizio", error: err });
+  }
+};
