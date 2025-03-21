@@ -27,6 +27,28 @@ const Esercizi = () => {
     }
   };
 
+  const handleDelete = async (id) => {
+    const conferma = window.confirm("Sei sicuro di voler eliminare questo esercizio?");
+    if (!conferma) return;
+
+    try {
+      const res = await fetch(`http://localhost:3001/api/esercizi/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error("Errore nella cancellazione dell'esercizio");
+      }
+
+      setEsercizi(esercizi.filter((esercizio) => esercizio._id !== id));
+    } catch (err) {
+      console.error("Errore durante la cancellazione:", err);
+    }
+  };
+
   return (
     <div>
       <h2>Lista di tutti gli esercizi</h2>
@@ -36,7 +58,8 @@ const Esercizi = () => {
             <th>Nome</th>
             <th>Descrizione</th>
             <th>Parametri</th>
-            <th>Sport</th> {/* Colonna per visualizzare gli sport */}
+            <th>Sport</th>
+            <th>Azioni</th>
           </tr>
         </thead>
         <tbody>
@@ -56,18 +79,22 @@ const Esercizi = () => {
                 )}
               </td>
               <td>
-  {esercizio.sport && esercizio.sport.length > 0 ? (
-    <ul>
-      {esercizio.sport.map((sport) => (
-        <li key={sport._id}>{sport.nome}</li>
-      ))}
-    </ul>
-  ) : (
-    <span>Nessuno sport associato</span>
-  )}
-</td>
-
-
+                {esercizio.sport && esercizio.sport.length > 0 ? (
+                  <ul>
+                    {esercizio.sport.map((sport) => (
+                      <li key={sport._id}>{sport.nome}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <span>Nessuno sport associato</span>
+                )}
+              </td>
+              <td>
+                <Link to={`/modifica-esercizio/${esercizio._id}`}>
+                  <button>Modifica</button>
+                </Link>
+                <button onClick={() => handleDelete(esercizio._id)}>Elimina</button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -78,4 +105,3 @@ const Esercizi = () => {
 };
 
 export default Esercizi;
-
