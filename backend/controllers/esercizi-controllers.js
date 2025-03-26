@@ -10,84 +10,74 @@ exports.getAllEsercizi = async (req, res) => {
     const esercizi = await Esercizio.aggregate([
       {
         $lookup: {
-          from: "SportEsercizio", // La collezione che unisce sport e esercizi
-          localField: "_id",      // Riferimento all'ID dell'esercizio
-          foreignField: "esercizio_id", // Campo nella collezione "SportEsercizio" che fa riferimento all'esercizio
-          as: "sport_relazione"   // Alias per i risultati
+          from: "SportEsercizio",
+          localField: "_id",
+          foreignField: "id_esercizio",
+          as: "sport_relazione"
         }
       },
       {
         $lookup: {
-          from: "Sport",          // La collezione degli sport
-          localField: "sport_relazione.sport_id", // Riferimento all'ID dello sport associato
-          foreignField: "_id",    // Riferimento all'ID nella collezione "Sport"
-          as: "sport"             // Alias per gli sport trovati
+          from: "Sport",
+          localField: "sport_relazione.id_sport",
+          foreignField: "_id",
+          as: "sport"
         }
       },
       {
         $lookup: {
-          from: "EsercizioParametro",  // Collezione per i parametri
-          localField: "_id",           // Riferimento all'ID dell'esercizio
-          foreignField: "esercizio_id", // Campo nella collezione EsercizioParametro che fa riferimento all'esercizio
-          as: "relazioni"              // Alias per le relazioni trovate
+          from: "EsercizioParametro",
+          localField: "_id",
+          foreignField: "id_esercizio",
+          as: "parametri_relazione"
         }
       },
       {
         $lookup: {
-          from: "Parametro",           // La collezione dei parametri
-          localField: "relazioni.parametri", // Array di ObjectId dei parametri
-          foreignField: "_id",         // Riferimento all'ID dei parametri nella collezione "Parametro"
-          as: "parametri"              // Alias per i parametri trovati
+          from: "Parametro",
+          localField: "parametri_relazione.id_parametro",
+          foreignField: "_id",
+          as: "parametri"
         }
       },
       {
         $project: {
           nome: 1,
           descrizione: 1,
-          sport: 1,                // Includiamo gli sport associati
-          parametri: 1             // Includiamo i parametri associati
+          sport: 1,
+          parametri: 1
         }
       }
     ]);
 
     return res.status(200).json(esercizi);
+    console.log(esercizi)
   } catch (err) {
     return res.status(500).json({ message: "Errore nel recupero degli esercizi", error: err });
   }
 };
 
-
-
-
-
 // Funzione per inserire un nuovo esercizio
 exports.addEsercizio = async (req, res) => {
-  const { nome, descrizione, id_esperto, id_sport, id_parametro } = req.body;
+  const { nome, descrizione, id_esperto, id_sport, id_parametri } = req.body;
 
   try {
-    const nuovoEsercizio = new Esercizio({
-      nome,
-      descrizione,
-      id_esperto,
-      id_sport,
-      id_parametro
-    });
-
+    const nuovoEsercizio = new Esercizio({ nome, descrizione, id_esperto });
     const esercizioSalvato = await nuovoEsercizio.save();
 
-    // Associa l'esercizio al suo sport
-    const sportEsercizio = new SportEsercizio({
-      id_sport,
-      id_esercizio: esercizioSalvato._id,
-    });
-    await sportEsercizio.save();
+    if (id_sport && id_sport.length > 0) {
+      await SportEsercizio.insertMany(id_sport.map(sport_id => ({
+        id_esercizio: esercizioSalvato._id,
+        id_sport: sport_id
+      })));
+    }
 
-    // Associa l'esercizio ai parametri
-    const parametroEsercizio = new ParametroEsercizio({
-      id_parametro,
-      id_esercizio: esercizioSalvato._id,
-    });
-    await parametroEsercizio.save();
+    if (id_parametri && id_parametri.length > 0) {
+      await ParametroEsercizio.insertMany(id_parametri.map(parametro_id => ({
+        id_esercizio: esercizioSalvato._id,
+        id_parametro: parametro_id
+      })));
+    }
 
     return res.status(201).json({ message: "Esercizio inserito con successo", esercizio: esercizioSalvato });
   } catch (error) {
@@ -95,52 +85,84 @@ exports.addEsercizio = async (req, res) => {
     return res.status(500).json({ message: "Errore nell'inserimento dell'esercizio." });
   }
 };
+
+// Funzione per ottenere un esercizio con dettagli di sport e parametri
 exports.getEsercizioById = async (req, res) => {
   try {
     const esercizio = await Esercizio.findById(req.params.id);
     if (!esercizio) {
       return res.status(404).json({ message: "Esercizio non trovato" });
     }
-    return res.status(200).json(esercizio);
+
+    const sport = await SportEsercizio.find({ id_esercizio: req.params.id }).populate("id_sport");
+    const parametri = await ParametroEsercizio.find({ id_esercizio: req.params.id }).populate("id_parametro");
+    //console.log("Sport:associati",sport)
+    console.log(parametri);
+    return res.status(200).json({
+      ...esercizio._doc,
+      sport: sport.map(s => s.id_sport),
+      parametri: parametri.map(p=>p.id_parametro)
+    });
   } catch (err) {
     return res.status(500).json({ message: "Errore nel recupero dell'esercizio", error: err });
   }
 };
 
 // Funzione per aggiornare un esercizio
+// Funzione per aggiornare un esercizio
 exports.updateEsercizio = async (req, res) => {
   const { id } = req.params;
   const { nome, descrizione, id_sport, id_parametri } = req.body;
 
   try {
-      const esercizio = await Esercizio.findByIdAndUpdate(id, { nome, descrizione }, { new: true });
+    const esercizio = await Esercizio.findByIdAndUpdate(id, { nome, descrizione }, { new: true });
 
-      if (!esercizio) {
-          return res.status(404).json({ message: "Esercizio non trovato." });
-      }
+    if (!esercizio) {
+      return res.status(404).json({ message: "Esercizio non trovato." });
+    }
 
-      // Aggiorna Sport
+    if (id_sport) {
       await SportEsercizio.deleteMany({ id_esercizio: id });
-      await SportEsercizio.insertMany(id_sport.map(sport_id => ({ id_esercizio: id, id_sport: sport_id })));
-
-      // Aggiorna Parametri
+      if (id_sport.length > 0) {
+        await SportEsercizio.insertMany(id_sport.map(sport_id => ({
+          id_esercizio: id,
+          id_sport: sport_id
+        })));
+      }
+    }
+    if (id_parametri) {
       await ParametroEsercizio.deleteMany({ id_esercizio: id });
-      await ParametroEsercizio.insertMany(id_parametri.map(parametro_id => ({ id_esercizio: id, id_parametro: parametro_id })));
+      if (id_parametri.length > 0) {
+        await ParametroEsercizio.insertMany(id_parametri.map(parametro_id => ({
+          id_esercizio: id,
+          id_parametro: parametro_id
+        })));
+      }
+    }
+    
+    console.log("Risposta inviata al client:", { message: "Esercizio aggiornato con successo." });
 
-      return res.status(200).json({ message: "Esercizio aggiornato con successo." });
+    return res.status(200).json({ message: "Esercizio aggiornato con successo." });
   } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: "Errore nell'aggiornamento dell'esercizio." });
+    console.error(error);
+    return res.status(500).json({ message: "Errore nell'aggiornamento dell'esercizio." });
   }
 };
 
-// Funzione per eliminare un esercizio
+
+
+
+// Funzione per eliminare un esercizio e le sue relazioni
 exports.deleteEsercizio = async (req, res) => {
   try {
     const esercizioEliminato = await Esercizio.findByIdAndDelete(req.params.id);
     if (!esercizioEliminato) {
       return res.status(404).json({ message: "Esercizio non trovato" });
     }
+
+    await SportEsercizio.deleteMany({ id_esercizio: req.params.id });
+    await ParametroEsercizio.deleteMany({ id_esercizio: req.params.id });
+
     return res.status(200).json({ message: "Esercizio eliminato con successo" });
   } catch (err) {
     return res.status(500).json({ message: "Errore nella cancellazione dell'esercizio", error: err });

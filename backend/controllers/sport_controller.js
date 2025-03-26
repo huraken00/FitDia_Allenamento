@@ -2,7 +2,6 @@ const Sport= require("../models/sport")
 exports.getAllSports = async (req, res) => {
   try {
     const sports = await Sport.find();
-    console.log(sports); // Aggiungi questo per vedere i dati
     return res.status(200).json(sports);
   } catch (error) {
     console.error(error);

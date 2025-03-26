@@ -20,11 +20,19 @@ const ModificaEsercizio = () => {
   const fetchEsercizio = async () => {
     const res = await fetch(`http://localhost:3001/api/esercizi/${id}`);
     const data = await res.json();
-    setEsercizio({ nome: data.nome, descrizione: data.descrizione });
-    setSelectedSport(data.sport.map((s) => s._id));
-    setSelectedParametri(data.parametri.map((p) => p._id));
+     console.log("esercizio:",data)
+    // Verifica che i dati siano validi prima di utilizzarli
+    if (data) {
+      setEsercizio({ nome: data.nome, descrizione: data.descrizione });
+  
+      // Se sport e parametri non sono null o undefined, imposta i selezionati
+      setSelectedSport(data.sport ? data.sport.map((s) => s._id) : []);
+      setSelectedParametri(data.parametri ? data.parametri.map((p) => p._id) : []);
+    } else {
+      console.error("Dati non validi ricevuti dal server.");
+    }
   };
-
+  
   const fetchSport = async () => {
     const res = await fetch("http://localhost:3001/api/sport");
     const data = await res.json();
@@ -44,21 +52,32 @@ const ModificaEsercizio = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await fetch(`http://localhost:3001/api/esercizi/${id}`, {
+      const res = await fetch(`http://localhost:3001/api/esercizi/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           nome: esercizio.nome,
           descrizione: esercizio.descrizione,
-          sportIds: selectedSport,
-          parametroIds: selectedParametri
+          id_sport: selectedSport,
+          id_parametri: selectedParametri
         }),
       });
-      navigate("/lista-esercizi", { replace: true });
+
+      const responseData = await res.json();  // Cattura i dati della risposta del server
+      console.log("Risposta del server:", responseData); // Logga la risposta del server per il debug
+      
+      if (res.ok) {
+        navigate("/lista-esercizi", { replace: true });
+      } else {
+        console.error("Errore nell'aggiornamento dell'esercizio:", responseData);
+      }
     } catch (error) {
       console.error("Errore nell'aggiornamento dell'esercizio:", error);
     }
-  };
+};
+
+  
+  
 
   return (
     <div>

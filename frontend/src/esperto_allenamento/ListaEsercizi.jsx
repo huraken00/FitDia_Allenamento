@@ -22,6 +22,7 @@ const Esercizi = () => {
 
       const data = await res.json();
       setEsercizi(data);
+      console.log("Esercizi:",data)
     } catch (err) {
       console.error("Errore nel recupero degli esercizi:", err);
     }
