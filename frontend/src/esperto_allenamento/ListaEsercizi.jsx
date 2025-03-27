@@ -3,10 +3,21 @@ import { Link } from "react-router-dom";
 
 const Esercizi = () => {
   const [esercizi, setEsercizi] = useState([]);
+  const [filteredEsercizi, setFilteredEsercizi] = useState([]);
+  const [search, setSearch] = useState("");
+  const [sportFilter, setSportFilter] = useState("");
+  const [parametroFilter, setParametroFilter] = useState("");
+  const [sportOptions, setSportOptions] = useState([]);
+  const [parametroOptions, setParametroOptions] = useState([]);
 
   useEffect(() => {
     fetchEsercizi();
+    fetchSportAndParametri();
   }, []);
+
+  useEffect(() => {
+    filterEsercizi();
+  }, [search, sportFilter, parametroFilter, esercizi]);
 
   const fetchEsercizi = async () => {
     try {
@@ -22,9 +33,22 @@ const Esercizi = () => {
 
       const data = await res.json();
       setEsercizi(data);
-      console.log("Esercizi:",data)
+      setFilteredEsercizi(data);
     } catch (err) {
       console.error("Errore nel recupero degli esercizi:", err);
+    }
+  };
+
+  const fetchSportAndParametri = async () => {
+    try {
+      const sportRes = await fetch("http://localhost:3001/api/sport");
+      const parametriRes = await fetch("http://localhost:3001/api/parametri");
+      const sportData = await sportRes.json();
+      const parametriData = await parametriRes.json();
+      setSportOptions(sportData);
+      setParametroOptions(parametriData);
+    } catch (err) {
+      console.error("Errore nel recupero di sport e parametri:", err);
     }
   };
 
@@ -50,9 +74,47 @@ const Esercizi = () => {
     }
   };
 
+  const filterEsercizi = () => {
+    let filtered = esercizi.filter((esercizio) =>
+      esercizio.nome.toLowerCase().includes(search.toLowerCase())
+    );
+    
+    if (sportFilter) {
+      filtered = filtered.filter((esercizio) =>
+        esercizio.sport.some((s) => s._id === sportFilter)
+      );
+    }
+
+    if (parametroFilter) {
+      filtered = filtered.filter((esercizio) =>
+        esercizio.parametri.some((p) => p._id === parametroFilter)
+      );
+    }
+
+    setFilteredEsercizi(filtered);
+  };
+
   return (
     <div>
       <h2>Lista di tutti gli esercizi</h2>
+      <input
+        type="text"
+        placeholder="Cerca per nome..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <select onChange={(e) => setSportFilter(e.target.value)}>
+        <option value="">Filtra per sport</option>
+        {sportOptions.map((sport) => (
+          <option key={sport._id} value={sport._id}>{sport.nome}</option>
+        ))}
+      </select>
+      <select onChange={(e) => setParametroFilter(e.target.value)}>
+        <option value="">Filtra per parametro</option>
+        {parametroOptions.map((parametro) => (
+          <option key={parametro._id} value={parametro._id}>{parametro.nome}</option>
+        ))}
+      </select>
       <table border="1">
         <thead>
           <tr>
@@ -64,7 +126,7 @@ const Esercizi = () => {
           </tr>
         </thead>
         <tbody>
-          {esercizi.map((esercizio) => (
+          {filteredEsercizi.map((esercizio) => (
             <tr key={esercizio._id}>
               <td>{esercizio.nome}</td>
               <td>{esercizio.descrizione}</td>

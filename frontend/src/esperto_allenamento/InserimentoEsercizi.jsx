@@ -1,126 +1,125 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const InserimentoEsercizi = () => {
-  const [nome, setNome] = useState("");
-  const [descrizione, setDescrizione] = useState("");
-  const [selectedParams, setSelectedParams] = useState([]);
-  const [selectedSports, setSelectedSports] = useState([]);
-  const [sports, setSports] = useState([]);
-  const [parameters, setParameters] = useState([]);
+const InserisciEsercizio = () => {
   const navigate = useNavigate();
 
-  // Fetch sports and parameters from the backend
+  // Recupera l'ID dell'esperto autenticato (modifica se necessario)
+  const espertoId = localStorage.userId; // Invece di getItem
+
+  const [esercizio, setEsercizio] = useState({ nome: "", descrizione: "" });
+  const [sport, setSport] = useState([]);
+  const [parametri, setParametri] = useState([]);
+  const [selectedSport, setSelectedSport] = useState([]);
+  const [selectedParametri, setSelectedParametri] = useState([]);
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const sportResponse = await fetch("http://localhost:3001/api/sport");
-        const sportsData = await sportResponse.json();
-        setSports(sportsData);
-
-        const paramResponse = await fetch("http://localhost:3001/api/parametri");
-        const parametersData = await paramResponse.json();
-        setParameters(parametersData);
-      } catch (err) {
-        console.error("Errore nel recupero di sport e parametri:", err);
-      }
-    };
-
-    fetchData();
+    fetchSport();
+    fetchParametri();
   }, []);
 
-  // Handle parameter selection
-  const handleParamChange = (e) => {
-    const { value, checked } = e.target;
-    setSelectedParams((prev) =>
-      checked ? [...prev, value] : prev.filter((param) => param !== value)
-    );
+  const fetchSport = async () => {
+    const res = await fetch("http://localhost:3001/api/sport");
+    const data = await res.json();
+    setSport(data || []);
   };
 
-  // Handle sport selection
-  const handleSportChange = (e) => {
-    const { value, checked } = e.target;
-    setSelectedSports((prev) =>
-      checked ? [...prev, value] : prev.filter((sport) => sport !== value)
-    );
+  const fetchParametri = async () => {
+    const res = await fetch("http://localhost:3001/api/parametri");
+    const data = await res.json();
+    setParametri(data || []);
+  };
+
+  const handleCheckboxChange = (id, setSelected, selected) => {
+    setSelected(selected.includes(id) ? selected.filter((s) => s !== id) : [...selected, id]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!espertoId) {
+      console.error("ID esperto non disponibile");
+      return;
+    }
     try {
       const res = await fetch("http://localhost:3001/api/esercizi", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          nome,
-          descrizione,
-          id_esperto: "1", // Assuming you are passing this value dynamically
-          id_sport: selectedSports,
-          id_parametro: selectedParams,
+          nome: esercizio.nome,
+          descrizione: esercizio.descrizione,
+          id_esperto: espertoId,
+          id_sport: selectedSport,
+          id_parametri: selectedParametri
         }),
       });
 
-      if (!res.ok) {
-        throw new Error("Errore nell'aggiunta dell'esercizio");
+      const responseData = await res.json();
+      console.log("Risposta del server:", responseData);
+
+      if (res.ok) {
+        navigate("/lista-esercizi", { replace: true });
+      } else {
+        console.error("Errore nell'inserimento dell'esercizio:", responseData);
       }
-      navigate("/esercizi"); // Torna alla lista degli esercizi
-    } catch (err) {
-      console.error("Errore nell'aggiunta dell'esercizio:", err);
+    } catch (error) {
+      console.error("Errore nell'inserimento dell'esercizio:", error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <div>
+      <h2>Inserisci Nuovo Esercizio</h2>
+      <form onSubmit={handleSubmit}>
         <label>Nome:</label>
         <input
           type="text"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
+          value={esercizio.nome}
+          onChange={(e) => setEsercizio({ ...esercizio, nome: e.target.value })}
         />
-      </div>
-      <div>
+
         <label>Descrizione:</label>
         <input
           type="text"
-          value={descrizione}
-          onChange={(e) => setDescrizione(e.target.value)}
+          value={esercizio.descrizione}
+          onChange={(e) => setEsercizio({ ...esercizio, descrizione: e.target.value })}
         />
-      </div>
 
-      <div>
-        <label>Seleziona i parametri:</label>
-        {parameters.map((param) => (
-          <div key={param._id}>
-            <input
-              type="checkbox"
-              value={param._id}
-              onChange={handleParamChange}
-            />
-            <label>{param.nome}</label>
-          </div>
-        ))}
-      </div>
+        <h3>Sport</h3>
+        {sport.length > 0 ? (
+          sport.map((s) => (
+            <label key={s._id}>
+              <input
+                type="checkbox"
+                checked={selectedSport.includes(s._id)}
+                onChange={() => handleCheckboxChange(s._id, setSelectedSport, selectedSport)}
+              />
+              {s.nome}
+            </label>
+          ))
+        ) : (
+          <p>Nessuno sport disponibile</p>
+        )}
 
-      <div>
-        <label>Seleziona gli sport:</label>
-        {sports.map((sport) => (
-          <div key={sport._id}>
-            <input
-              type="checkbox"
-              value={sport._id}
-              onChange={handleSportChange}
-            />
-            <label>{sport.nome}</label>
-          </div>
-        ))}
-      </div>
+        <h3>Parametri</h3>
+        {parametri.length > 0 ? (
+          parametri.map((p) => (
+            <label key={p._id}>
+              <input
+                type="checkbox"
+                checked={selectedParametri.includes(p._id)}
+                onChange={() => handleCheckboxChange(p._id, setSelectedParametri, selectedParametri)}
+              />
+              {p.nome}
+            </label>
+          ))
+        ) : (
+          <p>Nessun parametro disponibile</p>
+        )}
 
-      <button type="submit">Aggiungi Esercizio</button>
-    </form>
+        <button type="submit">Inserisci Esercizio</button>
+      </form>
+    </div>
   );
 };
 
-export default InserimentoEsercizi;
+export default InserisciEsercizio;

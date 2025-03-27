@@ -20,7 +20,6 @@ const ModificaEsercizio = () => {
   const fetchEsercizio = async () => {
     const res = await fetch(`http://localhost:3001/api/esercizi/${id}`);
     const data = await res.json();
-     console.log("esercizio:",data)
     // Verifica che i dati siano validi prima di utilizzarli
     if (data) {
       setEsercizio({ nome: data.nome, descrizione: data.descrizione });
@@ -64,7 +63,6 @@ const ModificaEsercizio = () => {
       });
 
       const responseData = await res.json();  // Cattura i dati della risposta del server
-      console.log("Risposta del server:", responseData); // Logga la risposta del server per il debug
       
       if (res.ok) {
         navigate("/lista-esercizi", { replace: true });

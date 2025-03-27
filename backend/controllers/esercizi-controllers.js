@@ -96,8 +96,6 @@ exports.getEsercizioById = async (req, res) => {
 
     const sport = await SportEsercizio.find({ id_esercizio: req.params.id }).populate("id_sport");
     const parametri = await ParametroEsercizio.find({ id_esercizio: req.params.id }).populate("id_parametro");
-    //console.log("Sport:associati",sport)
-    console.log(parametri);
     return res.status(200).json({
       ...esercizio._doc,
       sport: sport.map(s => s.id_sport),
@@ -140,8 +138,6 @@ exports.updateEsercizio = async (req, res) => {
       }
     }
     
-    console.log("Risposta inviata al client:", { message: "Esercizio aggiornato con successo." });
-
     return res.status(200).json({ message: "Esercizio aggiornato con successo." });
   } catch (error) {
     console.error(error);
