@@ -1,11 +1,13 @@
-// controllers/serieController.js
-const Serie = require("../models/serie");
 
-// Recupera tutte le serie associate a un allenamento
- exports.getAllSerie = async (req, res) => {
+const Serie = require("../models/serie");
+const Allenamento = require("../models/allenamento");
+const Esercizio = require("../models/esercizio");
+
+// Funzione per recuperare tutte le serie associate a un allenamento
+exports.getAllSerie = async (req, res) => {
   try {
-    const serie = await Serie.find({ allenamento: req.params.allenamentoId })
-      .populate("esercizio") // Popola il campo esercizio con i dettagli dell'esercizio
+    const serie = await Serie.find({ id_allenamento: req.params.allenamentoId })
+      .populate("id_esercizio")
       .exec();
 
     if (!serie || serie.length === 0) {
@@ -19,4 +21,29 @@ const Serie = require("../models/serie");
   }
 };
 
+// Funzione per creare una nuova serie
+exports.createSerie = async (req, res) => {
+  const { peso, distanza, durata, ripetizioni, id_allenamento, id_esercizio } = req.body;
 
+  // Verifica che id_allenamento e id_esercizio siano presenti
+  if (!id_allenamento || !id_esercizio) {
+    return res.status(400).json({ message: "id_allenamento e id_esercizio sono obbligatori" });
+  }
+
+  try {
+    const nuovaSerie = new Serie({
+      peso,
+      distanza,
+      durata,
+      ripetizioni,
+      id_allenamento,
+      id_esercizio,
+    });
+
+    const serieSalvata = await nuovaSerie.save();
+    return res.status(201).json(serieSalvata);
+  } catch (error) {
+    console.error("Errore nel salvataggio della serie:", error);
+    return res.status(500).json({ message: "Errore interno del server" });
+  }
+};

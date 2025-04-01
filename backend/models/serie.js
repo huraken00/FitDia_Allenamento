@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // Schema per Serie
@@ -6,36 +6,32 @@ const serieSchema = new Schema(
   {
     peso: {
       type: Number,
-      required: false, // Peso è opzionale
+      required: false // Peso della serie (opzionale)
     },
     distanza: {
       type: Number,
-      required: false, // Distanza è opzionale
+      required: false // Distanza della serie (opzionale)
     },
     durata: {
       type: Number,
-      required: false, // Durata è opzionale (ad esempio in secondi)
+      required: false // Durata della serie (opzionale)
     },
     ripetizioni: {
       type: Number,
-      required: false, // Ripetizioni sono opzionali
+      required: false // Ripetizioni della serie (opzionale)
     },
-    // Riferimento all'allenamento a cui appartiene questa serie
-    allenamento: {
-      type: Schema.Types.ObjectId,
-      ref: "Allenamento", // Riferimento al modello Allenamento
-      required: true,
+    id_allenamento: { 
+      type: Schema.Types.ObjectId, 
+      ref: "Allenamento", 
+      required: true // Riferimento all'allenamento a cui appartiene la serie
     },
-    // Riferimento all'esercizio
-    esercizio: {
-      type: Schema.Types.ObjectId,
-      ref: "Esercizio", // Riferimento al modello Esercizio
-      required: true,
-    },
+    id_esercizio: { 
+      type: Schema.Types.ObjectId, 
+      ref: "Esercizio", 
+      required: true // Riferimento all'esercizio associato alla serie
+    }
   },
   { timestamps: true } // Aggiunge createdAt e updatedAt
 );
 
-const Serie = mongoose.model("Serie", serieSchema,"Serie");
-
-module.exports = Serie;
+module.exports = mongoose.model("Serie", serieSchema, "Serie");

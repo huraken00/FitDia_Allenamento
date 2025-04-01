@@ -110,10 +110,19 @@ exports.getEsercizioById = async (req, res) => {
 // Funzione per aggiornare un esercizio
 exports.updateEsercizio = async (req, res) => {
   const { id } = req.params;
-  const { nome, descrizione, id_sport, id_parametri } = req.body;
+  const { nome, descrizione, id_sport, id_parametri, id_esperto } = req.body;
 
   try {
-    const esercizio = await Esercizio.findByIdAndUpdate(id, { nome, descrizione }, { new: true });
+    const esercizio = await Esercizio.findByIdAndUpdate(
+      id,
+      { 
+        nome, 
+        descrizione, 
+        id_esperto, // Aggiorna l'ID dell'esperto che sta modificando
+        data_modifica: new Date() // Salva la data di modifica
+      }, 
+      { new: true }
+    );
 
     if (!esercizio) {
       return res.status(404).json({ message: "Esercizio non trovato." });
@@ -128,6 +137,7 @@ exports.updateEsercizio = async (req, res) => {
         })));
       }
     }
+
     if (id_parametri) {
       await ParametroEsercizio.deleteMany({ id_esercizio: id });
       if (id_parametri.length > 0) {
@@ -144,6 +154,7 @@ exports.updateEsercizio = async (req, res) => {
     return res.status(500).json({ message: "Errore nell'aggiornamento dell'esercizio." });
   }
 };
+
 
 
 

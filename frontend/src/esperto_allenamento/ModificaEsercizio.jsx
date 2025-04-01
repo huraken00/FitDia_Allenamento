@@ -51,6 +51,8 @@ const ModificaEsercizio = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const id_esperto = localStorage.userId; // Recupera l'ID dell'esperto autenticato
+  
       const res = await fetch(`http://localhost:3001/api/esercizi/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -58,12 +60,12 @@ const ModificaEsercizio = () => {
           nome: esercizio.nome,
           descrizione: esercizio.descrizione,
           id_sport: selectedSport,
-          id_parametri: selectedParametri
+          id_parametri: selectedParametri,
+          id_esperto // Passa l'ID dell'esperto che modifica
         }),
       });
-
-      const responseData = await res.json();  // Cattura i dati della risposta del server
-      
+  
+      const responseData = await res.json();
       if (res.ok) {
         navigate("/lista-esercizi", { replace: true });
       } else {
@@ -72,7 +74,8 @@ const ModificaEsercizio = () => {
     } catch (error) {
       console.error("Errore nell'aggiornamento dell'esercizio:", error);
     }
-};
+  };
+  
 
   
   

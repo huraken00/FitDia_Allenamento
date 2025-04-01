@@ -1,38 +1,27 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // Schema per Allenamento
 const allenamentoSchema = new Schema(
   {
-    nome: {
-      type: String,
-      required: true,
+    id_utente: { 
+      type: String, 
+      required: true // ID dell'utente che ha creato l'allenamento
     },
-    dataCreazione: {
-      type: Date,
-      default: Date.now,
+    nome: { 
+      type: String, 
+      required: true // Nome dell'allenamento
     },
-    appuntiAllenamento: {
-      type: String,
-      required: false, // Questo campo è opzionale
+    dataCreazione: { 
+      type: Date, 
+      default: Date.now // Data di creazione dell'allenamento
     },
-    // Riferimento all'utente che ha creato l'allenamento
-    utente: {
-      type: Schema.Types.ObjectId,
-      ref: "Utente", // Riferimento al modello Utente
-      required: true,
-    },
-    // Serie appartenenti a questo allenamento
-    serie: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Serie", // Riferimento al modello Serie
-      },
-    ],
+    appuntiAllenamento: { 
+      type: String, 
+      required: false // Appunti relativi all'allenamento (opzionali)
+    }
   },
   { timestamps: true } // Aggiunge createdAt e updatedAt
 );
 
-const Allenamento = mongoose.model("Allenamento", allenamentoSchema,"Allenamento");
-
-module.exports = Allenamento;
+module.exports = mongoose.model("Allenamento", allenamentoSchema, "Allenamento");

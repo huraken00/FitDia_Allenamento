@@ -11,17 +11,22 @@ const ListaAllenamenti = () => {
   // Funzione per caricare gli allenamenti
   const fetchAllenamenti = async () => {
     try {
-      const res = await fetch("http://localhost:3001/api/allenamenti", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const utenteId = localStorage.getItem("userId");
+
+      if (!utenteId) {
+        throw new Error("ID utente non trovato");
+      }
+
+      console.log("Fetching allenamenti per utente:", utenteId); // DEBUG
+
+      const res = await fetch(`http://localhost:3001/api/allenamenti/${utenteId}`);
 
       if (!res.ok) {
         throw new Error("Errore nel recupero degli allenamenti");
       }
 
       const data = await res.json();
+      console.log("Allenamenti ricevuti:", data); // DEBUG
       setAllenamenti(data);
     } catch (err) {
       console.error("Errore nel recupero degli allenamenti:", err);
