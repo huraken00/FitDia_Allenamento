@@ -17,10 +17,13 @@ const InserimentoAllenamenti = () => {
     durata: "",
     ripetizioni: "",
     esercizio: "",
+    sport: [], // Sport gestito come array
   });
 
   const [esercizi, setEsercizi] = useState([]);
   const [error, setError] = useState(null);
+  const [parametriDisponibili, setParametriDisponibili] = useState([]);
+  const [sportDisponibili, setSportDisponibili] = useState([]); // Array per gestire più sport
 
   useEffect(() => {
     const fetchEsercizi = async () => {
@@ -40,9 +43,37 @@ const InserimentoAllenamenti = () => {
     setAllenamento((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSerieChange = (e) => {
+  const handleSerieChange = async (e) => {
     const { name, value } = e.target;
     setSerie((prev) => ({ ...prev, [name]: value }));
+  
+    if (name === "esercizio") {
+      try {
+        const res = await fetch(`http://localhost:3001/api/esercizi-parametri/${value}`);
+        const data = await res.json();
+  
+        console.log("Dati ricevuti:", data);  // Aggiungi il log per vedere cosa arriva
+  
+        if (!data.parametri || !Array.isArray(data.parametri)) {
+          console.error("Formato dati errato:", data);
+          setParametriDisponibili([]);
+          setSportDisponibili([]); // Reset sport se i dati sono errati
+          return;
+        }
+  
+        setParametriDisponibili(data.parametri);
+        setSportDisponibili(data.sport || []);  // Gestisci più sport come array
+        setSerie((prev) => ({
+          ...prev,
+          nomeEsercizio: data.nomeEsercizio,
+          sport: data.sport || [],  // Assicurati di gestire correttamente gli sport
+        }));
+      } catch (err) {
+        console.error("Errore nel recupero dei parametri:", err);
+        setParametriDisponibili([]);
+        setSportDisponibili([]); // Reset sport in caso di errore
+      }
+    }
   };
 
   const handleAggiungiSerie = async () => {
@@ -66,17 +97,29 @@ const InserimentoAllenamenti = () => {
           durata: serie.durata ? Number(serie.durata) : null,
           ripetizioni: serie.ripetizioni ? Number(serie.ripetizioni) : null,
           id_allenamento: allenamento._id,
-          id_esercizio: serie.esercizio,
+          id_esercizio: serie.esercizio, // ID esercizio
         }),
       });
 
       const data = await response.json();
       if (response.ok) {
+        const esercizioSelezionato = esercizi.find(e => e._id === serie.esercizio);
+
         setAllenamento((prev) => ({
           ...prev,
-          serie: [...prev.serie, data],
+          serie: [
+            ...prev.serie,
+            {
+              ...data,
+              id_esercizio: {
+                _id: serie.esercizio,
+                nome: esercizioSelezionato ? esercizioSelezionato.nome : "Sconosciuto",
+              },
+              sport: serie.sport,  // Assicurati di aggiungere lo sport alla serie
+            },
+          ],
         }));
-        setSerie({ peso: "", distanza: "", durata: "", ripetizioni: "", esercizio: "" });
+        setSerie({ peso: "", distanza: "", durata: "", ripetizioni: "", esercizio: "", sport: [] });
       } else {
         setError(data.message || "Errore nell'aggiunta della serie");
       }
@@ -133,17 +176,37 @@ const InserimentoAllenamenti = () => {
       {allenamento._id && (
         <>
           <h3>Aggiungi Serie</h3>
-          <label>Peso (kg):</label>
-          <input type="number" name="peso" value={serie.peso} onChange={handleSerieChange} />
+          {parametriDisponibili.length === 0 ? (
+            <p>Non ci sono parametri disponibili per questo esercizio.</p>
+          ) : (
+            <>
+              {parametriDisponibili.some(p => p.nome === "Peso") && (
+                <>
+                  <label>Peso (kg):</label>
+                  <input type="number" name="peso" value={serie.peso} onChange={handleSerieChange} />
+                </>
+              )}
 
-          <label>Distanza (metri):</label>
-          <input type="number" name="distanza" value={serie.distanza} onChange={handleSerieChange} />
-
-          <label>Durata (secondi):</label>
-          <input type="number" name="durata" value={serie.durata} onChange={handleSerieChange} />
-
-          <label>Ripetizioni:</label>
-          <input type="number" name="ripetizioni" value={serie.ripetizioni} onChange={handleSerieChange} />
+              {parametriDisponibili.some(p => p.nome === "Distanza") && (
+                <>
+                  <label>Distanza (metri):</label>
+                  <input type="number" name="distanza" value={serie.distanza} onChange={handleSerieChange} />
+                </>
+              )}
+              {parametriDisponibili.some(p => p.nome === "Durata") && (
+                <>
+                  <label>Durata (secondi):</label>
+                  <input type="number" name="durata" value={serie.durata} onChange={handleSerieChange} />
+                </>
+              )}
+              {parametriDisponibili.some(p => p.nome === "Ripetizioni") && (
+                <>
+                  <label>Ripetizioni:</label>
+                  <input type="number" name="ripetizioni" value={serie.ripetizioni} onChange={handleSerieChange} />
+                </>
+              )}
+            </>
+          )}
 
           <label>Esercizio:</label>
           <select name="esercizio" value={serie.esercizio} onChange={handleSerieChange}>
@@ -154,6 +217,18 @@ const InserimentoAllenamenti = () => {
               </option>
             ))}
           </select>
+
+          {/* Mostra gli sport selezionati */}
+          {sportDisponibili.length > 0 && (
+            <div>
+              <strong>Sport Associati:</strong>
+              <ul>
+                {sportDisponibili.map((sport, index) => (
+                  <li key={index}>{sport}</li> // Mostra ogni sport in un elemento <li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <button type="button" onClick={handleAggiungiSerie}>
             Aggiungi Serie
@@ -168,8 +243,11 @@ const InserimentoAllenamenti = () => {
             <li key={index}>
               <p>
                 <strong>Esercizio:</strong> {s.id_esercizio?.nome || "Sconosciuto"} <br />
-                <strong>Peso:</strong> {s.peso ?? "-"} kg - <strong>Distanza:</strong> {s.distanza ?? "-"} m -{" "}
-                <strong>Durata:</strong> {s.durata ?? "-"} sec - <strong>Ripetizioni:</strong> {s.ripetizioni ?? "-"}
+                <strong>Sport:</strong> {s.sport.join(", ") || "Sconosciuto"} <br /> {/* Visualizza sport come elenco separato da virgola */}
+                {parametriDisponibili.some(p => p.nome === "Peso") && <strong>Peso:</strong>} {s.peso ?? "-"} kg -{" "}
+                {parametriDisponibili.some(p => p.nome === "Distanza") && <strong>Distanza:</strong>} {s.distanza ?? "-"} m -{" "}
+                {parametriDisponibili.some(p => p.nome === "Durata") && <strong>Durata:</strong>} {s.durata ?? "-"} sec -{" "}
+                {parametriDisponibili.some(p => p.nome === "Ripetizioni") && <strong>Ripetizioni:</strong>} {s.ripetizioni ?? "-"}
               </p>
             </li>
           ))}
