@@ -17,13 +17,13 @@ const InserimentoAllenamenti = () => {
     durata: "",
     ripetizioni: "",
     esercizio: "",
-    sport: [], // Sport gestito come array
+    sport: [],
   });
 
   const [esercizi, setEsercizi] = useState([]);
   const [error, setError] = useState(null);
   const [parametriDisponibili, setParametriDisponibili] = useState([]);
-  const [sportDisponibili, setSportDisponibili] = useState([]); // Array per gestire più sport
+  const [sportDisponibili, setSportDisponibili] = useState([]);
 
   useEffect(() => {
     const fetchEsercizi = async () => {
@@ -37,6 +37,7 @@ const InserimentoAllenamenti = () => {
     };
     fetchEsercizi();
   }, []);
+
 
   const handleAllenamentoChange = (e) => {
     const { name, value } = e.target;
@@ -176,38 +177,7 @@ const InserimentoAllenamenti = () => {
       {allenamento._id && (
         <>
           <h3>Aggiungi Serie</h3>
-          {parametriDisponibili.length === 0 ? (
-            <p>Non ci sono parametri disponibili per questo esercizio.</p>
-          ) : (
-            <>
-              {parametriDisponibili.some(p => p.nome === "Peso") && (
-                <>
-                  <label>Peso (kg):</label>
-                  <input type="number" name="peso" value={serie.peso} onChange={handleSerieChange} />
-                </>
-              )}
-
-              {parametriDisponibili.some(p => p.nome === "Distanza") && (
-                <>
-                  <label>Distanza (metri):</label>
-                  <input type="number" name="distanza" value={serie.distanza} onChange={handleSerieChange} />
-                </>
-              )}
-              {parametriDisponibili.some(p => p.nome === "Durata") && (
-                <>
-                  <label>Durata (secondi):</label>
-                  <input type="number" name="durata" value={serie.durata} onChange={handleSerieChange} />
-                </>
-              )}
-              {parametriDisponibili.some(p => p.nome === "Ripetizioni") && (
-                <>
-                  <label>Ripetizioni:</label>
-                  <input type="number" name="ripetizioni" value={serie.ripetizioni} onChange={handleSerieChange} />
-                </>
-              )}
-            </>
-          )}
-
+          
           <label>Esercizio:</label>
           <select name="esercizio" value={serie.esercizio} onChange={handleSerieChange}>
             <option value="">Seleziona Esercizio</option>
@@ -217,7 +187,23 @@ const InserimentoAllenamenti = () => {
               </option>
             ))}
           </select>
-
+          {/*mostra i parametri associati */}
+          {parametriDisponibili.length > 0 && (
+        <div>
+          <strong>Parametri:</strong>
+          {parametriDisponibili.map((parametro) => (
+            <div key={parametro.nome}>
+              <label>{parametro.nome}:</label>
+              <input
+                type="number"
+                name={parametro.nome.toLowerCase()}
+                value={serie[parametro.nome.toLowerCase()] || ""}
+                onChange={handleSerieChange}
+              />
+            </div>
+          ))}
+        </div>
+      )}
           {/* Mostra gli sport selezionati */}
           {sportDisponibili.length > 0 && (
             <div>
@@ -244,10 +230,10 @@ const InserimentoAllenamenti = () => {
               <p>
                 <strong>Esercizio:</strong> {s.id_esercizio?.nome || "Sconosciuto"} <br />
                 <strong>Sport:</strong> {s.sport.join(", ") || "Sconosciuto"} <br /> {/* Visualizza sport come elenco separato da virgola */}
-                {parametriDisponibili.some(p => p.nome === "Peso") && <strong>Peso:</strong>} {s.peso ?? "-"} kg -{" "}
-                {parametriDisponibili.some(p => p.nome === "Distanza") && <strong>Distanza:</strong>} {s.distanza ?? "-"} m -{" "}
-                {parametriDisponibili.some(p => p.nome === "Durata") && <strong>Durata:</strong>} {s.durata ?? "-"} sec -{" "}
-                {parametriDisponibili.some(p => p.nome === "Ripetizioni") && <strong>Ripetizioni:</strong>} {s.ripetizioni ?? "-"}
+                {s.peso && <><strong>Peso:</strong> {s.peso} kg <br /></>}
+                {s.distanza && <><strong>Distanza:</strong> {s.distanza} m <br /></>}
+                {s.durata && <><strong>Durata:</strong> {s.durata} sec <br /></>}
+                {s.ripetizioni && <><strong>Ripetizioni:</strong> {s.ripetizioni} <br /></>}
               </p>
             </li>
           ))}
