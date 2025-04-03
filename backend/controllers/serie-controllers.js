@@ -2,7 +2,9 @@
 const Serie = require("../models/serie");
 const Allenamento = require("../models/allenamento");
 const Esercizio = require("../models/esercizio");
-
+const EsercizioParametro = require("../models/parametro_esercizio");
+const Parametro = require("../models/parametro");
+const SportEsercizio = require("../models/sport_esercizio");
 // Funzione per recuperare tutte le serie associate a un allenamento
 exports.getAllSerie = async (req, res) => {
   try {
@@ -45,5 +47,29 @@ exports.createSerie = async (req, res) => {
   } catch (error) {
     console.error("Errore nel salvataggio della serie:", error);
     return res.status(500).json({ message: "Errore interno del server" });
+  }
+};
+exports.getPropEsercizio = async (req, res) => {
+  try {
+    const parametri = await EsercizioParametro.find({ id_esercizio: req.params.id_esercizio })
+      .populate("id_parametro", "nome");
+
+    const sportEsercizio = await SportEsercizio.find({ id_esercizio: req.params.id_esercizio })
+      .populate("id_sport", "nome");
+
+    const esercizio = await Esercizio.findById(req.params.id_esercizio).select("nome");
+
+
+    // Se ci sono più sport associati, crea un array con i nomi degli sport
+    const sportNames = sportEsercizio.map(se => se.id_sport.nome);
+    const parametriNames=parametri.map(p=>p.id_parametro);
+    res.json({
+      nomeEsercizio: esercizio ? esercizio.nome : "Sconosciuto",
+      sport: sportNames.length > 0 ? sportNames : ["Sconosciuto"], // Restituisci un array di sport
+      parametri: parametriNames.length > 0 ? parametriNames :["Sconosciuto"],
+    });
+
+  } catch (err) {
+    res.status(500).json({ error: "Errore nel recupero dei parametri e dello sport" });
   }
 };

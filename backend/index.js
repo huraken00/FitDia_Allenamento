@@ -11,7 +11,6 @@ const sport_routes = require("./routes/sport-routes");
 const parametro_routes = require("./routes/parametri-routes");
 const allenamento_routes = require("./routes/allenamenti-routes");
 const serie_routes = require("./routes/serie-routes");
-const parametriEsercizi_routes=require("./routes/esercizioParametro-routes");
 
 const app = express();
 app.use(cors());
@@ -25,7 +24,6 @@ app.use("/api/user", user_routes);
 app.use("/api/esperti-allenamento", esperto_routes);
 app.use("/api/allenamenti", allenamento_routes);  // Usato "/api/allenamenti" per gli allenamenti
 app.use("/api/serie", serie_routes);  // Usato "/api/serie" per le serie
-app.use("/api/esercizi-parametri",parametriEsercizi_routes);
 app.use("/api/esercizi", esercizi_routes);
 app.use("/api/sport", sport_routes);
 app.use("/api/parametri", parametro_routes);

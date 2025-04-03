@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllSerie, createSerie } = require("../controllers/serie-controllers");
+const { getAllSerie, createSerie, getPropEsercizio } = require("../controllers/serie-controllers");
 
 const router = express.Router();
 
@@ -7,6 +7,9 @@ const router = express.Router();
 router.get("/:allenamentoId", getAllSerie);
 
 // Crea una nuova serie associata a un allenamento
-router.post("/", createSerie);  // ✅ CORRETTO: POST per creare una serie
+router.post("/", createSerie); 
+
+// Recupera parametri e sport per un esercizio
+router.get("/esercizio/:id_esercizio", getPropEsercizio);
 
 module.exports = router;

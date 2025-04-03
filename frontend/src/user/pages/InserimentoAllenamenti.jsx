@@ -50,7 +50,7 @@ const InserimentoAllenamenti = () => {
   
     if (name === "esercizio") {
       try {
-        const res = await fetch(`http://localhost:3001/api/esercizi-parametri/${value}`);
+        const res = await fetch(`http://localhost:3001/api/serie/esercizio/${value}`);
         const data = await res.json();
   
         console.log("Dati ricevuti:", data);  // Aggiungi il log per vedere cosa arriva
@@ -78,16 +78,19 @@ const InserimentoAllenamenti = () => {
   };
 
   const handleAggiungiSerie = async () => {
+    // Controllo se un esercizio è selezionato
     if (!serie.esercizio) {
       alert("Seleziona un esercizio!");
-      return;
+      return;  // Non proseguire se non c'è un esercizio selezionato
     }
-
+  
+    // Controllo se l'allenamento è stato creato
     if (!allenamento._id) {
       alert("Devi creare prima l'allenamento!");
       return;
     }
-
+  
+    // Ora possiamo inviare la richiesta per aggiungere la serie
     try {
       const response = await fetch("http://localhost:3001/api/serie", {
         method: "POST",
@@ -101,11 +104,11 @@ const InserimentoAllenamenti = () => {
           id_esercizio: serie.esercizio, // ID esercizio
         }),
       });
-
+  
       const data = await response.json();
       if (response.ok) {
         const esercizioSelezionato = esercizi.find(e => e._id === serie.esercizio);
-
+  
         setAllenamento((prev) => ({
           ...prev,
           serie: [
@@ -116,11 +119,21 @@ const InserimentoAllenamenti = () => {
                 _id: serie.esercizio,
                 nome: esercizioSelezionato ? esercizioSelezionato.nome : "Sconosciuto",
               },
-              sport: serie.sport,  // Assicurati di aggiungere lo sport alla serie
+              sport: serie.sport,  // Aggiungi lo sport alla serie
             },
           ],
         }));
-        setSerie({ peso: "", distanza: "", durata: "", ripetizioni: "", esercizio: "", sport: [] });
+  
+        // Dopo aver aggiunto la serie, mantieni l'esercizio selezionato
+        setSerie((prev) => ({
+          ...prev,
+          esercizio: serie.esercizio,  // Mantieni l'esercizio selezionato
+          peso: "",  // Reset degli altri parametri (opzionale)
+          distanza: "",
+          durata: "",
+          ripetizioni: "",
+          sport: serie.sport  // Reset degli sport selezionati (opzionale)
+        }));
       } else {
         setError(data.message || "Errore nell'aggiunta della serie");
       }
@@ -129,6 +142,7 @@ const InserimentoAllenamenti = () => {
       console.error(err);
     }
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -199,6 +213,8 @@ const InserimentoAllenamenti = () => {
                 name={parametro.nome.toLowerCase()}
                 value={serie[parametro.nome.toLowerCase()] || ""}
                 onChange={handleSerieChange}
+                min="1"
+                required
               />
             </div>
           ))}
