@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllSerie, createSerie, getPropEsercizio, deleteSerie } = require("../controllers/serie-controllers");
+const { getAllSerie, createSerie, getPropEsercizio, deleteSerie, updateSerie } = require("../controllers/serie-controllers");
 
 const router = express.Router();
 
@@ -13,5 +13,7 @@ router.post("/", createSerie);
 router.get("/esercizio/:id_esercizio", getPropEsercizio);
 
 router.delete("/:id",deleteSerie);
+
+router.put("/:id",updateSerie);
 
 module.exports = router;

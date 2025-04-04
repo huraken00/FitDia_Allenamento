@@ -12,24 +12,57 @@ const ModificaAllenamento = () => {
 
   // Fetch dell'allenamento al montaggio del componente
   useEffect(() => {
-    const fetchAllenamento = async () => {
-      try {
-        const res = await fetch(`http://localhost:3001/api/allenamenti/dettagli/${id}`);
-        const data = await res.json();
-        if (res.ok) {
-          setAllenamento(data);
-          setSerie(data.serie || []);
-        } else {
-          setError(data.message);
-        }
-      } catch (err) {
-        console.error(err);
-        setError("Errore nel recupero dell'allenamento");
-      }
-    };
+  const fetchAllenamento = async () => {
+    try {
+      const res = await fetch(`http://localhost:3001/api/allenamenti/dettagli/${id}`);
+      const data = await res.json();
 
-    fetchAllenamento();
-  }, [id]);
+      if (res.ok) {
+        const serieArricchite = await Promise.all(
+          (data.serie || []).map(async (s) => {
+            console.log("valore",data);
+            try {
+              const resExtra = await fetch(`http://localhost:3001/api/serie/esercizio/${s.id_esercizio}`);
+              const extra = await resExtra.json();
+        
+              const parametri = (extra.parametri || []).map(p => ({
+                nome: p.nome,
+                valore: s[p.nome.toLowerCase()] ?? ""               
+              }));
+              return {
+                ...s,
+                sport: extra.sport || [],
+                esercizio: extra.nomeEsercizio,
+                parametri
+                
+              };
+            } 
+            
+            catch (err) {
+              console.error("Errore recupero parametri/sport:", err);
+              return { ...s, sport: [], parametri: [] };
+            }
+          })
+        );
+        
+        
+        setAllenamento(data);
+        setSerie(serieArricchite);
+      } else {
+        setError(data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Errore nel recupero dell'allenamento");
+    }
+  };
+
+  fetchAllenamento();
+}, [id]);
+
+
+
+
 
   // Funzione per gestire i cambiamenti nei campi dell'allenamento
   const handleInputChange = (e) => {
@@ -37,15 +70,20 @@ const ModificaAllenamento = () => {
     setAllenamento((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Funzione per gestire la modifica dei campi delle serie
-  const handleSerieChange = (index, e) => {
-    const { name, value } = e.target;
-    setSerie((prev) =>
-      prev.map((s, i) =>
-        i === index ? { ...s, [name]: value } : s
-      )
+ 
+
+  const handleParametroChange = (serieIndex, paramIndex, valore) => {
+    setSerie(prev =>
+      prev.map((s, i) => {
+        if (i !== serieIndex) return s;
+        const nuoviParametri = s.parametri.map((p, j) =>
+          j === paramIndex ? { ...p, valore } : p
+        );
+        return { ...s, parametri: nuoviParametri };
+      })
     );
   };
+  
 
   // Funzione per eliminare una serie
   const handleEliminaSerie = async (serieId) => {
@@ -72,6 +110,17 @@ const ModificaAllenamento = () => {
           appuntiAllenamento: allenamento.appuntiAllenamento,
         }),
       });
+      for (const s of serie) {
+      await fetch(`http://localhost:3001/api/serie/${s._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          parametri: s.parametri, // questo è un array di oggetti { nome, valore }
+          
+        }),
+      });
+    }
+    
 
       if (res.ok) {
         alert("Allenamento aggiornato con successo");
@@ -83,6 +132,9 @@ const ModificaAllenamento = () => {
     } catch (err) {
       console.error(err);
     }
+
+    
+    
   };
 
   // Funzione per eliminare l'allenamento
@@ -120,32 +172,34 @@ const ModificaAllenamento = () => {
       <textarea name="appuntiAllenamento" value={allenamento.appuntiAllenamento} onChange={handleInputChange} />
 
       <h3>Serie</h3>
-      {serie.length > 0 ? (
-        serie.map((s, index) => (
-          <div key={s._id} style={{ border: "1px solid gray", marginBottom: "1rem", padding: "0.5rem" }}>
-            <p><strong>Esercizio:</strong> {s.id_esercizio?.nome}</p>
-            
-            {/* Campi per la modifica della serie */}
-            <label>Peso:</label>
-            <input name="peso" type="number" value={s.peso || ""} onChange={(e) => handleSerieChange(index, e)} />
-            <label>Ripetizioni:</label>
-            <input name="ripetizioni" type="number" value={s.ripetizioni || ""} onChange={(e) => handleSerieChange(index, e)} />
-            <label>Durata:</label>
-            <input name="durata" type="number" value={s.durata || ""} onChange={(e) => handleSerieChange(index, e)} />
-            <label>Distanza:</label>
-            <input name="distanza" type="number" value={s.distanza || ""} onChange={(e) => handleSerieChange(index, e)} />
+      {serie.map((s, index) => (
+     <div key={s._id} style={{ border: "1px solid gray", marginBottom: "1rem", padding: "0.5rem" }}>
+    <p><strong>Esercizio:</strong> {s.esercizio}</p>
+    <p><strong>Sport:</strong> {s.sport?.join(", ") || "N/A"}</p>
 
-            {/* Pulsante per eliminare la serie */}
-            <button onClick={() => handleEliminaSerie(s._id)}>Elimina Serie</button>
-          </div>
-        ))
-      ) : (
-        <p>Nessuna serie registrata.</p>
-      )}
+    <div>
+  <strong>Parametri:</strong>
+  {(s.parametri || []).map((p, paramIndex) => (
+    <div key={paramIndex}>
+      <label>{p.nome}:</label>
+      <input
+  type="text"
+  value={p.valore}
+  onChange={(e) => handleParametroChange(index, paramIndex, e.target.value)}
+/>
+    </div>
+  ))}
+</div>
+
+
+    <button onClick={() => handleEliminaSerie(s._id)}>Elimina Serie</button>
+  </div>
+))}
+
 
       {/* Componente per aggiungere una nuova serie */}
       <AggiungiSerie
-        idAllenamento={allenamento._id}
+        allenamentoId={allenamento._id}
         onSerieAggiunta={(nuovaSerie) => setSerie((prev) => [...prev, nuovaSerie])}
       />
 

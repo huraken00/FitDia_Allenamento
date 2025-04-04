@@ -70,7 +70,8 @@ const InserimentoAllenamenti = () => {
       </form>
 
       {allenamento._id && (
-        <AggiungiSerie allenamentoId={allenamento._id} onSerieAggiunta={handleSerieAggiunta} />
+        <AggiungiSerie allenamentoId={allenamento._id} 
+        onSerieAggiunta={handleSerieAggiunta} />
       )}
 
       <div>
@@ -79,6 +80,7 @@ const InserimentoAllenamenti = () => {
     {allenamento.serie.map((s, index) => (
       <li key={index}>
         <p>
+        {/*il punto interrogativo indica un operazione ternaria */}
           <strong>Esercizio:</strong> {s.id_esercizio?.nome || "Sconosciuto"} <br />
           <strong>Sport:</strong> {s.sport.join(", ") || "Sconosciuto"} <br />
           {s.peso && <><strong>Peso:</strong> {s.peso} kg <br /></>}

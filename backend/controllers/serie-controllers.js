@@ -59,7 +59,6 @@ exports.getPropEsercizio = async (req, res) => {
 
     const esercizio = await Esercizio.findById(req.params.id_esercizio).select("nome");
 
-
     // Se ci sono più sport associati, crea un array con i nomi degli sport
     const sportNames = sportEsercizio.map(se => se.id_sport.nome);
     const parametriNames=parametri.map(p=>p.id_parametro);
@@ -92,5 +91,29 @@ exports.deleteSerie = async (req, res) => {
   } catch (error) {
     console.error("Errore durante l'eliminazione della serie:", error);
     return res.status(500).json({ message: "Errore durante l'eliminazione della serie" });
+  }
+};
+
+exports.updateSerie = async (req, res) => {
+  const { parametri } = req.body;
+
+  try {
+    const serie = await Serie.findById(req.params.id);
+    if (!serie) {
+      return res.status(404).json({ message: "Serie non trovata" });
+    }
+
+    // Mappa i parametri nei campi corretti della serie
+    parametri.forEach(p => {
+      if (['peso', 'ripetizioni', 'distanza', 'durata'].includes(p.nome)) {
+        serie[p.nome] = p.valore;
+      }
+    });
+
+    await serie.save();
+    return res.status(200).json({ message: "Serie aggiornata con successo" });
+  } catch (err) {
+    console.error("Errore aggiornamento serie:", err);
+    return res.status(500).json({ message: "Errore interno" });
   }
 };
