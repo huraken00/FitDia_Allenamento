@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllSerie, createSerie, getPropEsercizio } = require("../controllers/serie-controllers");
+const { getAllSerie, createSerie, getPropEsercizio, deleteSerie } = require("../controllers/serie-controllers");
 
 const router = express.Router();
 
@@ -11,5 +11,7 @@ router.post("/", createSerie);
 
 // Recupera parametri e sport per un esercizio
 router.get("/esercizio/:id_esercizio", getPropEsercizio);
+
+router.delete("/:id",deleteSerie);
 
 module.exports = router;

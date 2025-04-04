@@ -188,6 +188,7 @@ const InserimentoAllenamenti = () => {
         <button type="submit">Crea Allenamento</button>
       </form>
 
+    {/*Questo può diventare un component perchè lo utilizzo sia in Inserimento che in modificaAllenamento? Si , perchè io dalla modifica di un allenamento posso inserire una nuova serie*/}
       {allenamento._id && (
         <>
           <h3>Aggiungi Serie</h3>

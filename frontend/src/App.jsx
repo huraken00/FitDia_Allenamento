@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext, AuthProvider } from "./shared/context/auth-context";
-import { useNavigate } from "react-router-dom";
+
 //Login e registrazione 
 import HomePage from "./Homepage";
 import LoginUser from "./user/pages/Login";
@@ -23,6 +23,7 @@ import VariantiEsercizi from "./user/pages/VariantiEsercizi";
 import InserimentoAllenamenti from "./user/pages/InserimentoAllenamenti";
 import MonitoraggioProgressi from "./user/pages/MonitoraggioProgressi";
 import ListaAllenamenti from "./user/pages/ListaAllenamenti";
+import ModificaAllenamento from "./user/pages/ModificaAllenamento";
 
 //Routes esperti
 import HomePageEsperto from "./esperto_allenamento/Homepage";
@@ -78,6 +79,8 @@ const App = () => {
           <Route path="/crea-allenamento" element={<PrivateRoute requiredRole="utente"><InserimentoAllenamenti /></PrivateRoute>} />
           <Route path="/lista-allenamenti" element={<PrivateRoute requiredRole="utente">< ListaAllenamenti/></PrivateRoute>} />
           <Route path="/monitoraggio-progressi" element={<PrivateRoute requiredRole="utente"><MonitoraggioProgressi /></PrivateRoute>} />
+          <Route path="/modifica-allenamento/:id" element={<PrivateRoute requiredRole="utente"><ModificaAllenamento /></PrivateRoute>} />
+
 
 
          {/* Pagine accessibili solo agli esperti */}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const ListaAllenamenti = () => {
   const [allenamenti, setAllenamenti] = useState([]);
@@ -36,15 +37,14 @@ const ListaAllenamenti = () => {
   return (
     <div>
       <h3>Lista degli Allenamenti</h3>
-      {allenamenti.length > 0 ? (
-        <ul>
-          {allenamenti.map((allenamento) => (
-            <li key={allenamento._id}>{allenamento.nome}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>Nessun allenamento disponibile.</p>
-      )}
+      {allenamenti.map((allenamento) => (
+  <li key={allenamento._id}>
+    {allenamento.nome}{" "}
+    <Link to={`/modifica-allenamento/${allenamento._id}`}>
+      <button>Modifica</button>
+    </Link>
+  </li>
+))}
     </div>
   );
 };

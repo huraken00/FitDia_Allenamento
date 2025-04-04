@@ -1,10 +1,9 @@
 
 const Serie = require("../models/serie");
-const Allenamento = require("../models/allenamento");
 const Esercizio = require("../models/esercizio");
 const EsercizioParametro = require("../models/parametro_esercizio");
-const Parametro = require("../models/parametro");
 const SportEsercizio = require("../models/sport_esercizio");
+
 // Funzione per recuperare tutte le serie associate a un allenamento
 exports.getAllSerie = async (req, res) => {
   try {
@@ -49,6 +48,7 @@ exports.createSerie = async (req, res) => {
     return res.status(500).json({ message: "Errore interno del server" });
   }
 };
+
 exports.getPropEsercizio = async (req, res) => {
   try {
     const parametri = await EsercizioParametro.find({ id_esercizio: req.params.id_esercizio })
@@ -71,5 +71,26 @@ exports.getPropEsercizio = async (req, res) => {
 
   } catch (err) {
     res.status(500).json({ error: "Errore nel recupero dei parametri e dello sport" });
+  }
+};
+
+// Funzione per eliminare una serie
+exports.deleteSerie = async (req, res) => {
+  try {
+    const serieId = req.params.id;
+
+    // Verifica se la serie esiste
+    const serie = await Serie.findById(serieId);
+    if (!serie) {
+      return res.status(404).json({ message: "Serie non trovata" });
+    }
+
+    // Elimina la serie
+    await Serie.findByIdAndDelete(serieId);
+
+    return res.status(200).json({ message: "Serie eliminata con successo" });
+  } catch (error) {
+    console.error("Errore durante l'eliminazione della serie:", error);
+    return res.status(500).json({ message: "Errore durante l'eliminazione della serie" });
   }
 };
