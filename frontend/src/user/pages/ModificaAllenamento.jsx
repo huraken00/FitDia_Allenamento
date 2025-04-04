@@ -1,5 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'; // Importa useParams
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import AggiungiSerie from '../../components/AggiungiSerie';
+
 const ModificaAllenamento = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -8,6 +10,7 @@ const ModificaAllenamento = () => {
   const [serie, setSerie] = useState([]);
   const [error, setError] = useState(null);
 
+  // Fetch dell'allenamento al montaggio del componente
   useEffect(() => {
     const fetchAllenamento = async () => {
       try {
@@ -28,11 +31,13 @@ const ModificaAllenamento = () => {
     fetchAllenamento();
   }, [id]);
 
+  // Funzione per gestire i cambiamenti nei campi dell'allenamento
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setAllenamento((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Funzione per gestire la modifica dei campi delle serie
   const handleSerieChange = (index, e) => {
     const { name, value } = e.target;
     setSerie((prev) =>
@@ -42,6 +47,7 @@ const ModificaAllenamento = () => {
     );
   };
 
+  // Funzione per eliminare una serie
   const handleEliminaSerie = async (serieId) => {
     try {
       const res = await fetch(`http://localhost:3001/api/serie/${serieId}`, {
@@ -55,6 +61,7 @@ const ModificaAllenamento = () => {
     }
   };
 
+  // Funzione per salvare le modifiche dell'allenamento
   const handleSalvaModifiche = async () => {
     try {
       const res = await fetch(`http://localhost:3001/api/allenamenti/${id}`, {
@@ -78,6 +85,7 @@ const ModificaAllenamento = () => {
     }
   };
 
+  // Funzione per eliminare l'allenamento
   const handleEliminaAllenamento = async () => {
     const conferma = window.confirm("Vuoi eliminare questo allenamento?");
     if (!conferma) return;
@@ -99,6 +107,7 @@ const ModificaAllenamento = () => {
     }
   };
 
+  // Se l'allenamento non è ancora caricato, mostriamo un messaggio di caricamento
   if (!allenamento) return <p>Caricamento...</p>;
 
   return (
@@ -112,28 +121,33 @@ const ModificaAllenamento = () => {
 
       <h3>Serie</h3>
       {serie.length > 0 ? (
-  serie.map((s, index) => (
-    <div key={s._id} style={{ border: "1px solid gray", marginBottom: "1rem", padding: "0.5rem" }}>
-      <p><strong>Esercizio:</strong> {s.id_esercizio?.nome}</p>
-      
-      {/* Campi per la modifica della serie */}
-      <label>Peso:</label>
-      <input name="peso" type="number" value={s.peso || ""} onChange={(e) => handleSerieChange(index, e)} />
-      <label>Ripetizioni:</label>
-      <input name="ripetizioni" type="number" value={s.ripetizioni || ""} onChange={(e) => handleSerieChange(index, e)} />
-      <label>Durata:</label>
-      <input name="durata" type="number" value={s.durata || ""} onChange={(e) => handleSerieChange(index, e)} />
-      <label>Distanza:</label>
-      <input name="distanza" type="number" value={s.distanza || ""} onChange={(e) => handleSerieChange(index, e)} />
+        serie.map((s, index) => (
+          <div key={s._id} style={{ border: "1px solid gray", marginBottom: "1rem", padding: "0.5rem" }}>
+            <p><strong>Esercizio:</strong> {s.id_esercizio?.nome}</p>
+            
+            {/* Campi per la modifica della serie */}
+            <label>Peso:</label>
+            <input name="peso" type="number" value={s.peso || ""} onChange={(e) => handleSerieChange(index, e)} />
+            <label>Ripetizioni:</label>
+            <input name="ripetizioni" type="number" value={s.ripetizioni || ""} onChange={(e) => handleSerieChange(index, e)} />
+            <label>Durata:</label>
+            <input name="durata" type="number" value={s.durata || ""} onChange={(e) => handleSerieChange(index, e)} />
+            <label>Distanza:</label>
+            <input name="distanza" type="number" value={s.distanza || ""} onChange={(e) => handleSerieChange(index, e)} />
 
-      {/* Pulsante per eliminare la serie */}
-      <button onClick={() => handleEliminaSerie(s._id)}>Elimina Serie</button>
-    </div>
-  ))
-) : (
-  <p>Nessuna serie registrata.</p>
-)}
+            {/* Pulsante per eliminare la serie */}
+            <button onClick={() => handleEliminaSerie(s._id)}>Elimina Serie</button>
+          </div>
+        ))
+      ) : (
+        <p>Nessuna serie registrata.</p>
+      )}
 
+      {/* Componente per aggiungere una nuova serie */}
+      <AggiungiSerie
+        idAllenamento={allenamento._id}
+        onSerieAggiunta={(nuovaSerie) => setSerie((prev) => [...prev, nuovaSerie])}
+      />
 
       <button onClick={handleSalvaModifiche}>Salva Modifiche</button>
       <button onClick={handleEliminaAllenamento} style={{ color: "red", marginLeft: "10px" }}>
