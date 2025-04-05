@@ -27,7 +27,7 @@ const ModificaAllenamento = () => {
         
               const parametri = (extra.parametri || []).map(p => ({
                 nome: p.nome,
-                valore: s[p.nome.toLowerCase()] ?? ""               
+                valore: s[p.nome] ?? ""               
               }));
               return {
                 ...s,
@@ -188,6 +188,7 @@ const ModificaAllenamento = () => {
   onChange={(e) => handleParametroChange(index, paramIndex, e.target.value)}
 />
     </div>
+    
   ))}
 </div>
 
@@ -207,7 +208,7 @@ const ModificaAllenamento = () => {
       <button onClick={handleEliminaAllenamento} style={{ color: "red", marginLeft: "10px" }}>
         Elimina Allenamento
       </button>
-
+     
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );

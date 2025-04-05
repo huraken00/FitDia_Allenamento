@@ -4,19 +4,19 @@ const Schema = mongoose.Schema;
 // Schema per Serie
 const serieSchema = new Schema(
   {
-    peso: {
+    Peso: {
       type: Number,
       required: false // Peso della serie (opzionale)
     },
-    distanza: {
+    Distanza: {
       type: Number,
       required: false // Distanza della serie (opzionale)
     },
-    durata: {
+    Durata: {
       type: Number,
       required: false // Durata della serie (opzionale)
     },
-    ripetizioni: {
+    Ripetizioni: {
       type: Number,
       required: false // Ripetizioni della serie (opzionale)
     },

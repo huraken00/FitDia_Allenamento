@@ -105,7 +105,7 @@ exports.updateSerie = async (req, res) => {
 
     // Mappa i parametri nei campi corretti della serie
     parametri.forEach(p => {
-      if (['peso', 'ripetizioni', 'distanza', 'durata'].includes(p.nome)) {
+      if (['Peso', 'Ripetizioni', 'Distanza', 'Durata'].includes(p.nome)) {
         serie[p.nome] = p.valore;
       }
     });
