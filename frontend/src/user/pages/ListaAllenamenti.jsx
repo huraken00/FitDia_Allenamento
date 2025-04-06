@@ -38,15 +38,17 @@ const ListaAllenamenti = () => {
     <div>
       <h3>Lista degli Allenamenti</h3>
       {allenamenti.map((allenamento) => (
-  <li key={allenamento._id}>
-    {allenamento.nome}{" "}
-    <Link to={`/modifica-allenamento/${allenamento._id}`}>
-      <button>Modifica</button>
-    </Link>
-  </li>
-))}
+        <li key={allenamento._id}>
+          {allenamento.nome}{" "}
+          <Link to={`/modifica-allenamento/${allenamento._id}`}>
+            <button>Modifica</button>
+          </Link>{" "}
+          <Link to={`/dettagli-allenamento/${allenamento._id}`}>
+            <button>Avvia Allenamento</button>
+          </Link>
+        </li>
+      ))}
     </div>
   );
-};
-
+}
 export default ListaAllenamenti;

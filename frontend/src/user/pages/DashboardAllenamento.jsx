@@ -16,9 +16,9 @@ const DashboardAllenamento = () => {
         <button>Crea Nuovo Allenamento</button>
       </Link>
 
-      {/* Pulsante per monitorare i progressi */}
+      {/* Pulsante per andare alla pagina di monitoraggio degli esercizi */}
       <Link to="/monitoraggio-progressi">
-        <button>Monitora i Tuoi Progressi</button>
+        <button>Monitora i Progressi</button>
       </Link>
 
       {/* Pulsante per generare varianti degli esercizi */}
@@ -30,3 +30,4 @@ const DashboardAllenamento = () => {
 };
 
 export default DashboardAllenamento;
+

@@ -5,7 +5,8 @@ const {
   addEsercizio, 
   getEsercizioById, 
   updateEsercizio, 
-  deleteEsercizio 
+  deleteEsercizio,
+  getProgressiEsercizio
 } = require("../controllers/esercizi-controllers");
 
 // Rotta per ottenere tutti gli esercizi
@@ -22,5 +23,8 @@ router.put("/:id", updateEsercizio);
 
 // Rotta per eliminare un esercizio
 router.delete("/:id", deleteEsercizio);
+
+//Rotta per i progressi di un esercizio
+router.get("/progressi-esercizio/:id",getProgressiEsercizio);
 
 module.exports = router;
