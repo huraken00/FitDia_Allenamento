@@ -24,7 +24,7 @@ exports.getAllSerie = async (req, res) => {
 
 // Funzione per creare una nuova serie
 exports.createSerie = async (req, res) => {
-  const { peso, distanza, durata, ripetizioni, id_allenamento, id_esercizio } = req.body;
+  const { Peso, Distanza, Durata, Ripetizioni, id_allenamento, id_esercizio } = req.body;
 
   // Verifica che id_allenamento e id_esercizio siano presenti
   if (!id_allenamento || !id_esercizio) {
@@ -33,10 +33,10 @@ exports.createSerie = async (req, res) => {
 
   try {
     const nuovaSerie = new Serie({
-      peso,
-      distanza,
-      durata,
-      ripetizioni,
+      Peso,
+      Distanza,
+      Durata,
+      Ripetizioni,
       id_allenamento,
       id_esercizio,
     });

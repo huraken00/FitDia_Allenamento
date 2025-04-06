@@ -83,10 +83,10 @@ const InserimentoAllenamenti = () => {
         {/*il punto interrogativo indica un operazione ternaria */}
           <strong>Esercizio:</strong> {s.id_esercizio?.nome || "Sconosciuto"} <br />
           <strong>Sport:</strong> {s.sport.join(", ") || "Sconosciuto"} <br />
-          {s.peso && <><strong>Peso:</strong> {s.peso} kg <br /></>}
-          {s.distanza && <><strong>Distanza:</strong> {s.distanza} m <br /></>}
-          {s.durata && <><strong>Durata:</strong> {s.durata} sec <br /></>}
-          {s.ripetizioni && <><strong>Ripetizioni:</strong> {s.ripetizioni} <br /></>}
+          {s.Peso && <><strong>Peso:</strong> {s.Peso} kg <br /></>}
+          {s.Distanza && <><strong>Distanza:</strong> {s.Distanza} m <br /></>}
+          {s.Durata && <><strong>Durata:</strong> {s.Durata} sec <br /></>}
+          {s.Ripetizioni && <><strong>Ripetizioni:</strong> {s.Ripetizioni} <br /></>}
         </p>
       </li>
     ))}
