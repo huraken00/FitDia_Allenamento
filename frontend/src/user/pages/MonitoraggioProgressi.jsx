@@ -26,13 +26,14 @@ const MonitoraggioProgressi = () => {
   // Supponiamo che l'ID dell'utente venga recuperato da una variabile globale o un contesto
   const userId = localStorage.getItem('userId'); // O tramite un context, o una variabile di stato
 
-  // Fetch lista esercizi
-  useEffect(() => {
+
+ useEffect(() => {
     const fetchEsercizi = async () => {
       try {
         const res = await fetch("http://localhost:3001/api/esercizi");
         const data = await res.json();
         setEsercizi(data || []);
+        
       } catch (err) {
         setError("Errore nel recupero degli esercizi.");
       }
@@ -43,12 +44,17 @@ const MonitoraggioProgressi = () => {
 
   // Fetch dati progresso quando cambia esercizio selezionato o periodo
   useEffect(() => {
+    
     if (!selectedEsercizio || !userId) return;  // Aggiungi controllo per l'ID utente
+    
 
     const fetchProgressi = async () => {
       setLoading(true);
       setError("");
+      
       try {
+        
+
         const queryParams = new URLSearchParams();
         if (fromDate) queryParams.append("from", fromDate);
         if (toDate) queryParams.append("to", toDate);
@@ -59,7 +65,6 @@ const MonitoraggioProgressi = () => {
         if (res.ok) {
           setDati(data.dati || []);
           setNomeEsercizio(data.nomeEsercizio || "Esercizio");
-          setSelectedParametro(""); // Reset parametro quando si cambia esercizio
         } else {
           setError(data.message || "Errore nel recupero dei progressi");
         }
@@ -87,7 +92,11 @@ const MonitoraggioProgressi = () => {
         <strong>Seleziona un esercizio:</strong>
         <select
           value={selectedEsercizio}
-          onChange={(e) => setSelectedEsercizio(e.target.value)}
+          onChange={(e) => {
+            setSelectedEsercizio(e.target.value);
+            setFromDate("");
+            setToDate("");
+          }}
         >
           <option value="">-- Scegli --</option>
           {esercizi.map((ex) => (
