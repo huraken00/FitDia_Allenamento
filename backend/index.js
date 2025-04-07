@@ -11,6 +11,7 @@ const sport_routes = require("./routes/sport-routes");
 const parametro_routes = require("./routes/parametri-routes");
 const allenamento_routes = require("./routes/allenamenti-routes");
 const serie_routes = require("./routes/serie-routes");
+const varianti_routes = require("./routes/varianti-routes");
 
 const app = express();
 app.use(cors());
@@ -27,6 +28,7 @@ app.use("/api/serie", serie_routes);  // Usato "/api/serie" per le serie
 app.use("/api/esercizi", esercizi_routes);
 app.use("/api/sport", sport_routes);
 app.use("/api/parametri", parametro_routes);
+app.use("/api/varianti",varianti_routes);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

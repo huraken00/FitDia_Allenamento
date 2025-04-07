@@ -25,6 +25,7 @@ import MonitoraggioProgressi from "./user/pages/MonitoraggioProgressi";
 import ListaAllenamenti from "./user/pages/ListaAllenamenti";
 import ModificaAllenamento from "./user/pages/ModificaAllenamento";
 import DettagliAllenamento from "./user/pages/DettagliAllenamento";
+import ListaVarianti from "./user/pages/ListaVarianti";
 
 //Routes esperti
 import HomePageEsperto from "./esperto_allenamento/Homepage";
@@ -77,6 +78,7 @@ const App = () => {
           <Route path="/dashboard-allenamento" element={<PrivateRoute requiredRole="utente"><DashboardAllenamento /></PrivateRoute>} />
           <Route path="/profilo" element={<PrivateRoute requiredRole="utente"><Profilo /></PrivateRoute>} />
           <Route path="/varianti-esercizi" element={<PrivateRoute requiredRole="utente"><VariantiEsercizi /></PrivateRoute>} />
+          <Route path="/varianti" element={<PrivateRoute requiredRole="utente"><ListaVarianti /></PrivateRoute>} />
           <Route path="/crea-allenamento" element={<PrivateRoute requiredRole="utente"><InserimentoAllenamenti /></PrivateRoute>} />
           <Route path="/lista-allenamenti" element={<PrivateRoute requiredRole="utente">< ListaAllenamenti/></PrivateRoute>} />
           <Route path="/monitoraggio-progressi" element={<PrivateRoute requiredRole="utente"><MonitoraggioProgressi /></PrivateRoute>} />
