@@ -165,6 +165,7 @@ const ModificaAllenamento = () => {
   return (
     <div>
       <h2>Modifica Allenamento</h2>
+      <p><strong>Data:</strong> {new Date(allenamento.dataCreazione).toLocaleDateString()}</p>
       <label>Nome:</label>
       <input name="nome" value={allenamento.nome} onChange={handleInputChange} />
 

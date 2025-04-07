@@ -59,7 +59,7 @@ const DettagliAllenamento = () => {
     <div style={{ padding: "1rem" }}>
       <h2>📋 Dettagli Allenamento</h2>
       <p><strong>Nome:</strong> {allenamento.nome}</p>
-      <p><strong>Data:</strong> {new Date(allenamento.data).toLocaleDateString()}</p>
+      <p><strong>Data:</strong> {new Date(allenamento.dataCreazione).toLocaleDateString()}</p>
       <p><strong>Note:</strong> {allenamento.appuntiAllenamento}</p>
 
       <h3>🏋️‍♂️ Serie</h3>

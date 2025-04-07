@@ -1,10 +1,8 @@
 const Esercizio = require("../models/esercizio");
-const Sport = require("../models/sport");
-const Parametro = require("../models/parametro");
 const SportEsercizio = require("../models/sport_esercizio");
 const ParametroEsercizio = require("../models/parametro_esercizio");
-const Serie = require("../models/serie");
 const Allenamento = require("../models/allenamento");
+const Serie = require ("../models/serie");
 
 // Funzione per ottenere tutti gli esercizi con i dettagli di sport e parametri
 exports.getAllEsercizi = async (req, res) => {
@@ -177,31 +175,71 @@ exports.deleteEsercizio = async (req, res) => {
     return res.status(500).json({ message: "Errore nella cancellazione dell'esercizio", error: err });
   }
 };
+
+// Funzione per ottenere i progressi di un esercizio per un determinato utente
 exports.getProgressiEsercizio = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params; // ID dell'esercizio
+  const userId = req.params.userId;  // ID dell'utente passato dalla URL
+
+  // Prendi i parametri di data dalla query string
+  const { from, to } = req.query;  // Date di inizio e fine per il filtraggio
 
   try {
+    // Trova l'esercizio
     const esercizio = await Esercizio.findById(id);
-    if (!esercizio) return res.status(404).json({ message: "Esercizio non trovato" });
+    if (!esercizio) {
+      return res.status(404).json({ message: "Esercizio non trovato" });
+    }
 
-    // Trova tutte le serie di questo esercizio e popola la data dell'allenamento
-    const serie = await Serie.find({ id_esercizio: id }).populate("id_allenamento");
+    // Trova tutte le serie associate a questo esercizio e all'utente corrente
+    const serie = await Serie.find({ id_esercizio: id })
+      .populate({
+        path: "id_allenamento",
+        match: { id_utente: userId },  // Filtro per id_utente
+      });
 
-    // Trasforma ogni serie in un oggetto { data, ...parametri }
+      
+
+    // Filtro per le date se 'from' o 'to' sono presenti
     const progressi = serie
-      .filter(s => s.id_allenamento && s.parametri)
+      .filter(s => s.id_allenamento) // Solo serie che hanno un allenamento associato
       .map(s => {
-        const dataAllenamento = s.id_allenamento.data;
+        const dataSerie = s.createdAt;
+
+        // Normalizza le date, impostando l'orario a 00:00:00
+const normalizeDate = (date) => {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);  // Imposta l'orario a mezzanotte
+  return d;
+};
+
+// Confronta la data di allenamento con le date selezionate
+const isValidDate =
+  (!from || normalizeDate(dataSerie) >= normalizeDate(from)) &&
+  (!to || normalizeDate(dataSerie) <= normalizeDate(to));
+
+if (!isValidDate) {
+  return null;  // Se la data non rientra nell'intervallo, non includerla
+}
+
+
+        // Estrai i parametri misurabili
+        const { Peso, Ripetizioni, Durata, Distanza } = s;
+
         return {
-          data: new Date(dataAllenamento).toISOString().split("T")[0], // yyyy-mm-dd
-          ...s.parametri
+          data: new Date(dataSerie).toISOString().split("T")[0],  // Formatta la data in "yyyy-mm-dd"
+          ...(Peso !== undefined && { Peso }),
+          ...(Ripetizioni !== undefined && { Ripetizioni }),
+          ...(Durata !== undefined && { Durata }),
+          ...(Distanza !== undefined && { Distanza }),
         };
       })
-      .sort((a, b) => new Date(a.data) - new Date(b.data)); // Ordina cronologicamente
+      .filter(progress => progress !== null)  // Rimuovi gli progressi nulli
+      .sort((a, b) => new Date(a.data) - new Date(b.data));  // Ordina i progressi per data
 
     return res.status(200).json({
       nomeEsercizio: esercizio.nome,
-      dati: progressi
+      dati: progressi,
     });
 
   } catch (err) {

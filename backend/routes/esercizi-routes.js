@@ -24,7 +24,7 @@ router.put("/:id", updateEsercizio);
 // Rotta per eliminare un esercizio
 router.delete("/:id", deleteEsercizio);
 
-//Rotta per i progressi di un esercizio
-router.get("/progressi-esercizio/:id",getProgressiEsercizio);
+// Rotta per i progressi di un esercizio (ora include anche userId)
+router.get("/progressi-esercizio/:id/:userId", getProgressiEsercizio);
 
 module.exports = router;
