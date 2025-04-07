@@ -1,9 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { inserisciVariante, getVariantiByUtente } = require('../controllers/varianteEsercizio-controllers');
+const { getAllVarianti, getVariantiByUtente, deleteVariante } = require("../controllers/varianteEsercizio-controllers");
 
-// Definisci le tue rotte
-router.post("/", inserisciVariante);
-router.get("/utente/:userId", getVariantiByUtente);
+router.get("/", getAllVarianti); // tutte le varianti
+router.get("/utente/:userId", getVariantiByUtente); // varianti per utente
+router.delete("/:id", deleteVariante); // elimina
 
 module.exports = router;

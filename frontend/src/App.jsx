@@ -26,6 +26,7 @@ import ListaAllenamenti from "./user/pages/ListaAllenamenti";
 import ModificaAllenamento from "./user/pages/ModificaAllenamento";
 import DettagliAllenamento from "./user/pages/DettagliAllenamento";
 import ListaVarianti from "./user/pages/ListaVarianti";
+import ListaVariantiEsperto from "./esperto_allenamento/ListaVariantiEsperto";
 
 //Routes esperti
 import HomePageEsperto from "./esperto_allenamento/Homepage";
@@ -92,6 +93,8 @@ const App = () => {
          <Route path="/lista-esercizi" element={<PrivateRoute requiredRole="esperto"><ListaEsercizi /></PrivateRoute>} />
          <Route path="/inserimento-esercizi" element = {<PrivateRoute requiredRole="esperto"><InserimentoEsercizi /></PrivateRoute>}></Route>
          <Route path="/modifica-esercizio/:id" element = {<PrivateRoute requiredRole="esperto"><ModificaEsercizio /></PrivateRoute>}></Route>
+         <Route path="/modifica-esercizio" element = {<PrivateRoute requiredRole="esperto"><ModificaEsercizio /></PrivateRoute>}></Route>
+         <Route path="/lista-varianti" element = {<PrivateRoute requiredRole="esperto"><ListaVariantiEsperto /></PrivateRoute>}></Route>
         </Routes>
       </Router>
     </AuthProvider>

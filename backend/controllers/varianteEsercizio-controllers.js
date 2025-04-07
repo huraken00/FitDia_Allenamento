@@ -40,4 +40,22 @@ exports.getVariantiByUtente = async (req, res) => {
       res.status(500).json({ error: "Errore nel recupero delle varianti" });
     }
   };
+  exports.getAllVarianti = async (req, res) => {
+    try {
+      const varianti = await Variante.find();
+      res.status(200).json(varianti);
+    } catch (err) {
+      res.status(500).json({ message: "Errore nel recupero delle varianti" });
+    }
+  };
+  
+  exports.deleteVariante = async (req, res) => {
+    try {
+      const result = await Variante.findByIdAndDelete(req.params.id);
+      if (!result) return res.status(404).json({ message: "Variante non trovata" });
+      res.status(200).json({ message: "Variante eliminata" });
+    } catch (err) {
+      res.status(500).json({ message: "Errore durante l'eliminazione" });
+    }
+  };
   
