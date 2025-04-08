@@ -5,6 +5,9 @@ const HomePage = () => {
 
   return (
     <div>
+      <Link to={`/profilo-esperto`}>
+                  <button>Profilo</button>
+                </Link>
       <h1>Homepage Esperto di allenamento</h1>
       <Link to="/lista-varianti">Varianti generate </Link>
       <br />

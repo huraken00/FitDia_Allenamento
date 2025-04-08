@@ -65,3 +65,32 @@ exports.loginEsperto = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+exports.updateEsperto = async (req, res) => {
+  const id = req.params.eid;
+  const updatedData = { ...req.body }; // Clona i dati in arrivo
+
+  try {
+    // Se il client ha inviato una nuova password, hashala prima
+    if (updatedData.password) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(updatedData.password, salt);
+      updatedData.password = hashedPassword;
+    }
+
+    // Trova e aggiorna l'esperto
+    const esperto = await Esperto.findOneAndUpdate(
+      { _id: id },
+      { $set: updatedData },
+      { new: true, runValidators: true }
+    );
+
+    if (!esperto) {
+      return res.status(404).json({ message: "Esperto non trovato" });
+    }
+
+    res.status(200);
+  } catch (error) {
+    console.error("Errore nell'aggiornamento esperto:", error);
+    res.status(500).json({ message: "Errore nell'aggiornamento", error });
+  }
+};
