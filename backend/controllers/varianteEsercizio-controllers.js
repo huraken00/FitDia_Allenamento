@@ -8,7 +8,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 exports.inserisciVariante = async (req, res) => {
   const { nome, sport, luogo, livello, userId } = req.body; // userId passato nel body
 
-  const prompt = `Genera una descrizione dettagliata di una variante per l'esercizio "${nome}" adattata a chi pratica ${sport}, si allena in ${luogo} ed è di livello ${livello}.`;
+  const prompt = `Come un esperto di sport, genera una descrizione semplice (massimo 100 parole) di una variante per l'esercizio "${nome}" adattata a chi pratica ${sport}, si allena in ${luogo} ed è di livello ${livello}.`;
 
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import CercaEsercizio from "./CercaEsercizio";
-
 const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
   const [serie, setSerie] = useState({
     peso: "",
@@ -74,16 +73,17 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
       const data = await response.json();
       if (response.ok) {
         // Trova il nome dell'esercizio selezionato dalla lista degli esercizi
-        const esercizioSelezionato = { nome: serie.nomeEsercizio };
 
         onSerieAggiunta({
           ...data,
-          id_esercizio: {
-            _id: serie.esercizio,
-            nome: esercizioSelezionato ? esercizioSelezionato.nome : "Sconosciuto",
-          },
+          esercizio: serie.nomeEsercizio,
           sport: serie.sport,
+          parametri: parametriDisponibili.map(p => ({
+            nome: p.nome,
+            valore: data[p.nome] ?? ""
+          })),
         });
+        
 
         // Resetta i campi della serie
         setSerie({
@@ -91,9 +91,9 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
           distanza: "",
           durata: "",
           ripetizioni: "",
-          esercizio: "",
-          nomeEsercizio: "",
-          sport: [],
+          esercizio: serie.esercizio,
+          nomeEsercizio: serie.nomeEsercizio,
+          sport: serie.sport,
         });
       } else {
         setError(data.message || "Errore nell'aggiunta della serie");
