@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CercaEsercizio from "../../components/CercaEsercizio";
+
 import "./Varianti.css";
 
 const VariantiEsercizi = () => {
-  const [allExercises, setAllExercises] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredExercises, setFilteredExercises] = useState([]);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedExercise, setSelectedExercise] = useState(null);
 
+  const [selectedExercise, setSelectedExercise] = useState(null);
+  
   const [sport, setSport] = useState("pallavolo");
   const [luogo, setLuogo] = useState("casa");
   const [livello, setLivello] = useState("principiante");
@@ -17,48 +16,7 @@ const VariantiEsercizi = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchExercises = async () => {
-      try {
-        const res = await fetch("http://localhost:3001/api/esercizi", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        if (!res.ok) {
-          throw new Error("Errore nel recupero degli esercizi");
-        }
-        const data = await res.json();
-        setAllExercises(data);
-      } catch (error) {
-        console.error("Errore:", error);
-      }
-    };
-    fetchExercises();
-  }, []);
-
-  useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setFilteredExercises([]);
-      setShowDropdown(false);
-    } else {
-      const filtered = allExercises.filter((exercise) =>
-        exercise.nome.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredExercises(filtered);
-      setShowDropdown(filtered.length > 0);
-    }
-  }, [searchQuery, allExercises]);
-
-  const handleSelectExercise = (exercise) => {
-    setSelectedExercise(exercise);
-    setSearchQuery(exercise.nome);
-    setShowDropdown(false);
-  };
-
-  const handleBlur = () => {
-    setTimeout(() => setShowDropdown(false), 150);
-  };
+ 
 
   const generaVariante = async () => {
     if (!selectedExercise) return;
@@ -96,34 +54,7 @@ const VariantiEsercizi = () => {
   return (
     <div className="varianti-container">
       <h2>Genera una Variante di un Esercizio</h2>
-
-      <input
-        className="search-input"
-        type="text"
-        placeholder="Cerca esercizio..."
-        value={searchQuery}
-        onChange={(e) => {
-          setSearchQuery(e.target.value);
-          setSelectedExercise(null);
-        }}
-        onFocus={() => {
-          if (filteredExercises.length > 0) setShowDropdown(true);
-        }}
-        onBlur={handleBlur}
-      />
-
-      {showDropdown && (
-        <ul className="dropdown-list">
-          {filteredExercises.map((exercise) => (
-            <li
-              key={exercise._id}
-              onMouseDown={() => handleSelectExercise(exercise)}
-            >
-              {exercise.nome}
-            </li>
-          ))}
-        </ul>
-      )}
+      <CercaEsercizio onSelect={setSelectedExercise} />
 
       <div className="form-params">
         <label>Sport:</label>
