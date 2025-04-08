@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import AggiungiSerie from "../../components/AggiungiSerie";
 
 const InserimentoAllenamenti = () => {
@@ -58,7 +58,11 @@ const InserimentoAllenamenti = () => {
 
   return (
     <div>
+      
       <h2>Crea Nuovo Allenamento</h2>
+      <Link to={`/profilo`}>
+                  <button>Profilo</button>
+                </Link>
       <form onSubmit={handleSubmit}>
         <label>Nome Allenamento:</label>
         <input type="text" name="nome" value={allenamento.nome} onChange={handleAllenamentoChange} required />

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const ListaVarianti = () => {
   const [varianti, setVarianti] = useState([]);
@@ -33,6 +34,9 @@ const ListaVarianti = () => {
 
   return (
     <div className="lista-varianti">
+      <Link to={`/profilo`}>
+                  <button>Profilo</button>
+                </Link>
       <h2>Le mie varianti generate</h2>
       {varianti.length === 0 ? (
         <p>Nessuna variante disponibile.</p>

@@ -36,6 +36,9 @@ const ListaAllenamenti = () => {
 
   return (
     <div>
+      <Link to={`/profilo`}>
+                        <button>Profilo</button>
+                      </Link>
       <h3>Lista degli Allenamenti</h3>
       {allenamenti.map((allenamento) => (
         <li key={allenamento._id}>

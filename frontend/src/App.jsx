@@ -18,7 +18,6 @@ import InserimentoEspertiAllenamento from "./director/pages/InserimentoEspertiAl
 //Routes utenti
 import Dashboard from "./user/pages/Dashboard"; 
 import DashboardAllenamento from "./user/pages/DashboardAllenamento";
-import Profilo from "./components/profilo";
 import VariantiEsercizi from "./user/pages/VariantiEsercizi";
 import InserimentoAllenamenti from "./user/pages/InserimentoAllenamenti";
 import MonitoraggioProgressi from "./user/pages/MonitoraggioProgressi";
@@ -27,6 +26,7 @@ import ModificaAllenamento from "./user/pages/ModificaAllenamento";
 import DettagliAllenamento from "./user/pages/DettagliAllenamento";
 import ListaVarianti from "./user/pages/ListaVarianti";
 import ListaVariantiEsperto from "./esperto_allenamento/ListaVariantiEsperto";
+import Profilo from "./user/pages/Profilo";
 
 //Routes esperti
 import HomePageEsperto from "./esperto_allenamento/Homepage";
@@ -75,9 +75,9 @@ const App = () => {
           <Route path="/inserimento-esperti-allenamento" element={<PrivateRoute requiredRole="direttore"><InserimentoEspertiAllenamento /></PrivateRoute>} />
 
           {/* Pagine accessibili solo agli utenti */}
+          <Route path="/profilo" element={<PrivateRoute requiredRole="utente"><Profilo/></PrivateRoute>} />
           <Route path="/dashboard" element={<PrivateRoute requiredRole="utente"><Dashboard /></PrivateRoute>} />
           <Route path="/dashboard-allenamento" element={<PrivateRoute requiredRole="utente"><DashboardAllenamento /></PrivateRoute>} />
-          <Route path="/profilo" element={<PrivateRoute requiredRole="utente"><Profilo /></PrivateRoute>} />
           <Route path="/varianti-esercizi" element={<PrivateRoute requiredRole="utente"><VariantiEsercizi /></PrivateRoute>} />
           <Route path="/varianti" element={<PrivateRoute requiredRole="utente"><ListaVarianti /></PrivateRoute>} />
           <Route path="/crea-allenamento" element={<PrivateRoute requiredRole="utente"><InserimentoAllenamenti /></PrivateRoute>} />

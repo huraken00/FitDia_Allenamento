@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import CercaEsercizio from "../../components/CercaEsercizio";
 import Modal from "../../components/Modal"; // Importa la modale
 
@@ -74,6 +74,9 @@ const VariantiEsercizi = () => {
       {!showModal && (
         <>
           <h2>Genera una Variante di un Esercizio</h2>
+          <Link to={`/profilo`}>
+                  <button>Profilo</button>
+                </Link>
           <CercaEsercizio onSelect={setSelectedExercise} />
 
           <div className="form-params">

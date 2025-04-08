@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";
-import { AuthContext } from "../shared/context/auth-context";
+import { AuthContext } from "../../shared/context/auth-context";
 
 const Profilo = () => {
   const [user, setUser] = useState(null);

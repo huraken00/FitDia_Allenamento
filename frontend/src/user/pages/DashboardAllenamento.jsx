@@ -7,6 +7,8 @@ const DashboardAllenamento = () => {
     <div>
       <h2>Dashboard Allenamento</h2>
       <p>Benvenuto nella tua dashboard allenamento!</p>
+      
+      
 
       {/* Renderizza la lista degli allenamenti */}
       <ListaAllenamenti />

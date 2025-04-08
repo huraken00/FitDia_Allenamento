@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import AggiungiSerie from '../../components/AggiungiSerie';
 
@@ -144,6 +144,9 @@ const ModificaAllenamento = () => {
 
   return (
     <div>
+      <Link to={`/profilo`}>
+                  <button>Profilo</button>
+                </Link>
       <h2>Modifica Allenamento</h2>
       <p><strong>Data:</strong> {new Date(allenamento.dataCreazione).toLocaleDateString()}</p>
       <label>Nome:</label>

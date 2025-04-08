@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Card from "../../components/ui/card";
 
 
+
 // Dashboard Component
 const Dashboard = () => {
   const navigate = useNavigate(); // Hook per la navigazione
@@ -13,8 +14,11 @@ const Dashboard = () => {
 
   return (
     <div>
-     
-      <h1>Dashboard Fitness</h1>
+      
+       <Link to={`/profilo`}>
+                  <button>Profilo</button>
+                </Link>
+      
 
       <Card 
         title="Alimentazione"

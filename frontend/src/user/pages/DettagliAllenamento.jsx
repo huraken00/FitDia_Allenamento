@@ -1,5 +1,6 @@
-import { useParams } from 'react-router-dom';
+import { useParams,Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+
 
 const DettagliAllenamento = () => {
   const { id } = useParams();
@@ -57,6 +58,9 @@ const DettagliAllenamento = () => {
 
   return (
     <div style={{ padding: "1rem" }}>
+      <Link to={`/profilo`}>
+                  <button>Profilo</button>
+                </Link>
       <h2>📋 Dettagli Allenamento</h2>
       <p><strong>Nome:</strong> {allenamento.nome}</p>
       <p><strong>Data:</strong> {new Date(allenamento.dataCreazione).toLocaleDateString()}</p>

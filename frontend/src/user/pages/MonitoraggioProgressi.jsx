@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   LineChart,
   Line,
@@ -85,6 +86,9 @@ const MonitoraggioProgressi = () => {
 
   return (
     <div style={{ padding: "1rem" }}>
+      <Link to={`/profilo`}>
+                  <button>Profilo</button>
+                </Link>
       <h2>📊 Monitoraggio Progressi</h2>
 
       {/* Select esercizio */}
