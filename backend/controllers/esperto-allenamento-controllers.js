@@ -94,3 +94,22 @@ exports.updateEsperto = async (req, res) => {
     res.status(500).json({ message: "Errore nell'aggiornamento", error });
   }
 };
+
+// controller per eliminare un esperto
+exports.eliminaEsperto = async (req, res) => {
+  const id = req.params.eid;
+
+  try {
+    console.log("DENTRO")
+    const espertoEliminato = await Esperto.findByIdAndDelete(id);
+
+    if (!espertoEliminato) {
+      return res.status(404).json({ message: "Esperto non trovato" });
+    }
+
+    res.status(200).json({ message: "Esperto eliminato con successo" });
+  } catch (error) {
+    console.error("Errore nell'eliminazione dell'esperto:", error);
+    res.status(500).json({ message: "Errore nell'eliminazione", error });
+  }
+};
