@@ -10,7 +10,13 @@ const ListaVariantiEsperto = () => {
     try {
       const res = await fetch("http://localhost:3001/api/varianti");
       const data = await res.json();
-      setVarianti(data);
+
+      // Filtra varianti approvate
+      const nonApprovate = data.filter(
+        (v) => !v.validazione || v.validazione.stato !== "approvata"
+      );
+
+      setVarianti(nonApprovate);
     } catch (err) {
       console.error("Errore nel caricamento delle varianti:", err);
     } finally {
@@ -18,22 +24,30 @@ const ListaVariantiEsperto = () => {
     }
   };
 
-  const eliminaVariante = async (id) => {
+  const validaVariante = async (id, stato, messaggio) => {
     try {
-      const res = await fetch(`http://localhost:3001/api/varianti/${id}`, {
-        method: "DELETE",
+      const res = await fetch(`http://localhost:3001/api/varianti/${id}/valida`, {
+        method: "PUT",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
+        body: JSON.stringify({ stato, messaggio }),
       });
 
       if (res.ok) {
-        setVarianti((prev) => prev.filter((v) => v._id !== id));
-      } else {
-        console.error("Errore nell'eliminazione");
+        const variante = varianti.find((v) => v._id === id);
+
+        if (stato === "approvata") {
+          // Reindirizza a modifica-esercizio con variante
+          navigate("/modifica-esercizio", { state: variante });
+        } else {
+          // Rimuove dalla lista le scartate
+          fetchVarianti();
+        }
       }
     } catch (err) {
-      console.error("Errore nell'eliminazione:", err);
+      console.error("Errore nella validazione:", err);
     }
   };
 
@@ -50,18 +64,32 @@ const ListaVariantiEsperto = () => {
         <p>Nessuna variante disponibile.</p>
       ) : (
         varianti.map((v) => (
-          <div key={v._id} style={{ border: "1px solid #ccc", padding: "1rem", margin: "1rem 0" }}>
+          <div
+            key={v._id}
+            style={{ border: "1px solid #ccc", padding: "1rem", margin: "1rem 0" }}
+          >
             <h3>{v.nome}</h3>
             <p>{v.descrizione}</p>
-            <div>
-              <button onClick={() => navigate("/modifica-esercizio", { state: v })}>
-                ✏️ Modifica e Valida
+
+            {v.validazione && (
+              <p>
+                <strong>Stato:</strong> {v.validazione.stato} <br />
+                <strong>Messaggio:</strong> {v.validazione.messaggio}
+              </p>
+            )}
+
+            <div style={{ marginTop: "0.5rem" }}>
+              <button
+                onClick={() =>
+                  validaVariante(v._id, "approvata", "La variante è stata trasformata in esercizio.")
+                }
+              >
+                ✅ Approva
               </button>
               <button
-                onClick={() => eliminaVariante(v._id)}
-                style={{ marginLeft: "1rem", color: "red" }}
-              >
-                🗑️ Scarta
+                style={{ marginLeft: "1rem" }}
+                onClick={() => validaVariante(v._id, "scartata", "La variante non è idonea.")}>
+                ❌ Scarta
               </button>
             </div>
           </div>

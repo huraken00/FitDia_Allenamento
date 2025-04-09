@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { getAllVarianti, getVariantiByUtente, deleteVariante,inserisciVariante  } = require("../controllers/varianteEsercizio-controllers");
+const { getAllVarianti, getVariantiByUtente,inserisciVariante ,validaVariante } = require("../controllers/varianteEsercizio-controllers");
 
 router.get("/", getAllVarianti); // tutte le varianti
 router.get("/utente/:userId", getVariantiByUtente); // varianti per utente
-router.delete("/:id", deleteVariante); // elimina
 router.post("/", inserisciVariante);
+router.put("/:id/valida",validaVariante);
 
 
   

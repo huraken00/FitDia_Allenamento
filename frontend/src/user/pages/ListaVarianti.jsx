@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const ListaVarianti = () => {
   const [varianti, setVarianti] = useState([]);
-  const userId = localStorage.getItem("userId"); // Assumi che l'ID dell'utente sia memorizzato nel localStorage
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const fetchVarianti = async () => {
@@ -13,7 +13,7 @@ const ListaVarianti = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        
+
         if (!res.ok) {
           throw new Error(`Errore nel recupero delle varianti: ${res.status}`);
         }
@@ -33,18 +33,46 @@ const ListaVarianti = () => {
   }, [userId]);
 
   return (
-    <div className="lista-varianti">
-      <Link to={`/profilo`}>
-                  <button>Profilo</button>
-                </Link>
+    <div className="lista-varianti" style={{ padding: "1rem" }}>
+      <Link to="/profilo">
+        <button>🔙 Torna al Profilo</button>
+      </Link>
+
       <h2>Le mie varianti generate</h2>
+
       {varianti.length === 0 ? (
         <p>Nessuna variante disponibile.</p>
       ) : (
         varianti.map((v) => (
-          <div key={v._id} className="variante-card">
+          <div
+            key={v._id}
+            className="variante-card"
+            style={{
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+              padding: "1rem",
+              marginBottom: "1rem",
+            }}
+          >
             <h4>{v.nome}</h4>
             <p>{v.descrizione}</p>
+
+            <p>
+              <strong>Stato:</strong>{" "}
+              {v.validazione?.stato ? (
+                <span style={{ color: v.validazione.stato === "approvata" ? "green" : "red" }}>
+                  {v.validazione.stato.toUpperCase()}
+                </span>
+              ) : (
+                "In attesa di validazione"
+              )}
+            </p>
+
+            {v.validazione?.messaggio && (
+              <p>
+                <strong>Messaggio dell'esperto:</strong> {v.validazione.messaggio}
+              </p>
+            )}
           </div>
         ))
       )}

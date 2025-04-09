@@ -109,11 +109,18 @@ const VariantiEsercizi = () => {
 
           {variante && (
             <div className="output-box">
-              <h3>Variante salvata:</h3>
-              <h4>{variante.nome}</h4>
-              <p>{variante.descrizione}</p>
-            </div>
-          )}
+               <h3>Variante salvata:</h3>
+               <h4>{variante.nome}</h4>
+                <p>{variante.descrizione}</p>
+                {variante.validazione?.stato !== "in_attesa" && (
+                   <div className={`status-msg ${variante.validazione.stato}`}>
+                    <strong>{variante.validazione.stato === "approvata" ? "✅ Approvata: " : "❌ Scartata: "}</strong>
+                     {variante.validazione.messaggio}
+                     </div>
+                    )}
+                    </div>
+)}
+
 
           <button className="lista-btn" onClick={() => navigate("/varianti")}>
             Vai alle mie varianti

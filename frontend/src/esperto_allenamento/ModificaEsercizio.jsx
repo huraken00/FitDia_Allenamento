@@ -3,14 +3,18 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 const ModificaEsercizio = () => {
   const { id } = useParams(); // Se presente, è modifica. Se assente, è validazione
-  const { state: variante } = useLocation(); // Se presente, stai validando una variante
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const varianteFromLocation = location.state;
+  const varianteFromStorage = localStorage.getItem("varianteInValidazione");
 
   const [esercizio, setEsercizio] = useState({ nome: "", descrizione: "" });
   const [sport, setSport] = useState([]);
   const [parametri, setParametri] = useState([]);
   const [selectedSport, setSelectedSport] = useState([]);
   const [selectedParametri, setSelectedParametri] = useState([]);
+  const [variante, setVariante] = useState(null);
 
   useEffect(() => {
     fetchSport();
@@ -19,11 +23,23 @@ const ModificaEsercizio = () => {
     if (id) {
       // Modifica esercizio
       fetchEsercizio();
-    } else if (variante) {
-      // Modifica variante prima di validare
-      setEsercizio({ nome: variante.nome, descrizione: variante.descrizione });
-      setSelectedSport(variante.sport ? [variante.sport] : []);
-      setSelectedParametri(variante.parametri || []);
+    } else {
+      // Validazione variante
+      let v = varianteFromLocation;
+
+      if (!v && varianteFromStorage) {
+        v = JSON.parse(varianteFromStorage);
+      }
+
+      if (v) {
+        setVariante(v);
+        setEsercizio({ nome: v.nome, descrizione: v.descrizione });
+        setSelectedSport(v.sport ? [v.sport] : []);
+        setSelectedParametri(v.parametri || []);
+
+        // Salva nel localStorage per il fallback refresh
+        localStorage.setItem("varianteInValidazione", JSON.stringify(v));
+      }
     }
   }, []);
 
@@ -79,7 +95,7 @@ const ModificaEsercizio = () => {
           console.error("Errore aggiornamento");
         }
       } else {
-        // Validazione variante → creazione nuovo esercizio
+        // Creazione nuovo esercizio da variante
         const res = await fetch("http://localhost:3001/api/esercizi", {
           method: "POST",
           headers: {
@@ -89,15 +105,17 @@ const ModificaEsercizio = () => {
           body: JSON.stringify(payload),
         });
 
-        if (res.ok) {
-          // Elimina la variante dopo la validazione
+        if (res.ok && variante) {
+          // Elimina la variante approvata
           await fetch(`http://localhost:3001/api/varianti/${variante._id}`, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           });
+
           alert("Variante validata e convertita con successo!");
+          localStorage.removeItem("varianteInValidazione"); // Pulisce lo storage
           navigate("/lista-esercizi", { replace: true });
         } else {
           console.error("Errore nella validazione");

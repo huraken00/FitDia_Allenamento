@@ -49,13 +49,24 @@ exports.getVariantiByUtente = async (req, res) => {
     }
   };
   
-  exports.deleteVariante = async (req, res) => {
+  exports.validaVariante = async (req, res) => {
+    const { id } = req.params;
+    const { stato, messaggio } = req.body;
+  
+    if (!["approvata", "scartata"].includes(stato)) {
+      return res.status(400).json({ message: "Stato non valido" });
+    }
+  
     try {
-      const result = await Variante.findByIdAndDelete(req.params.id);
-      if (!result) return res.status(404).json({ message: "Variante non trovata" });
-      res.status(200).json({ message: "Variante eliminata" });
+      const variante = await Variante.findByIdAndUpdate(
+        id,
+        { validazione: { stato, messaggio } },
+        { new: true }
+      );
+      res.status(200).json(variante);
     } catch (err) {
-      res.status(500).json({ message: "Errore durante l'eliminazione" });
+      res.status(500).json({ message: "Errore nella validazione" });
     }
   };
+  
   
