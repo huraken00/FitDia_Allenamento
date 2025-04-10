@@ -1,0 +1,89 @@
+/* Container principale per CercaEsercizio */
+.cercaEsercizioContainer {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Input di ricerca */
+.searchInput {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.searchInput:focus {
+    border-color: #5f2eff;
+    outline: none;
+}
+
+/* Contenitore dei filtri */
+.filtriContainer {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.filtriContainer select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+.filtriContainer select:focus {
+    border-color: #5f2eff;
+    outline: none;
+}
+
+/* Lista a discesa (dropdown) */
+.dropdownList {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 0;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdownList li {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dropdownList li:hover {
+    background-color: #f0f0f0;
+}
+
+/* Messaggio quando non ci sono risultati */
+.dropdownListEmpty {
+    text-align: center;
+    padding: 10px;
+    color: #888;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .filtriContainer {
+        flex-direction: column;
+    }
+
+    .filtriContainer select {
+        width: 100%;
+    }
+}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import styles from './Register.module.css';
 import validateForm from "../../shared/utils/validateForm";
 
-console.log("Register component is rendering!");
 function Register() {
   const [formData, setFormData] = useState({
     username: "",
@@ -47,44 +47,33 @@ function Register() {
   };
 
   return (
-    <div>
-      <h2>Registrati su FitDia</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username:</label>
-          <input type="text" name="username" value={formData.username} onChange={handleChange} />
-          {errors.username && <p>{errors.username}</p>}
-        </div>
+    <div className={styles.container}>
+      <form className={styles.formBox} onSubmit={handleSubmit}>
+        <h2 className={styles.title}>Registrati su FitDia</h2>
 
-        <div>
-          <label>Nome:</label>
-          <input type="text" name="nome" value={formData.nome} onChange={handleChange} />
-          {errors.nome && <p>{errors.nome}</p>}
-        </div>
+        <label className={styles.label}>Username:</label>
+        <input className={styles.input} type="text" name="username" value={formData.username} onChange={handleChange} />
+        {errors.username && <p className={styles.error}>{errors.username}</p>}
 
-        <div>
-          <label>Cognome:</label>
-          <input type="text" name="cognome" value={formData.cognome} onChange={handleChange} />
-          {errors.cognome && <p>{errors.cognome}</p>}
-        </div>
+        <label className={styles.label}>Nome:</label>
+        <input className={styles.input} type="text" name="nome" value={formData.nome} onChange={handleChange} />
+        {errors.nome && <p className={styles.error}>{errors.nome}</p>}
 
-        <div>
-          <label>Email:</label>
-          <input type="email" name="email" value={formData.email} onChange={handleChange} />
-          {errors.email && <p>{errors.email}</p>}
-        </div>
+        <label className={styles.label}>Cognome:</label>
+        <input className={styles.input} type="text" name="cognome" value={formData.cognome} onChange={handleChange} />
+        {errors.cognome && <p className={styles.error}>{errors.cognome}</p>}
 
-        <div>
-          <label>Password:</label>
-          <input type="password" name="password" value={formData.password} onChange={handleChange} />
-          {errors.password && <p>{errors.password}</p>}
-        </div>
+        <label className={styles.label}>Email:</label>
+        <input className={styles.input} type="email" name="email" value={formData.email} onChange={handleChange} />
+        {errors.email && <p className={styles.error}>{errors.email}</p>}
 
-        <button type="submit">Registrati</button>
+        <label className={styles.label}>Password:</label>
+        <input className={styles.input} type="password" name="password" value={formData.password} onChange={handleChange} />
+        {errors.password && <p className={styles.error}>{errors.password}</p>}
+
+        <button className={styles.button} type="submit">Registrati</button>
+        {message && <p className={styles.message}>{message}</p>}
       </form>
-
-      {message && <p>{message}</p>}
-
     </div>
   );
 }

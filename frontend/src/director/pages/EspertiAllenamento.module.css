@@ -1,0 +1,101 @@
+/* Contenitore principale */
+.container {
+    padding: 2rem;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 100px;
+  }
+  
+  /* Titolo della pagina */
+  .title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 2rem;
+  }
+  
+  /* Stile per la tabella */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+  }
+  
+  .table th, .table td {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .table th {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .table td {
+    background-color: #f9f9f9;
+  }
+  
+  .table tr:nth-child(even) td {
+    background-color: #f1f1f1;
+  }
+  
+  /* Bottone per eliminare un esperto */
+  .deleteButton {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .deleteButton:hover {
+    background-color: #e53935;
+  }
+  
+  /* Link per inserire un nuovo esperto */
+  .addLink {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #4CAF50;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border: 2px solid #4CAF50;
+    border-radius: 8px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .addLink:hover {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+      margin-top: 60px;
+    }
+  
+    .title {
+      font-size: 2rem;
+    }
+  
+    .table {
+      font-size: 0.9rem;
+    }
+  
+    .table th, .table td {
+      padding: 0.8rem;
+    }
+  
+    .addLink {
+      font-size: 1rem;
+      padding: 0.4rem 0.8rem;
+    }
+  }
+  

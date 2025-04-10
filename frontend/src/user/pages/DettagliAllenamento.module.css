@@ -1,0 +1,121 @@
+/* DettagliAllenamento.module.css */
+
+/* Stile del contenitore principale */
+/* DettagliAllenamento.module.css */
+
+/* Stile del contenitore principale */
+.container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 80px; /* Aggiunto margine superiore per evitare il sovrapporsi all'header */
+  }
+  
+  /* Stile del titolo */
+  h2 {
+    font-size: 2rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 1rem;
+    margin-top: 0; /* Puoi personalizzarlo in base allo spazio necessario */
+  }
+  
+  /* Altri stili... */
+  
+  
+  /* Stile per i paragrafi */
+  p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555;
+  }
+  
+  /* Bottone principale */
+  button {
+    padding: 10px 20px;
+    background-color: #5f2eff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 10px 0;
+  }
+  
+  /* Effetto hover per i bottoni */
+  button:hover {
+    background-color: #3e1fdd;
+  }
+  
+  /* Stile per il link di navigazione */
+  a {
+    text-decoration: none;
+  }
+  
+  a button {
+    margin-right: 10px;
+  }
+  
+  /* Contenitore delle serie */
+  h3 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    color: #333;
+  }
+  
+  /* Stile per ogni serie */
+  .serieBox {
+    border: 1px solid #ccc;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  /* Dettaglio per esercizio e sport */
+  .serieBox p {
+    font-size: 1.1rem;
+    color: #444;
+  }
+  
+  /* Lista parametri */
+  .serieBox ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .serieBox ul li {
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  /* Media Queries per dispositivi più piccoli */
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+    }
+  
+    p, .serieBox p {
+      font-size: 1rem;
+    }
+  
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+    }
+  
+    .serieBox {
+      padding: 0.5rem;
+    }
+  
+    .serieBox ul li {
+      font-size: 0.9rem;
+    }
+  }
+  

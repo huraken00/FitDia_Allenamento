@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AggiungiSerie from "../../components/AggiungiSerie";
+import styles from './InserimentoAllenamenti.module.css'; // Importazione del modulo CSS
 
 const InserimentoAllenamenti = () => {
   const navigate = useNavigate();
@@ -57,50 +58,55 @@ const InserimentoAllenamenti = () => {
   };
 
   return (
-    <div>
-      
-      <h2>Crea Nuovo Allenamento</h2>
-      <Link to={`/profilo`}>
-                  <button>Profilo</button>
-                </Link>
-      <form onSubmit={handleSubmit}>
-        <label>Nome Allenamento:</label>
-        <input type="text" name="nome" value={allenamento.nome} onChange={handleAllenamentoChange} required />
+    <div className={styles.container}>
+      <h2 className={styles.title}>Crea Nuovo Allenamento</h2>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <label className={styles.label}>Nome Allenamento:</label>
+        <input
+          type="text"
+          name="nome"
+          value={allenamento.nome}
+          onChange={handleAllenamentoChange}
+          className={styles.input}
+          required
+        />
 
-        <label>Appunti Allenamento:</label>
-        <textarea name="appuntiAllenamento" value={allenamento.appuntiAllenamento} onChange={handleAllenamentoChange} />
+        <label className={styles.label}>Appunti Allenamento:</label>
+        <textarea
+          name="appuntiAllenamento"
+          value={allenamento.appuntiAllenamento}
+          onChange={handleAllenamentoChange}
+          className={styles.textarea}
+        />
 
-        <button type="submit">Crea Allenamento</button>
+        <button type="submit" className={styles.submitButton}>Crea Allenamento</button>
       </form>
 
       {allenamento._id && (
-        <AggiungiSerie allenamentoId={allenamento._id} 
-        onSerieAggiunta={handleSerieAggiunta} />
+        <AggiungiSerie allenamentoId={allenamento._id} onSerieAggiunta={handleSerieAggiunta} />
       )}
 
-      <div>
-  <h3>Serie Aggiunte:</h3>
-  <ul>
-    {allenamento.serie.map((s, index) => (
-      <li key={index}>
-        <p>
-        {/*il punto interrogativo indica un operazione ternaria */}
-          <strong>Esercizio:</strong> {s.id_esercizio?.nome || "Sconosciuto"} <br />
-          <strong>Sport:</strong> {s.sport.join(", ") || "Sconosciuto"} <br />
-          {s.Peso && <><strong>Peso:</strong> {s.Peso} kg <br /></>}
-          {s.Distanza && <><strong>Distanza:</strong> {s.Distanza} m <br /></>}
-          {s.Durata && <><strong>Durata:</strong> {s.Durata} sec <br /></>}
-          {s.Ripetizioni && <><strong>Ripetizioni:</strong> {s.Ripetizioni} <br /></>}
-        </p>
-      </li>
-    ))}
-  </ul>
-</div>
+      <div className={styles.serieContainer}>
+        <h3 className={styles.serieTitle}>Serie Aggiunte:</h3>
+        <ul>
+          {allenamento.serie.map((s, index) => (
+            <li key={index} className={styles.serieItem}>
+              <p>
+                <strong>Esercizio:</strong> {s.id_esercizio?.nome || "Sconosciuto"} <br />
+                <strong>Sport:</strong> {s.sport.join(", ") || "Sconosciuto"} <br />
+                {s.Peso && <><strong>Peso:</strong> {s.Peso} kg <br /></>}
+                {s.Distanza && <><strong>Distanza:</strong> {s.Distanza} m <br /></>}
+                {s.Durata && <><strong>Durata:</strong> {s.Durata} sec <br /></>}
+                {s.Ripetizioni && <><strong>Ripetizioni:</strong> {s.Ripetizioni} <br /></>}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </div>
 
+      <button onClick={() => navigate("/dashboard-allenamento")} className={styles.finishButton}>Termina</button>
 
-      <button onClick={() => navigate("/dashboard-allenamento")}>Termina</button>
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className={styles.error}>{error}</p>}
     </div>
   );
 };

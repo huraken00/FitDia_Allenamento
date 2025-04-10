@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
   CartesianGrid
 } from "recharts";
+import styles from "./MonitoraggioProgressi.module.css"; // Importa il modulo CSS
 
 const MonitoraggioProgressi = () => {
   const [esercizi, setEsercizi] = useState([]);
@@ -19,22 +20,18 @@ const MonitoraggioProgressi = () => {
   const [selectedParametro, setSelectedParametro] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  
-  // Nuove variabili per la gestione delle date
+
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-  
-  // Supponiamo che l'ID dell'utente venga recuperato da una variabile globale o un contesto
-  const userId = localStorage.getItem('userId'); // O tramite un context, o una variabile di stato
 
+  const userId = localStorage.getItem('userId'); // ID dell'utente
 
- useEffect(() => {
+  useEffect(() => {
     const fetchEsercizi = async () => {
       try {
         const res = await fetch("http://localhost:3001/api/esercizi");
         const data = await res.json();
         setEsercizi(data || []);
-        
       } catch (err) {
         setError("Errore nel recupero degli esercizi.");
       }
@@ -43,24 +40,18 @@ const MonitoraggioProgressi = () => {
     fetchEsercizi();
   }, []);
 
-  // Fetch dati progresso quando cambia esercizio selezionato o periodo
   useEffect(() => {
-    
-    if (!selectedEsercizio || !userId) return;  // Aggiungi controllo per l'ID utente
-    
+    if (!selectedEsercizio || !userId) return;
 
     const fetchProgressi = async () => {
       setLoading(true);
       setError("");
-      
-      try {
-        
 
+      try {
         const queryParams = new URLSearchParams();
         if (fromDate) queryParams.append("from", fromDate);
         if (toDate) queryParams.append("to", toDate);
 
-        // Includi l'ID dell'utente e le date selezionate nella URL
         const res = await fetch(`http://localhost:3001/api/esercizi/progressi-esercizio/${selectedEsercizio}/${userId}?${queryParams.toString()}`);
         const data = await res.json();
         if (res.ok) {
@@ -77,43 +68,43 @@ const MonitoraggioProgressi = () => {
     };
 
     fetchProgressi();
-  }, [selectedEsercizio, userId, fromDate, toDate]);  // Aggiungi fromDate e toDate come dipendenze
+  }, [selectedEsercizio, userId, fromDate, toDate]);
 
-  // Parametri allenanti disponibili
   const parametriAllenanti = dati.length > 0
     ? Object.keys(dati[0]).filter((key) => key !== "data")
     : [];
 
   return (
-    <div style={{ padding: "1rem" }}>
-      <Link to={`/profilo`}>
-                  <button>Profilo</button>
-                </Link>
-      <h2>📊 Monitoraggio Progressi</h2>
+    <div className={styles.monitoraggioProgressiContainer}>
+      
+
+      <h2 className={styles.titolo}>📊 Monitoraggio Progressi</h2>
 
       {/* Select esercizio */}
-      <label>
-        <strong>Seleziona un esercizio:</strong>
-        <select
-          value={selectedEsercizio}
-          onChange={(e) => {
-            setSelectedEsercizio(e.target.value);
-            setFromDate("");
-            setToDate("");
-          }}
-        >
-          <option value="">-- Scegli --</option>
-          {esercizi.map((ex) => (
-            <option key={ex._id} value={ex._id}>
-              {ex.nome}
-            </option>
-          ))}
-        </select>
-      </label>
+      <div className={styles.selectContainer}>
+        <label>
+          <strong>Seleziona un esercizio:</strong>
+          <select
+            value={selectedEsercizio}
+            onChange={(e) => {
+              setSelectedEsercizio(e.target.value);
+              setFromDate("");
+              setToDate("");
+            }}
+          >
+            <option value="">-- Scegli --</option>
+            {esercizi.map((ex) => (
+              <option key={ex._id} value={ex._id}>
+                {ex.nome}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
 
       {/* Select parametro */}
       {dati.length > 0 && (
-        <div style={{ marginTop: "1rem" }}>
+        <div className={styles.selectContainer} style={{ marginTop: "1rem" }}>
           <label>
             <strong>Parametro da visualizzare:</strong>
             <select
@@ -132,7 +123,7 @@ const MonitoraggioProgressi = () => {
       )}
 
       {/* Select periodo temporale */}
-      <div style={{ marginTop: "1rem" }}>
+      <div className={styles.dateInputContainer}>
         <label>
           <strong>Data Inizio:</strong>
           <input
@@ -141,7 +132,7 @@ const MonitoraggioProgressi = () => {
             onChange={(e) => setFromDate(e.target.value)}
           />
         </label>
-        <label style={{ marginLeft: "1rem" }}>
+        <label>
           <strong>Data Fine:</strong>
           <input
             type="date"
@@ -151,13 +142,13 @@ const MonitoraggioProgressi = () => {
         </label>
       </div>
 
-      {/* Visualizza stato di caricamento o errori */}
+      {/* Caricamento o errori */}
       {loading && <p>Caricamento progressi...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       {/* Grafico */}
       {selectedParametro && dati.length > 0 && (
-        <div style={{ marginTop: "2rem" }}>
+        <div className={styles.chartContainer}>
           <h3>📈 Progressi di {nomeEsercizio} - {selectedParametro}</h3>
           <ResponsiveContainer width="100%" height={400}>
             <LineChart data={dati}>

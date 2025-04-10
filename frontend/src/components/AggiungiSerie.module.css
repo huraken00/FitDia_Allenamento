@@ -1,0 +1,145 @@
+/* AggiungiSerie.module.css */
+
+/* Contenitore principale */
+.aggiungiSerieContainer {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Titolo */
+.aggiungiSerieContainer h3 {
+    text-align: center;
+    color: #5f2eff;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+/* Etichette */
+.aggiungiSerieContainer label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #333;
+    font-size: 1rem;
+}
+
+/* Input numerici */
+.aggiungiSerieContainer input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.aggiungiSerieContainer input[type="number"]:focus {
+    border-color: #5f2eff;
+    outline: none;
+}
+
+/* Contenitore dei parametri */
+.parametriContainer {
+    margin-top: 20px;
+}
+
+/* Contenitore degli sport associati */
+.sportAssociati {
+    margin-top: 20px;
+}
+
+.sportAssociati ul {
+    padding-left: 20px;
+}
+
+.sportAssociati li {
+    list-style-type: circle;
+    color: #5f2eff;
+}
+
+/* Bottone Aggiungi Serie */
+.btnAggiungi {
+    background-color: #5f2eff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.btnAggiungi:hover {
+    background-color: #4d1ad3;
+}
+
+/* Messaggio di errore */
+.errorMessage {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Responsivo - Aggiungi Serie Container per dispositivi piccoli */
+@media (max-width: 768px) {
+    .aggiungiSerieContainer {
+        padding: 15px;
+        max-width: 100%;
+        margin: 10px;
+    }
+
+    .aggiungiSerieContainer h3 {
+        font-size: 1.5rem;
+    }
+
+    .aggiungiSerieContainer label {
+        font-size: 0.9rem;
+    }
+
+    .aggiungiSerieContainer input[type="number"] {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .btnAggiungi {
+        padding: 12px 18px;
+        font-size: 14px;
+    }
+}
+
+/* Responsivo - Ottimizzazione per mobile */
+@media (max-width: 480px) {
+    .aggiungiSerieContainer {
+        padding: 10px;
+    }
+
+    .aggiungiSerieContainer h3 {
+        font-size: 1.2rem;
+    }
+
+    .aggiungiSerieContainer label {
+        font-size: 0.85rem;
+    }
+
+    .aggiungiSerieContainer input[type="number"] {
+        padding: 6px;
+        font-size: 13px;
+    }
+
+    .btnAggiungi {
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+
+    .sportAssociati ul {
+        padding-left: 15px;
+    }
+}

@@ -1,6 +1,7 @@
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import AggiungiSerie from '../../components/AggiungiSerie';
+import styles from './ModificaAllenamento.module.css'; // Importa il modulo CSS
 
 const ModificaAllenamento = () => {
   const { id } = useParams();
@@ -143,53 +144,56 @@ const ModificaAllenamento = () => {
   if (!allenamento) return <p>Caricamento...</p>;
 
   return (
-    <div>
-      <Link to={`/profilo`}>
-                  <button>Profilo</button>
-                </Link>
+    <div className={styles.container}>
       <h2>Modifica Allenamento</h2>
-      <p><strong>Data:</strong> {new Date(allenamento.dataCreazione).toLocaleDateString()}</p>
-      <label>Nome:</label>
-      <input name="nome" value={allenamento.nome} onChange={handleInputChange} />
+      <div className={styles.dettagliAllenamento}>
+        <p><strong>Data:</strong> {new Date(allenamento.dataCreazione).toLocaleDateString()}</p>
+        <label>Nome:</label>
+        <input name="nome" value={allenamento.nome} onChange={handleInputChange} />
 
-      <label>Appunti:</label>
-      <textarea name="appuntiAllenamento" value={allenamento.appuntiAllenamento} onChange={handleInputChange} />
+        <label>Appunti:</label>
+        <textarea name="appuntiAllenamento" value={allenamento.appuntiAllenamento} onChange={handleInputChange} />
+      </div>
 
-      <h3>Serie</h3>
-      {serie.map((s, index) => (
-        <div key={s._id} style={{ border: "1px solid gray", marginBottom: "1rem", padding: "0.5rem" }}>
-          <p><strong>Esercizio:</strong> {s.esercizio}</p>
-          <p><strong>Sport:</strong> {s.sport?.join(", ") || "N/A"}</p>
+      <div className={styles.serieContainer}>
+        <h3>Serie</h3>
+        {serie.map((s, index) => (
+          <div key={s._id} className={styles.serieBox}>
+            <p><strong>Esercizio:</strong> {s.esercizio}</p>
+            <p><strong>Sport:</strong> {s.sport?.join(", ") || "N/A"}</p>
 
-          <div>
-            <strong>Parametri:</strong>
-            {(s.parametri || []).map((p, paramIndex) => (
-              <div key={paramIndex}>
-                <label>{p.nome}:</label>
-                <input
-                  type="text"
-                  value={p.valore}
-                  onChange={(e) => handleParametroChange(index, paramIndex, e.target.value)}
-                />
-              </div>
-            ))}
+            <div>
+              <strong>Parametri:</strong>
+              {(s.parametri || []).map((p, paramIndex) => (
+                <div key={paramIndex}>
+                  <label>{p.nome}:</label>
+                  <input
+                    type="text"
+                    value={p.valore}
+                    onChange={(e) => handleParametroChange(index, paramIndex, e.target.value)}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <button className={styles.eliminaSerieBtn} onClick={() => handleEliminaSerie(s._id)}>Elimina Serie</button>
           </div>
+        ))}
 
-          <button onClick={() => handleEliminaSerie(s._id)}>Elimina Serie</button>
-        </div>
-      ))}
+        <AggiungiSerie
+          allenamentoId={allenamento._id}
+          onSerieAggiunta={(nuovaSerie) => {
+            setSerie(prev => [...prev, nuovaSerie]);
+          }}
+        />
+      </div>
 
-<AggiungiSerie
-  allenamentoId={allenamento._id}
-  onSerieAggiunta={(nuovaSerie) => {
-    setSerie(prev => [...prev, nuovaSerie]);
-  }}
-/>
-
-      <button onClick={handleSalvaModifiche}>Salva Modifiche</button>
-      <button onClick={handleEliminaAllenamento} style={{ color: "red", marginLeft: "10px" }}>
-        Elimina Allenamento
-      </button>
+      <div className={styles.buttonContainer}>
+        <button onClick={handleSalvaModifiche}>Salva Modifiche</button>
+        <button onClick={handleEliminaAllenamento} className={styles.deleteButton}>
+          Elimina Allenamento
+        </button>
+      </div>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>

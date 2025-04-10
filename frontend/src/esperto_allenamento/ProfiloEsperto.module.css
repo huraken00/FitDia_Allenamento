@@ -1,0 +1,85 @@
+.profiloContainer {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 100px;
+  }
+  
+  .titoloPagina {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .inputGroup {
+    margin-bottom: 1rem;
+  }
+  
+  .label {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+  
+  .input {
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+  }
+  
+  .salvaButton {
+    padding: 0.8rem;
+    font-size: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .salvaButton:hover {
+    background-color: #45a049;
+  }
+  
+  @media (max-width: 768px) {
+    .profiloContainer {
+      padding: 1rem;
+    }
+  
+    .titoloPagina {
+      font-size: 1.5rem;
+    }
+  
+    .form {
+      width: 100%;
+      max-width: 300px;
+    }
+  
+    .label {
+      font-size: 0.9rem;
+    }
+  
+    .input {
+      padding: 0.6rem;
+      font-size: 0.9rem;
+    }
+  
+    .salvaButton {
+      font-size: 0.9rem;
+    }
+  }
+  

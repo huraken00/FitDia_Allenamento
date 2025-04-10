@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../shared/context/auth-context";
+import styles from "./LoginEsperto.module.css"; // Importa il modulo CSS
 
 const LoginEsperto = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const auth = useContext(AuthContext); // Usa il contesto 
+  const auth = useContext(AuthContext); // Usa il contesto
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -36,26 +37,30 @@ const LoginEsperto = () => {
   };
 
   return (
-    <div>
-      <h2>Esperto Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div className={styles.loginContainer}>
+      <div className={styles.formWrapper}>
+        <h2 className={styles.formTitle}>Esperto Login</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            className={styles.inputField}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className={styles.inputField}
+          />
+          <button type="submit" className={styles.submitButton}>Login</button>
+        </form>
+        {error && <p className={styles.errorMessage}>{error}</p>}
+      </div>
     </div>
   );
 };

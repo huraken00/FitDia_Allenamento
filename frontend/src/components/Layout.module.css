@@ -1,0 +1,57 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between; /* Logo a sinistra, icona profilo a destra */
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.logo {
+  width: 60px;
+  height: auto;
+  margin-left: 20px;
+}
+
+.profileLink {
+  margin-right: 20px;
+}
+
+.icon {
+  color: #5f2eff;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.icon:hover {
+  color: #4722d6;
+}
+
+.main {
+  margin-top: 80px; /* Per non coprire il contenuto sotto l'header */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 20px;
+}
+
+@media (max-width: 600px) {
+  .logo {
+    width: 40px;
+  }
+
+  .main {
+    margin-top: 60px;
+  }
+}

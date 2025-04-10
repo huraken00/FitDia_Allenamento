@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext, AuthProvider } from "./shared/context/auth-context";
 
+import Layout from "./components/Layout";
+
 //Login e registrazione 
 import HomePage from "./Homepage";
 import LoginUser from "./user/pages/Login";
@@ -98,6 +100,7 @@ const App = () => {
          <Route path="/modifica-esercizio" element = {<PrivateRoute requiredRole="esperto"><ModificaEsercizio /></PrivateRoute>}></Route>
          <Route path="/lista-varianti" element = {<PrivateRoute requiredRole="esperto"><ListaVariantiEsperto /></PrivateRoute>}></Route>
         </Routes>
+        <Layout/>
       </Router>
     </AuthProvider>
   );

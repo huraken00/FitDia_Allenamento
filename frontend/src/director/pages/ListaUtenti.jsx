@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styles from "./ListaUtenti.module.css"; // Importiamo il modulo CSS
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -7,34 +8,32 @@ const UserList = () => {
 
   useEffect(() => {
     fetchData();
-  }, []); 
+  }, []);
 
-    const fetchData = async () => {
-      try {
-       
-        // Recupero della lista utenti solo se l'autenticazione ha avuto successo
-        const res = await fetch("http://localhost:3001/api/user");
-        if (!res.ok) throw new Error("Errore nel recupero degli utenti");
+  const fetchData = async () => {
+    try {
+      // Recupero della lista utenti solo se l'autenticazione ha avuto successo
+      const res = await fetch("http://localhost:3001/api/user");
+      if (!res.ok) throw new Error("Errore nel recupero degli utenti");
 
-        const data = await res.json();
-        setUsers(data);
-      } catch (err) {
-        if (err.message === "Accesso non autorizzato") {
-          // Solo in caso di errore di autenticazione, rimuoviamo il token
-          localStorage.removeItem("token");
-          navigate("/login-direttore");
-        } else {
-          // Se l'errore riguarda il recupero dei dati, non rimuoviamo il token
-          console.error("Errore nel recupero degli utenti:", err);
-        }
+      const data = await res.json();
+      setUsers(data);
+    } catch (err) {
+      if (err.message === "Accesso non autorizzato") {
+        // Solo in caso di errore di autenticazione, rimuoviamo il token
+        localStorage.removeItem("token");
+        navigate("/login-direttore");
+      } else {
+        // Se l'errore riguarda il recupero dei dati, non rimuoviamo il token
+        console.error("Errore nel recupero degli utenti:", err);
       }
-    };
-
+    }
+  };
 
   return (
-    <div>
-      <h2>Lista Utenti</h2>
-      <table>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Lista Utenti</h2>
+      <table className={styles.table}>
         <thead>
           <tr>
             <th>Nome</th>

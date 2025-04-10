@@ -1,35 +1,32 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import ListaAllenamenti from "./ListaAllenamenti"; // Importa la componente ListaAllenamenti
+import { FaUserCircle } from "react-icons/fa"; // 👈 Aggiungi questa riga
+import ListaAllenamenti from "./ListaAllenamenti";
+import styles from "./DashboardAllenamento.module.css"; // 👈 Se non ce l’hai, puoi crearlo
 
 const DashboardAllenamento = () => {
   return (
-    <div>
-      <h2>Dashboard Allenamento</h2>
-      <p>Benvenuto nella tua dashboard allenamento!</p>
-      
-      
+    <div className={styles.container}>
 
-      {/* Renderizza la lista degli allenamenti */}
+      <h2 className={styles.title}>Dashboard Allenamento</h2>
+      <p>Benvenuto nella tua dashboard allenamento!</p>
+
+      <h3 className={styles.subtitle}>Lista degli Allenamenti</h3>
       <ListaAllenamenti />
 
-      {/* Pulsante per creare un nuovo allenamento */}
-      <Link to="/crea-allenamento">
-        <button>Crea e Avvia Nuovo Allenamento</button>
-      </Link>
-
-      {/* Pulsante per andare alla pagina di monitoraggio degli esercizi */}
-      <Link to="/monitoraggio-progressi">
-        <button>Monitora i Progressi</button>
-      </Link>
-
-      {/* Pulsante per generare varianti degli esercizi */}
-      <Link to="/varianti-esercizi">
-        <button>Genera Varianti degli Esercizi</button>
-      </Link>
+      <div className={styles.buttonGroup}>
+        <Link to="/crea-allenamento">
+          <button className={styles.button}>Crea e Avvia Nuovo Allenamento</button>
+        </Link>
+        <Link to="/monitoraggio-progressi">
+          <button className={styles.button}>Monitora i Progressi</button>
+        </Link>
+        <Link to="/varianti-esercizi">
+          <button className={styles.button}>Genera Varianti degli Esercizi</button>
+        </Link>
+      </div>
     </div>
   );
 };
 
 export default DashboardAllenamento;
-

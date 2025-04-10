@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CercaEsercizio from "../../components/CercaEsercizio";
 import Modal from "../../components/Modal"; // Importa la modale
-
-import "./Varianti.css";
+import styles from "./VariantiEsercizi.module.css"; // Importa il modulo CSS
 
 const VariantiEsercizi = () => {
   const [selectedExercise, setSelectedExercise] = useState(null);
@@ -56,14 +55,14 @@ const VariantiEsercizi = () => {
   };
 
   return (
-    <div className="varianti-container">
+    <div className={styles.variantiContainer}>
       {showModal && (
         <Modal
           title="Attenzione"
           message="È importante ricordare che le risposte fornite sono tutte generate automaticamente e non sostituiscono il parere di un esperto.
                    FitDia non si assume e non accetta alcuna responsabilità riguardo alle informazioni fornite ovvero all’accuratezza 
                    e/o alla completezza delle medesime ed in nessun caso potrà essere ritenuta responsabile per eventuali danni o perdite.
-                   Se la variante risulta idonea, verrà succesivamente validata e inserita negli esercizi da un esperto"
+                   Se la variante risulta idonea, verrà successivamente validata e inserita negli esercizi da un esperto"
           onConfirm={() => handleModalResponse(true)}
           onCancel={() => handleModalResponse(false)}
           confirmText="Accetto"
@@ -73,13 +72,11 @@ const VariantiEsercizi = () => {
 
       {!showModal && (
         <>
-          <h2>Genera una Variante di un Esercizio</h2>
-          <Link to={`/profilo`}>
-                  <button>Profilo</button>
-                </Link>
+          <h2 className={styles.titolo} >Genera una Variante di un Esercizio</h2>
+          
           <CercaEsercizio onSelect={setSelectedExercise} />
 
-          <div className="form-params">
+          <div className={styles.formParams}>
             <label>Sport:</label>
             <select value={sport} onChange={(e) => setSport(e.target.value)}>
               <option value="pallavolo">Pallavolo</option>
@@ -103,28 +100,35 @@ const VariantiEsercizi = () => {
             </select>
           </div>
 
-          <button onClick={generaVariante} disabled={loading || !selectedExercise}>
-            {loading ? "Generazione in corso..." : "Genera Variante"}
-          </button>
+          <div className={styles.buttonContainer}>
+            <button onClick={generaVariante} disabled={loading || !selectedExercise}>
+              {loading ? "Generazione in corso..." : "Genera Variante"}
+            </button>
+          </div>
 
           {variante && (
-            <div className="output-box">
-               <h3>Variante salvata:</h3>
-               <h4>{variante.nome}</h4>
-                <p>{variante.descrizione}</p>
-                {variante.validazione?.stato !== "in_attesa" && (
-                   <div className={`status-msg ${variante.validazione.stato}`}>
-                    <strong>{variante.validazione.stato === "approvata" ? "✅ Approvata: " : "❌ Scartata: "}</strong>
-                     {variante.validazione.messaggio}
-                     </div>
-                    )}
-                    </div>
-)}
+            <div className={styles.outputBox}>
+              <h3>Variante salvata:</h3>
+              <h4>{variante.nome}</h4>
+              <p>{variante.descrizione}</p>
+              {variante.validazione?.stato !== "in_attesa" && (
+                <div className={`${styles.statusMsg} ${variante.validazione.stato}`}>
+                  <strong>
+                    {variante.validazione.stato === "approvata"
+                      ? "✅ Approvata: "
+                      : "❌ Scartata: "}
+                  </strong>
+                  {variante.validazione.messaggio}
+                </div>
+              )}
+            </div>
+          )}
 
-
-          <button className="lista-btn" onClick={() => navigate("/varianti")}>
-            Vai alle mie varianti
-          </button>
+          <div className={styles.buttonContainer}>
+            <button className={styles.listaBtn} onClick={() => navigate("/varianti")}>
+              Vai alle mie varianti
+            </button>
+          </div>
         </>
       )}
     </div>

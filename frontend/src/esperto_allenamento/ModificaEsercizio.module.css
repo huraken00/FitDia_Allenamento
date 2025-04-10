@@ -1,0 +1,100 @@
+/* ModificaEsercizio.module.css */
+.container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 80px;
+  }
+  
+  h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  input[type="text"] {
+    padding: 0.8rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Colore hover di default, per coerenza */
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+    margin-top: 1.5rem;
+    color: #333;
+  }
+  
+  label input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  .checkbox-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .checkbox-container label {
+    display: flex;
+    align-items: center;
+  }
+  
+  .checkbox-container label input {
+    margin-right: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+    }
+  
+    h3 {
+      font-size: 1.2rem;
+    }
+  
+    button {
+      font-size: 0.9rem;
+      padding: 0.6rem 1rem;
+    }
+  
+    input[type="text"] {
+      font-size: 0.9rem;
+      padding: 0.6rem;
+    }
+  
+    .checkbox-container {
+      flex-direction: column;
+    }
+  }
+  

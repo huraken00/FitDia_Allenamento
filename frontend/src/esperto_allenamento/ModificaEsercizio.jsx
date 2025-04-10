@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import styles from './ModificaEsercizio.module.css'; // Importa il modulo CSS
 
 const ModificaEsercizio = () => {
   const { id } = useParams(); // Se presente, è modifica. Se assente, è validazione
@@ -127,7 +128,7 @@ const ModificaEsercizio = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <h2>{id ? "Modifica Esercizio" : "Valida Variante"}</h2>
       <form onSubmit={handleSubmit}>
         <label>Nome:</label>
@@ -144,28 +145,32 @@ const ModificaEsercizio = () => {
         />
 
         <h3>Sport</h3>
-        {sport.map((s) => (
-          <label key={s._id}>
-            <input
-              type="checkbox"
-              checked={selectedSport.includes(s._id)}
-              onChange={() => handleCheckboxChange(s._id, setSelectedSport, selectedSport)}
-            />
-            {s.nome}
-          </label>
-        ))}
+        <div className={styles.checkboxContainer}>
+          {sport.map((s) => (
+            <label key={s._id}>
+              <input
+                type="checkbox"
+                checked={selectedSport.includes(s._id)}
+                onChange={() => handleCheckboxChange(s._id, setSelectedSport, selectedSport)}
+              />
+              {s.nome}
+            </label>
+          ))}
+        </div>
 
         <h3>Parametri</h3>
-        {parametri.map((p) => (
-          <label key={p._id}>
-            <input
-              type="checkbox"
-              checked={selectedParametri.includes(p._id)}
-              onChange={() => handleCheckboxChange(p._id, setSelectedParametri, selectedParametri)}
-            />
-            {p.nome}
-          </label>
-        ))}
+        <div className={styles.checkboxContainer}>
+          {parametri.map((p) => (
+            <label key={p._id}>
+              <input
+                type="checkbox"
+                checked={selectedParametri.includes(p._id)}
+                onChange={() => handleCheckboxChange(p._id, setSelectedParametri, selectedParametri)}
+              />
+              {p.nome}
+            </label>
+          ))}
+        </div>
 
         <button type="submit">{id ? "Salva Modifiche" : "Valida Variante"}</button>
       </form>

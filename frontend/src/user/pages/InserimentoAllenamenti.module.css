@@ -1,0 +1,194 @@
+/* Container principale */
+.container {
+    margin: 20px;
+    padding: 20px;
+    background-color: #f4f4f9;
+    border-radius: 8px;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 80px; /* Spazio per evitare la sovrapposizione con l'header */
+  }
+  
+  /* Titolo */
+  .title {
+    text-align: center;
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Bottone Profilo */
+  .profileButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  
+  .profileButton:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Formulario */
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .input,
+  .textarea {
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+  }
+  
+  .input:focus,
+  .textarea:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+  
+  /* Bottone Profilo */
+
+  
+  .profileButton:hover {
+    background-color: #5a2d98; /* Viola scuro */
+  }
+  
+  /* Bottone per inviare */
+  .submitButton {
+    background-color: #5f2eff; /* Viola */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .submitButton:hover {
+    background-color: #5a2d98; /* Viola scuro */
+  }
+  
+  /* Bottone per terminare */
+  .finishButton {
+    background-color: #5f2eff; /* Viola */
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+  }
+  
+  .finishButton:hover {
+    background-color: #5a2d98; /* Viola scuro */
+  }
+  
+  
+  /* Sezione Serie */
+  .serieContainer {
+    margin-top: 20px;
+  }
+  
+  .serieTitle {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .serieItem {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .serieItem p {
+    margin: 0;
+    font-size: 14px;
+  }
+  
+  /* Messaggio di errore */
+  .error {
+    color: red;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  /* Media Queries per dispositivi mobili */
+  @media (max-width: 768px) {
+    .container {
+      margin-top: 60px; /* Riduci lo spazio in cima per dispositivi mobili */
+      padding: 15px;
+    }
+  
+    .title {
+      font-size: 1.8em;
+    }
+  
+    .form {
+      gap: 10px;
+    }
+  
+    .input,
+    .textarea {
+      padding: 8px;
+      font-size: 12px;
+    }
+  
+    .submitButton,
+    .finishButton {
+      padding: 10px 15px;
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .container {
+      margin-top: 50px; /* Ancora meno spazio sopra per schermi più piccoli */
+      padding: 10px;
+    }
+  
+    .title {
+      font-size: 1.5em;
+    }
+  
+    .form {
+      gap: 8px;
+    }
+  
+    .input,
+    .textarea {
+      font-size: 11px;
+    }
+  
+    .submitButton,
+    .finishButton {
+      font-size: 13px;
+    }
+  }
+  

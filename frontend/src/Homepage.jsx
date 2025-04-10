@@ -1,14 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import styles from "./user/pages/Homepage.module.css";
 
 function HomePage() {
   return (
-    <div>
-      <h1>Benvenuto su FitDia</h1>
-      <p>La tua web app per gestire dieta e allenamento in modo intelligente.</p>
-      <Link to="/register-utente">Registrati</Link>
-      <br />
-      <Link to="/login-utente">Accedi</Link>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Benvenuto su FitDia</h1>
+      <p className={styles.description}>
+        La tua web app per gestire dieta e allenamento in modo intelligente.
+      </p>
+      <div className={styles.linkContainer}>
+        <Link to="/register-utente" className={styles.button}>Registrati</Link>
+        <Link to="/login-utente" className={styles.button}>Accedi</Link>
+      </div>
     </div>
   );
 }

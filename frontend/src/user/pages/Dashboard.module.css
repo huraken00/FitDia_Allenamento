@@ -1,0 +1,82 @@
+/* Dashboard.module.css */
+
+.container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9fb;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+  }
+  
+  .title {
+    font-size: 24px;
+    color: #1e1e1e;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .button {
+    background-color: #5f2eff;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+  }
+  
+  .button:hover {
+    background-color: #4722d6;
+  }
+  
+  .cardContainer {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    max-width: 100%;
+  }
+  
+  .card {
+    width: 350px;
+  }
+  .profileLink {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+  }
+  
+  .icon {
+    color: #5f2eff;
+    transition: color 0.3s ease;
+  }
+  
+  .icon:hover {
+    color: #4722d6;
+  }
+  
+  
+  @media (max-width: 768px) {
+    .title {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+  
+    .card {
+      width: 100%;
+    }
+  
+    .cardContainer {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  

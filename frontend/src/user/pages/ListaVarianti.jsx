@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import styles from "./ListaVarianti.module.css"; // Importa il modulo CSS
 
 const ListaVarianti = () => {
   const [varianti, setVarianti] = useState([]);
@@ -33,34 +34,27 @@ const ListaVarianti = () => {
   }, [userId]);
 
   return (
-    <div className="lista-varianti" style={{ padding: "1rem" }}>
-      <Link to="/profilo">
-        <button>🔙 Torna al Profilo</button>
-      </Link>
+    <div className={styles.listaVariantiContainer}>
+     
 
       <h2>Le mie varianti generate</h2>
 
       {varianti.length === 0 ? (
-        <p>Nessuna variante disponibile.</p>
+        <p className={styles.noVarianti}>Nessuna variante disponibile.</p>
       ) : (
         varianti.map((v) => (
-          <div
-            key={v._id}
-            className="variante-card"
-            style={{
-              border: "1px solid #ddd",
-              borderRadius: "8px",
-              padding: "1rem",
-              marginBottom: "1rem",
-            }}
-          >
+          <div key={v._id} className={styles.varianteCard}>
             <h4>{v.nome}</h4>
             <p>{v.descrizione}</p>
 
             <p>
-              <strong>Stato:</strong>{" "}
+              <strong className={styles.statoApprovazione}>Stato:</strong>
               {v.validazione?.stato ? (
-                <span style={{ color: v.validazione.stato === "approvata" ? "green" : "red" }}>
+                <span
+                  className={`${styles.statoApprovazione} ${
+                    v.validazione.stato === "approvata" ? "approvata" : "scartata"
+                  }`}
+                >
                   {v.validazione.stato.toUpperCase()}
                 </span>
               ) : (
@@ -69,7 +63,7 @@ const ListaVarianti = () => {
             </p>
 
             {v.validazione?.messaggio && (
-              <p>
+              <p className={styles.messaggioEsperto}>
                 <strong>Messaggio dell'esperto:</strong> {v.validazione.messaggio}
               </p>
             )}

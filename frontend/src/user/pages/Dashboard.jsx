@@ -1,36 +1,36 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FaUserCircle } from "react-icons/fa"; // ✅ importa l'icona
 import Card from "../../components/ui/card";
+import styles from "./Dashboard.module.css"; // Importa il modulo CSS
 
-
-
-// Dashboard Component
 const Dashboard = () => {
-  const navigate = useNavigate(); // Hook per la navigazione
+  const navigate = useNavigate();
 
   const handleCardClick = (path) => {
-    navigate(path); // Esegue la navigazione
+    navigate(path);
   };
 
   return (
-    <div>
-      
-       <Link to={`/profilo`}>
-                  <button>Profilo</button>
-                </Link>
-      
+    <div className={styles.container}>
+  
 
-      <Card 
-        title="Alimentazione"
-        description="Visualizza le informazioni nutrizionali"
-        onClick={() => handleCardClick("/alimentazione")}
-      />
-      <Card 
-        title="Allenamento"
-        description="Gestisci i tuoi allenamenti"
-        onClick={() => handleCardClick("/dashboard-allenamento")}
-      />
-      
+      <h2 className={styles.title}>Benvenuto nella tua Dashboard</h2>
+
+      <div className={styles.cardContainer}>
+        <Card
+          title="Alimentazione"
+          description="Visualizza le informazioni nutrizionali"
+          onClick={() => handleCardClick("/alimentazione")}
+          className={styles.card}
+        />
+        <Card
+          title="Allenamento"
+          description="Gestisci i tuoi allenamenti"
+          onClick={() => handleCardClick("/dashboard-allenamento")}
+          className={styles.card}
+        />
+      </div>
     </div>
   );
 };

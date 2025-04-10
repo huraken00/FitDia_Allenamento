@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../shared/context/auth-context";
+import styles from "./LoginDirettore.module.css"; // Importa il modulo CSS
 
 const LoginDirettore = () => {
   const [username, setUsername] = useState("");
@@ -21,13 +22,13 @@ const LoginDirettore = () => {
       });
 
       const data = await res.json();
-      console.log("data",data)
+      console.log("data", data);
       if (!res.ok) {
         throw new Error(data.message);
       }
-      console.log("id login",data.id)
+      console.log("id login", data.id);
       // Salva i dati nel contesto con il ruolo
-      auth.login( data.id,data.token, "direttore");
+      auth.login(data.id, data.token, "direttore");
 
       navigate("/homepage-direttore"); // Reindirizza alla homepage direttore
     } catch (err) {
@@ -36,26 +37,34 @@ const LoginDirettore = () => {
   };
 
   return (
-    <div>
-      <h2>Director Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
+    <div className={styles.loginContainer}>
+      <h2 className={styles.titoloPagina}>Login Direttore</h2>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.inputGroup}>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            className={styles.input}
+          />
+        </div>
+        <div className={styles.inputGroup}>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className={styles.input}
+          />
+        </div>
+        <button type="submit" className={styles.loginButton}>
+          Login
+        </button>
       </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className={styles.errorMessage}>{error}</p>}
     </div>
   );
 };

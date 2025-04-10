@@ -1,0 +1,90 @@
+/* Contenitore principale */
+.container {
+    padding: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+    margin-top: 100px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  /* Titolo della pagina */
+  .title {
+    font-size: 2rem;
+    text-align: center;
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Form */
+  .form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Gruppo di input */
+  .inputGroup {
+    margin-bottom: 1rem;
+  }
+  
+  /* Etichetta per input */
+  .label {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  
+  /* Campo di input */
+  .input {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .input:focus {
+    border-color: #4CAF50;
+  }
+  
+  /* Bottone di invio */
+  .submitButton {
+    padding: 0.8rem;
+    font-size: 1.1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .submitButton:hover {
+    background-color: #45a049;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+      margin-top: 60px;
+    }
+  
+    .title {
+      font-size: 1.5rem;
+    }
+  
+    .input {
+      font-size: 0.9rem;
+    }
+  
+    .submitButton {
+      font-size: 1rem;
+      padding: 0.7rem;
+    }
+  }
+  

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import styles from './InserimentoEsercizi.module.css';
 
 const InserisciEsercizio = () => {
   const navigate = useNavigate();
 
-  // Recupera l'ID dell'esperto autenticato (modifica se necessario)
-  const espertoId = localStorage.userId; // Invece di getItem
+  const espertoId = localStorage.userId;
 
   const [esercizio, setEsercizio] = useState({ nome: "", descrizione: "" });
   const [sport, setSport] = useState([]);
@@ -67,7 +67,7 @@ const InserisciEsercizio = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <h2>Inserisci Nuovo Esercizio</h2>
       <form onSubmit={handleSubmit}>
         <label>Nome:</label>
@@ -85,36 +85,40 @@ const InserisciEsercizio = () => {
         />
 
         <h3>Sport</h3>
-        {sport.length > 0 ? (
-          sport.map((s) => (
-            <label key={s._id}>
-              <input
-                type="checkbox"
-                checked={selectedSport.includes(s._id)}
-                onChange={() => handleCheckboxChange(s._id, setSelectedSport, selectedSport)}
-              />
-              {s.nome}
-            </label>
-          ))
-        ) : (
-          <p>Nessuno sport disponibile</p>
-        )}
+        <div className={styles.checkboxGroup}>
+          {sport.length > 0 ? (
+            sport.map((s) => (
+              <label key={s._id}>
+                <input
+                  type="checkbox"
+                  checked={selectedSport.includes(s._id)}
+                  onChange={() => handleCheckboxChange(s._id, setSelectedSport, selectedSport)}
+                />
+                {s.nome}
+              </label>
+            ))
+          ) : (
+            <p>Nessuno sport disponibile</p>
+          )}
+        </div>
 
         <h3>Parametri</h3>
-        {parametri.length > 0 ? (
-          parametri.map((p) => (
-            <label key={p._id}>
-              <input
-                type="checkbox"
-                checked={selectedParametri.includes(p._id)}
-                onChange={() => handleCheckboxChange(p._id, setSelectedParametri, selectedParametri)}
-              />
-              {p.nome}
-            </label>
-          ))
-        ) : (
-          <p>Nessun parametro disponibile</p>
-        )}
+        <div className={styles.checkboxGroup}>
+          {parametri.length > 0 ? (
+            parametri.map((p) => (
+              <label key={p._id}>
+                <input
+                  type="checkbox"
+                  checked={selectedParametri.includes(p._id)}
+                  onChange={() => handleCheckboxChange(p._id, setSelectedParametri, selectedParametri)}
+                />
+                {p.nome}
+              </label>
+            ))
+          ) : (
+            <p>Nessun parametro disponibile</p>
+          )}
+        </div>
 
         <button type="submit">Inserisci Esercizio</button>
       </form>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import styles from './ListaEsercizi.module.css'; // Importa il modulo CSS
 
 const Esercizi = () => {
   const [esercizi, setEsercizi] = useState([]);
@@ -78,7 +79,7 @@ const Esercizi = () => {
     let filtered = esercizi.filter((esercizio) =>
       esercizio.nome.toLowerCase().includes(search.toLowerCase())
     );
-    
+
     if (sportFilter) {
       filtered = filtered.filter((esercizio) =>
         esercizio.sport.some((s) => s._id === sportFilter)
@@ -95,7 +96,8 @@ const Esercizi = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
+      
       <h2>Lista di tutti gli esercizi</h2>
       <input
         type="text"
@@ -115,7 +117,10 @@ const Esercizi = () => {
           <option key={parametro._id} value={parametro._id}>{parametro.nome}</option>
         ))}
       </select>
-      <table border="1">
+      <Link className={styles.link} to="/inserimento-esercizi">
+        Inserisci un nuovo esercizio
+      </Link>
+      <table>
         <thead>
           <tr>
             <th>Nome</th>
@@ -162,7 +167,6 @@ const Esercizi = () => {
           ))}
         </tbody>
       </table>
-      <Link to="/inserimento-esercizi">Inserisci un nuovo esercizio</Link>
     </div>
   );
 };

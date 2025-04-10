@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import styles from "./ListaAllenamenti.module.css"; // Assicurati di avere il CSS appropriato
 
 const ListaAllenamenti = () => {
   const [allenamenti, setAllenamenti] = useState([]);
 
-  // Funzione per recuperare gli allenamenti
   useEffect(() => {
     fetchAllenamenti();
   }, []);
 
-  // Funzione per caricare gli allenamenti
   const fetchAllenamenti = async () => {
     try {
       const utenteId = localStorage.getItem("userId");
@@ -34,7 +33,6 @@ const ListaAllenamenti = () => {
     }
   };
 
-  
   const handleEliminaAllenamento = async (id) => {
     const conferma = window.confirm("Vuoi eliminare questo allenamento?");
     if (!conferma) return;
@@ -47,11 +45,10 @@ const ListaAllenamenti = () => {
       if (res.ok) {
         setAllenamenti((prev) => prev.filter((a) => a._id !== id));
         alert("Allenamento eliminato");
-        
       } else {
-        alert ("Allenamento non eliminato");
+        alert("Allenamento non eliminato");
         const data = await res.json();
-        setError(data.message);
+        console.log(data.message);
       }
     } catch (err) {
       console.error(err);
@@ -59,30 +56,37 @@ const ListaAllenamenti = () => {
   };
 
   return (
-    <div>
-      <Link to={`/profilo`}>
-                        <button>Profilo</button>
-                      </Link>
-      <h3>Lista degli Allenamenti</h3>
-      {allenamenti.map((allenamento) => (
-        <li key={allenamento._id}>
-        { allenamento.nome + " " + new Date(allenamento.createdAt).toLocaleDateString()+ " "}
-          <Link to={`/modifica-allenamento/${allenamento._id}`}>
-            <button>Modifica</button>
-          </Link>{" "}
-          <Link to={`/dettagli-allenamento/${allenamento._id}`}>
-            <button>Visualizzia Allenamento</button>
-          </Link>
-          <button
-  onClick={() => handleEliminaAllenamento(allenamento._id)}
-  style={{ color: "red", marginLeft: "10px" }}
->
-  Elimina Allenamento
-</button>
-
-        </li>
-      ))}
+    <div className={styles.container}>
+      <h3 className={styles.title}>Lista degli Allenamenti</h3>
+      <ul className={styles.list}>
+        {allenamenti.map((allenamento) => (
+          <li key={allenamento._id} className={styles.listItem}>
+            <div className={styles.itemContent}>
+              {allenamento.nome}{" "}
+              <span className={styles.date}>
+                {new Date(allenamento.createdAt).toLocaleDateString()}
+              </span>
+            </div>
+            <div className={styles.buttonGroup}>
+              <Link to={`/modifica-allenamento/${allenamento._id}`} className={styles.link}>
+                <button className={styles.button}>Modifica</button>
+              </Link>{" "}
+              <Link to={`/dettagli-allenamento/${allenamento._id}`} className={styles.link}>
+                <button className={styles.button}>Visualizza Allenamento</button>
+              </Link>
+              <button
+                onClick={() => handleEliminaAllenamento(allenamento._id)}
+                className={styles.deleteButton}
+              >
+                Elimina Allenamento
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
-}
+};
+
 export default ListaAllenamenti;
+

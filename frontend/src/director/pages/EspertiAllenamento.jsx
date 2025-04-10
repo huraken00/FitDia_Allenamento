@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import styles from "./EspertiAllenamento.module.css"; // Importa il modulo CSS
 
 const EspertiAllenamento = () => {
   const [esperti, setEsperti] = useState([]);
@@ -54,9 +55,9 @@ const EspertiAllenamento = () => {
   };
 
   return (
-    <div>
-      <h2>Lista Esperti Allenamento</h2>
-      <table>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Lista Esperti Allenamento</h2>
+      <table className={styles.table}>
         <thead>
           <tr>
             <th>Username</th>
@@ -68,13 +69,13 @@ const EspertiAllenamento = () => {
             <tr key={index}>
               <td>{esperto.username}</td>
               <td>
-                <button onClick={() => handleDelete(esperto._id)}>Elimina</button>
+                <button className={styles.deleteButton} onClick={() => handleDelete(esperto._id)}>Elimina</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <Link to="/inserimento-esperti-allenamento">Inserisci un nuovo esperto</Link>
+      <Link to="/inserimento-esperti-allenamento" className={styles.addLink}>Inserisci un nuovo esperto</Link>
     </div>
   );
 };

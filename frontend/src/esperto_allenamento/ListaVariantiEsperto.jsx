@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styles from "./ListaVariantiEsperto.module.css"; // Importa il modulo CSS
 
 const ListaVariantiEsperto = () => {
   const [varianti, setVarianti] = useState([]);
@@ -58,16 +59,13 @@ const ListaVariantiEsperto = () => {
   if (loading) return <p>Caricamento varianti...</p>;
 
   return (
-    <div>
-      <h2>Lista Varianti Generate dagli Utenti</h2>
+    <div className={styles.listaVariantiContainer}>
+      <h2 className={styles.titoloPagina}>Lista Varianti Generate dagli Utenti</h2>
       {varianti.length === 0 ? (
-        <p>Nessuna variante disponibile.</p>
+        <p className={styles.noVarianti}>Nessuna variante disponibile.</p>
       ) : (
         varianti.map((v) => (
-          <div
-            key={v._id}
-            style={{ border: "1px solid #ccc", padding: "1rem", margin: "1rem 0" }}
-          >
+          <div key={v._id} className={styles.varianteCard}>
             <h3>{v.nome}</h3>
             <p>{v.descrizione}</p>
 
@@ -78,8 +76,9 @@ const ListaVariantiEsperto = () => {
               </p>
             )}
 
-            <div style={{ marginTop: "0.5rem" }}>
+            <div className={styles.bottoniContainer}>
               <button
+                className={styles.approvaButton}
                 onClick={() =>
                   validaVariante(v._id, "approvata", "La variante è stata trasformata in esercizio.")
                 }
@@ -87,8 +86,9 @@ const ListaVariantiEsperto = () => {
                 ✅ Approva
               </button>
               <button
-                style={{ marginLeft: "1rem" }}
-                onClick={() => validaVariante(v._id, "scartata", "La variante non è idonea.")}>
+                className={styles.scartaButton}
+                onClick={() => validaVariante(v._id, "scartata", "La variante non è idonea.")}
+              >
                 ❌ Scarta
               </button>
             </div>

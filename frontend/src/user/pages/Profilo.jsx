@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../shared/context/auth-context";
+import styles from "./Profilo.module.css"; // nuovo file CSS
+
+import { FaUserCircle } from "react-icons/fa"; // icona omino
 
 const Profilo = () => {
   const [user, setUser] = useState(null);
@@ -39,21 +41,13 @@ const Profilo = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     const numValue = value === "" ? 0 : Number(value);
-    
-    // Definizione dei limiti
     const limits = {
       Obiettivo_Kcal: { min: 0, max: 10000 },
       Obiettivo_proteine: { min: 0, max: 1000 },
       Obiettivo_carboidrati: { min: 0, max: 1000 },
-      Obiettivo_grassi: { min: 0, max: 1000 }
+      Obiettivo_grassi: { min: 0, max: 1000 },
     };
-    
-    if (limits[name]) {
-      if (numValue < limits[name].min || numValue > limits[name].max) {
-        return;
-      }
-    }
-    
+    if (limits[name] && (numValue < limits[name].min || numValue > limits[name].max)) return;
     setUpdatedUser((prev) => ({ ...prev, [name]: numValue }));
   };
 
@@ -68,9 +62,7 @@ const Profilo = () => {
         body: JSON.stringify(updatedUser),
       });
 
-      if (!res.ok) {
-        throw new Error("Errore nel salvataggio delle modifiche");
-      }
+      if (!res.ok) throw new Error("Errore nel salvataggio delle modifiche");
 
       const data = await res.json();
       setUser(data);
@@ -80,26 +72,64 @@ const Profilo = () => {
     }
   };
 
-  if (!user) {
-    return <p>Caricamento...</p>;
-  }
+  if (!user) return <p>Caricamento...</p>;
 
   return (
-    <div>
-      <h2>Profilo Utente</h2>
-      <p>Nome: {editing ? <input type="text" name="nome" value={updatedUser.nome} onChange={handleChange} /> : user.nome}</p>
-      <p>Cognome: {editing ? <input type="text" name="cognome" value={updatedUser.cognome} onChange={handleChange} /> : user.cognome}</p>
-      <p>Email: {user.email}</p>
-      <p>Scadenza Abbonamento: {new Date(user.scadenza_abbonamento).toLocaleDateString()}</p>
-      <p>Obbiettivo Kcal: {editing ? <input type="number" name="Obiettivo_Kcal" value={updatedUser.Obiettivo_Kcal} onChange={handleChange} min="0" max="10000" /> : user.Obiettivo_Kcal}</p>
-      <p>Obbiettivo proteine: {editing ? <input type="number" name="Obiettivo_proteine" value={updatedUser.Obiettivo_proteine} onChange={handleChange} min="0" max="1000" /> : user.Obiettivo_proteine}</p>
-      <p>Obiettivo carboidrati: {editing ? <input type="number" name="Obiettivo_carboidrati" value={updatedUser.Obiettivo_carboidrati} onChange={handleChange} min="0" max="1000" /> : user.Obiettivo_carboidrati}</p>
-      <p>Obiettivo grassi: {editing ? <input type="number" name="Obiettivo_grassi" value={updatedUser.Obiettivo_grassi} onChange={handleChange} min="0" max="1000" /> : user.Obiettivo_grassi}</p>
-      {editing ? (
-        <button onClick={handleSave}>Salva</button>
-      ) : (
-        <button onClick={() => setEditing(true)}>Modifica</button>
-      )}
+    <div className={styles.container}>
+      <div className={styles.profileCard}>
+        <FaUserCircle size={64} className={styles.icon} />
+        <h2 className={styles.title}>Profilo Utente</h2>
+
+        <div className={styles.field}>
+          <label>Nome:</label>
+          {editing ? (
+            <input type="text" name="nome" value={updatedUser.nome} onChange={handleChange} />
+          ) : (
+            <p>{user.nome}</p>
+          )}
+        </div>
+
+        <div className={styles.field}>
+          <label>Cognome:</label>
+          {editing ? (
+            <input type="text" name="cognome" value={updatedUser.cognome} onChange={handleChange} />
+          ) : (
+            <p>{user.cognome}</p>
+          )}
+        </div>
+
+        <div className={styles.field}>
+          <label>Email:</label>
+          <p>{user.email}</p>
+        </div>
+
+        <div className={styles.field}>
+          <label>Scadenza Abbonamento:</label>
+          <p>{new Date(user.scadenza_abbonamento).toLocaleDateString()}</p>
+        </div>
+
+        {["Obiettivo_Kcal", "Obiettivo_proteine", "Obiettivo_carboidrati", "Obiettivo_grassi"].map((field) => (
+          <div className={styles.field} key={field}>
+            <label>{field.replace("_", " ")}:</label>
+            {editing ? (
+              <input
+                type="number"
+                name={field}
+                value={updatedUser[field]}
+                onChange={handleChange}
+              />
+            ) : (
+              <p>{user[field]}</p>
+            )}
+          </div>
+        ))}
+
+        {editing ? (
+          <button className={styles.button} onClick={handleSave}>Salva</button>
+        ) : (
+          <button className={styles.button} onClick={() => setEditing(true)}>Modifica</button>
+        )}
+      </div>
     </div>
   );
 };

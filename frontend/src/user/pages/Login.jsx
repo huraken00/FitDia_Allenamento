@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../shared/context/auth-context";
+import styles from './LoginUser.module.css';
 
 const LoginUser = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const auth = useContext(AuthContext); // Usa il contesto 
+  const auth = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -21,41 +22,42 @@ const LoginUser = () => {
       });
 
       const data = await res.json();
-      
-      if (!res.ok) {
-        throw new Error(data.message);
-      }
+      if (!res.ok) throw new Error(data.message);
 
-      // Salva i dati nel contesto con il ruolo
       auth.login(data.id, data.token, "utente");
-     
-      navigate("/dashboard"); // Reindirizza alla dashboard utente
+      navigate("/dashboard");
     } catch (err) {
       setError(err.message);
     }
   };
 
   return (
-    <div>
-      <h2>User Login</h2>
-      <form onSubmit={handleSubmit}>
+    <div className={styles.container}>
+      <form className={styles.formBox} onSubmit={handleSubmit}>
+        <h2 className={styles.title}>Login Utente</h2>
+
         <input
           type="text"
+          className={styles.input}
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
+
         <input
           type="password"
+          className={styles.input}
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Login</button>
+
+        <button className={styles.button} type="submit">Login</button>
+
+        {error && <p className={styles.error}>{error}</p>}
       </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 };

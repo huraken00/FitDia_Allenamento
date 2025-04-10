@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../user/pages/Varianti.css";
+import styles from "./CercaEsercizio.module.css"; // Importa il modulo CSS senza trattini
 
 const CercaEsercizio = ({ onSelect }) => {
   const [allExercises, setAllExercises] = useState([]);
@@ -89,9 +89,9 @@ const CercaEsercizio = ({ onSelect }) => {
   };
 
   return (
-    <div className="cerca-esercizio-container">
+    <div className={styles.cercaEsercizioContainer}>
       <input
-        className="search-input"
+        className={styles.searchInput}
         type="text"
         placeholder="Cerca esercizio..."
         value={searchQuery}
@@ -100,7 +100,7 @@ const CercaEsercizio = ({ onSelect }) => {
         onBlur={handleBlur}
       />
 
-      <div className="filtri-container">
+      <div className={styles.filtriContainer}>
         <select value={selectedSport} onChange={(e) => setSelectedSport(e.target.value)}>
           <option value="">Tutti gli sport</option>
           {sportOptions.map((sport) => (
@@ -121,13 +121,16 @@ const CercaEsercizio = ({ onSelect }) => {
       </div>
 
       {showDropdown && filteredExercises.length > 0 && (
-        <ul className="dropdown-list" onMouseDown={(e) => e.preventDefault()}>
+        <ul className={styles.dropdownList} onMouseDown={(e) => e.preventDefault()}>
           {filteredExercises.map((exercise) => (
             <li key={exercise._id} onMouseDown={() => handleSelectExercise(exercise)}>
               {exercise.nome}
             </li>
           ))}
         </ul>
+      )}
+      {showDropdown && filteredExercises.length === 0 && (
+        <div className={styles.dropdownListEmpty}>Nessun esercizio trovato</div>
       )}
     </div>
   );

@@ -1,5 +1,7 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
+import styles from "./AggiungiSerie.module.css"; // Importa il modulo di stile
 import CercaEsercizio from "./CercaEsercizio";
+
 const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
   const [serie, setSerie] = useState({
     peso: "",
@@ -15,9 +17,7 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
   const [sportDisponibili, setSportDisponibili] = useState([]);
   const [error, setError] = useState(null);
 
-  // Gestione del cambiamento dell'esercizio
   const handleSelectExercise = async (exercise) => {
-    // Imposta l'esercizio selezionato nello stato
     setSerie((prev) => ({
       ...prev,
       esercizio: exercise._id,
@@ -25,7 +25,6 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
     }));
 
     try {
-      // Recupera i parametri e gli sport per l'esercizio selezionato
       const res = await fetch(`http://localhost:3001/api/serie/esercizio/${exercise._id}`);
       const data = await res.json();
 
@@ -48,11 +47,9 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
     }
   };
 
-  // Gestione dell'aggiunta della serie
   const handleAggiungiSerie = async () => {
     if (!serie.esercizio) {
-      setError("Seleziona un esercizio!")
-      
+      setError("Seleziona un esercizio!");
       return;
     }
 
@@ -72,8 +69,6 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
 
       const data = await response.json();
       if (response.ok) {
-        // Trova il nome dell'esercizio selezionato dalla lista degli esercizi
-
         onSerieAggiunta({
           ...data,
           esercizio: serie.nomeEsercizio,
@@ -83,9 +78,7 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
             valore: data[p.nome] ?? ""
           })),
         });
-        
 
-        // Resetta i campi della serie
         setSerie({
           peso: "",
           distanza: "",
@@ -105,7 +98,7 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
   };
 
   return (
-    <div className="aggiungi-serie-container">
+    <div className={styles.aggiungiSerieContainer}>
       <h3>Aggiungi Serie</h3>
       
       {/* Selezione Esercizio */}
@@ -113,9 +106,9 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
       <CercaEsercizio onSelect={handleSelectExercise} />
 
       {/* Parametri */}
-      <div className="parametri-container">
+      <div className={styles.parametriContainer}>
         {parametriDisponibili.map((parametro) => (
-          <div key={parametro.nome} className="parametro">
+          <div key={parametro.nome} className={styles.parametro}>
             <label htmlFor={parametro.nome}>{parametro.nome || "Nome non disponibile"}:</label>
             <input
               type="number"
@@ -132,7 +125,7 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
 
       {/* Sport Associati */}
       {sportDisponibili.length > 0 && (
-        <div className="sport-associati">
+        <div className={styles.sportAssociati}>
           <strong>Sport Associati:</strong>
           <ul>
             {sportDisponibili.map((sport, index) => (
@@ -143,12 +136,12 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
       )}
 
       {/* Bottone per aggiungere serie */}
-      <button type="button" className="btn-aggiungi" onClick={handleAggiungiSerie}>
+      <button type="button" className={styles.btnAggiungi} onClick={handleAggiungiSerie}>
         Aggiungi Serie
       </button>
 
       {/* Messaggio di errore */}
-      {error && <p className="error-message">{error}</p>}
+      {error && <p className={styles.errorMessage}>{error}</p>}
     </div>
   );
 };

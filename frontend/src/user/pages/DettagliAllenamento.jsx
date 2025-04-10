@@ -1,6 +1,6 @@
-import { useParams,Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-
+import styles from './DettagliAllenamento.module.css'; // Importa il modulo CSS
 
 const DettagliAllenamento = () => {
   const { id } = useParams();
@@ -56,25 +56,25 @@ const DettagliAllenamento = () => {
   const avviaAllenamento = async () => {
     try {
       const utenteId = localStorage.getItem("userId");
-  
+
       // 1. Crea nuovo allenamento
       const resAllenamento = await fetch(`http://localhost:3001/api/allenamenti/${utenteId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          nome: allenamento.nome ,
+          nome: allenamento.nome,
           appuntiAllenamento: allenamento.appuntiAllenamento || "",
           id_utente: utenteId,
           serie: [], // la aggiungeremo dopo
         }),
       });
-  
+
       const nuovo = await resAllenamento.json();
-  
+
       if (!resAllenamento.ok) {
         throw new Error(nuovo.message || "Errore nella duplicazione dell'allenamento");
       }
-  
+
       // 2. Duplica tutte le serie
       for (const s of serie) {
         await fetch("http://localhost:3001/api/serie", {
@@ -91,40 +91,34 @@ const DettagliAllenamento = () => {
         });
         alert("Allenamento avviato con successo");
       }
-  
+
     } catch (err) {
       console.error("Errore nell'avvio dell'allenamento:", err);
       alert("Errore durante la duplicazione dell'allenamento");
     }
   };
-  
 
   if (!allenamento) return <p>Caricamento...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <div style={{ padding: "1rem" }}>
-      <Link to={`/profilo`}>
-                  <button>Profilo</button>
-                </Link>
+    <div className={styles.container}>
       <h2>📋 Dettagli Allenamento</h2>
       <p><strong>Nome:</strong> {allenamento.nome}</p>
-      <p><strong>Allenamento eseguito il : </strong>  {new Date(allenamento.createdAt).toLocaleDateString()}</p>
-      <p><strong>Data Creazione Allenamento :</strong> {new Date(allenamento.dataCreazione).toLocaleDateString()}</p>
+      <p><strong>Allenamento eseguito il:</strong> {new Date(allenamento.createdAt).toLocaleDateString()}</p>
+      <p><strong>Data Creazione Allenamento:</strong> {new Date(allenamento.dataCreazione).toLocaleDateString()}</p>
       <p><strong>Note:</strong> {allenamento.appuntiAllenamento}</p>
       <Link to={`/modifica-allenamento/${allenamento._id}`}>
-                  <button>Modifica</button>
-                </Link>{" "}
+        <button>Modifica</button>
+      </Link>
       <button onClick={avviaAllenamento}>Avvia Allenamento</button>
-
-
 
       <h3>🏋️‍♂️ Serie</h3>
       {serie.length === 0 ? (
         <p>Nessuna serie registrata.</p>
       ) : (
         serie.map((s) => (
-          <div key={s._id} style={{ border: "1px solid #ccc", marginBottom: "1rem", padding: "1rem", borderRadius: "8px" }}>
+          <div key={s._id} className={styles.serieBox}>
             <p><strong>Esercizio:</strong> {s.esercizio}</p>
             <p><strong>Sport:</strong> {s.sport.join(", ") || "N/A"}</p>
 
@@ -146,4 +140,3 @@ const DettagliAllenamento = () => {
 };
 
 export default DettagliAllenamento;
-
