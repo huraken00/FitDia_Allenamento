@@ -100,7 +100,6 @@ exports.eliminaEsperto = async (req, res) => {
   const id = req.params.eid;
 
   try {
-    console.log("DENTRO")
     const espertoEliminato = await Esperto.findByIdAndDelete(id);
 
     if (!espertoEliminato) {

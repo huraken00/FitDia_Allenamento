@@ -15,7 +15,7 @@ const DashboardAllenamento = () => {
 
       {/* Pulsante per creare un nuovo allenamento */}
       <Link to="/crea-allenamento">
-        <button>Crea Nuovo Allenamento</button>
+        <button>Crea e Avvia Nuovo Allenamento</button>
       </Link>
 
       {/* Pulsante per andare alla pagina di monitoraggio degli esercizi */}

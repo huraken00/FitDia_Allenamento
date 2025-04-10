@@ -53,6 +53,52 @@ const DettagliAllenamento = () => {
     fetchAllenamento();
   }, [id]);
 
+  const avviaAllenamento = async () => {
+    try {
+      const utenteId = localStorage.getItem("userId");
+  
+      // 1. Crea nuovo allenamento
+      const resAllenamento = await fetch(`http://localhost:3001/api/allenamenti/${utenteId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: allenamento.nome ,
+          appuntiAllenamento: allenamento.appuntiAllenamento || "",
+          id_utente: utenteId,
+          serie: [], // la aggiungeremo dopo
+        }),
+      });
+  
+      const nuovo = await resAllenamento.json();
+  
+      if (!resAllenamento.ok) {
+        throw new Error(nuovo.message || "Errore nella duplicazione dell'allenamento");
+      }
+  
+      // 2. Duplica tutte le serie
+      for (const s of serie) {
+        await fetch("http://localhost:3001/api/serie", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id_allenamento: nuovo.allenamento._id,
+            id_esercizio: s.id_esercizio,
+            Peso: s.Peso || null,
+            Distanza: s.Distanza || null,
+            Durata: s.Durata || null,
+            Ripetizioni: s.Ripetizioni || null,
+          }),
+        });
+        alert("Allenamento avviato con successo");
+      }
+  
+    } catch (err) {
+      console.error("Errore nell'avvio dell'allenamento:", err);
+      alert("Errore durante la duplicazione dell'allenamento");
+    }
+  };
+  
+
   if (!allenamento) return <p>Caricamento...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
@@ -63,8 +109,15 @@ const DettagliAllenamento = () => {
                 </Link>
       <h2>📋 Dettagli Allenamento</h2>
       <p><strong>Nome:</strong> {allenamento.nome}</p>
-      <p><strong>Data:</strong> {new Date(allenamento.dataCreazione).toLocaleDateString()}</p>
+      <p><strong>Allenamento eseguito il : </strong>  {new Date(allenamento.createdAt).toLocaleDateString()}</p>
+      <p><strong>Data Creazione Allenamento :</strong> {new Date(allenamento.dataCreazione).toLocaleDateString()}</p>
       <p><strong>Note:</strong> {allenamento.appuntiAllenamento}</p>
+      <Link to={`/modifica-allenamento/${allenamento._id}`}>
+                  <button>Modifica</button>
+                </Link>{" "}
+      <button onClick={avviaAllenamento}>Avvia Allenamento</button>
+
+
 
       <h3>🏋️‍♂️ Serie</h3>
       {serie.length === 0 ? (

@@ -34,6 +34,30 @@ const ListaAllenamenti = () => {
     }
   };
 
+  
+  const handleEliminaAllenamento = async (id) => {
+    const conferma = window.confirm("Vuoi eliminare questo allenamento?");
+    if (!conferma) return;
+
+    try {
+      const res = await fetch(`http://localhost:3001/api/allenamenti/${id}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        setAllenamenti((prev) => prev.filter((a) => a._id !== id));
+        alert("Allenamento eliminato");
+        
+      } else {
+        alert ("Allenamento non eliminato");
+        const data = await res.json();
+        setError(data.message);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div>
       <Link to={`/profilo`}>
@@ -42,13 +66,20 @@ const ListaAllenamenti = () => {
       <h3>Lista degli Allenamenti</h3>
       {allenamenti.map((allenamento) => (
         <li key={allenamento._id}>
-          {allenamento.nome}{" "}
+        { allenamento.nome + " " + new Date(allenamento.createdAt).toLocaleDateString()+ " "}
           <Link to={`/modifica-allenamento/${allenamento._id}`}>
             <button>Modifica</button>
           </Link>{" "}
           <Link to={`/dettagli-allenamento/${allenamento._id}`}>
-            <button>Avvia Allenamento</button>
+            <button>Visualizzia Allenamento</button>
           </Link>
+          <button
+  onClick={() => handleEliminaAllenamento(allenamento._id)}
+  style={{ color: "red", marginLeft: "10px" }}
+>
+  Elimina Allenamento
+</button>
+
         </li>
       ))}
     </div>
