@@ -1,57 +1,74 @@
+/* Layout generale */
 .layout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+
 }
 
 .header {
   display: flex;
-  justify-content: space-between; /* Logo a sinistra, icona profilo a destra */
-  align-items: center;
-  padding: 20px;
-  background-color: #fff;
-  position: fixed;
-  top: 0;
+  justify-content: space-between;  /* Imposta lo spazio tra il logo e l'icona del profilo */
+  align-items: center; /* Centra verticalmente il logo e l'icona */
+  background-color: #ffffff;
+  position: absolute;
+  top: 2%;
   left: 0;
+  right: 0;
   width: 100%;
-  z-index: 10;
+  z-index: 10%; /* Assicurati che l'header sia sopra il resto del contenuto */
 }
 
 .logo {
-  width: 60px;
-  height: auto;
-  margin-left: 20px;
+  max-width: 5%; /* Limita la larghezza massima dell'immagine del logo */
+  margin-left: 4%; /* Distanza il logo dal bordo sinistro */
 }
 
 .profileLink {
-  margin-right: 20px;
+  margin-right: 5%; /* Sposta l'icona del profilo a destra */
+  display: flex;
+  justify-content: center; /* Centra l'icona del profilo orizzontalmente */
 }
 
 .icon {
-  color: #5f2eff;
+  color: #000000;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color 0.3s;
+  font-size: 32px; /* Imposta una dimensione adeguata per l'icona */
 }
 
 .icon:hover {
   color: #4722d6;
 }
 
-.main {
-  margin-top: 80px; /* Per non coprire il contenuto sotto l'header */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-  padding: 20px;
-}
 
-@media (max-width: 600px) {
+
+/* Media Queries per dispositivi più piccoli */
+@media (max-width: 740px) {
   .logo {
-    width: 40px;
+    width: 20%; /* Riduci la larghezza del logo su tablet */
+    max-width: 80px; /* Limita la larghezza massima del logo */
   }
 
-  .main {
-    margin-top: 60px;
+  .header {
+    padding: 10px 15px; /* Riduci il padding dell'header */
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    width: 30%; /* Riduci ulteriormente la larghezza del logo su schermi piccoli */
+    max-width: 60px; /* Limita la larghezza massima del logo */
+  }
+
+  .header {
+    padding: 8px 10px; /* Ancora meno padding sui dispositivi più piccoli */
+  }
+
+  .profileLink {
+    margin-left: 10px; /* Riduci il margine sinistro del profilo per adattarlo meglio */
+  }
+
+  .icon {
+    font-size: 24px; /* Riduci la dimensione dell'icona per schermi piccoli */
   }
 }

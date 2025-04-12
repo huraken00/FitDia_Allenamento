@@ -22,19 +22,21 @@ exports.getAllAllenamenti = async (req, res) => {
 // Aggiunge un allenamento e le sue serie al database
 exports.createAllenamento = async (req, res) => {
   try {
-    const { nome, appuntiAllenamento, id_utente, serie } = req.body;
+    const { nome, appuntiAllenamento, id_utente, serie, dataCreazione } = req.body;
 
     if (!nome || !id_utente) {
       return res.status(400).json({ message: "Nome e id_utente sono obbligatori" });
     }
+ // Creazione dell'allenamento con la data automatica
+ const nuovoAllenamento = new Allenamento({
+  nome,
+  appuntiAllenamento,
+  id_utente,
+  dataCreazione : (dataCreazione) ? dataCreazione : new Date(), 
+});
 
-    // Creazione dell'allenamento con la data automatica
-    const nuovoAllenamento = new Allenamento({
-      nome,
-      appuntiAllenamento,
-      id_utente,
-      data: new Date(), // ✅ Data generata automaticamente
-    });
+
+   
 
     const allenamentoSalvato = await nuovoAllenamento.save();
 

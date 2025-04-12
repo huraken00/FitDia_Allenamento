@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../shared/context/auth-context";
 import styles from "./Profilo.module.css"; // nuovo file CSS
 
-import { FaUserCircle } from "react-icons/fa"; // icona omino
+
 
 const Profilo = () => {
   const [user, setUser] = useState(null);
@@ -77,8 +77,8 @@ const Profilo = () => {
   return (
     <div className={styles.container}>
       <div className={styles.profileCard}>
-        <FaUserCircle size={64} className={styles.icon} />
-        <h2 className={styles.title}>Profilo Utente</h2>
+       
+      
 
         <div className={styles.field}>
           <label>Nome:</label>

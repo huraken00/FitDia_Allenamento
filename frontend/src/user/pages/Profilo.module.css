@@ -1,78 +1,114 @@
+/* Layout principale */
 .container {
-    min-height: 100vh;
-    background-color: #f9f9fb;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra verticalmente */
+  align-items: center; /* Centra orizzontalmente */
+  text-align: center;
+  margin-top: 6%; /* Ridurre leggermente il margine superiore */
+}
+
+.profileCard {
+  background-color: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 40%; /* Rende la card più reattiva su schermi piccoli */
+  text-align: left; /* Allineamento a sinistra per una migliore visualizzazione dei dati */
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 1.8rem; /* Usa un font-size relativo per migliorare la leggibilità */
+  color: #1e1e1e;
+  margin-bottom: 20px;
+}
+
+.field {
+  margin-bottom: 15px;
+  display: flex;
   
+  align-items: center; /* Centra verticalmente */
+}
+
+.field label {
+  font-weight: bold;
+  color: #333;
+  font-size: 1.2rem; /* Usa una dimensione del font relativa */
+  margin-bottom: 5px;
+  width: 30%; /* La larghezza dell'etichetta è limitata */
+}
+
+.field p, .field input {
+  font-size: 1.1rem;
+  margin: 0; /* Rimuove margine extra */
+  width: 65%; /* La larghezza del valore si adatta all'etichetta */
+}
+
+
+.button {
+  padding: 10px 20px; /* Impostare padding per definire la grandezza del bottone */
+  font-size: 1rem;
+  background-color: #5f2eff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 30%; /* Imposta una larghezza fissa per i bottoni */
+  text-align: center; /* Centra il testo nel bottone */
+}
+
+.button:hover {
+  background-color: #4722d6;
+}
+
+/* Media Queries per dispositivi più piccoli */
+@media (max-width: 768px) {
   .profileCard {
-    background-color: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
-    width: 100%;
-    text-align: center;
+    padding: 30px;
+    width: 90%;
   }
-  
+
   .title {
-    font-size: 24px;
-    color: #1e1e1e;
-    margin-bottom: 20px;
+    font-size: 1.6rem; /* Riduci la dimensione del titolo su schermi più piccoli */
   }
-  
-  .icon {
-    color: #5f2eff;
-    margin-bottom: 10px;
-  }
-  
-  .field {
-    margin-bottom: 15px;
-    text-align: left;
-  }
-  
+
   .field label {
-    font-weight: bold;
-    color: #333;
-    display: block;
-    margin-bottom: 5px;
+    font-size: 0.9rem; /* Adatta la dimensione dei font per dispositivi più piccoli */
+    width: 35%; /* Larghezza etichetta maggiore su schermi piccoli */
   }
-  
+
   .field input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #dcdcdc;
-    border-radius: 8px;
-    background-color: #f5f8ff;
-    font-size: 14px;
+    font-size: 0.9rem;
   }
-  
+
   .button {
-    width: 100%;
-    background-color: #5f2eff;
-    color: white;
-    padding: 12px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 15px;
+    padding: 10px 20px;
   }
-  
-  .button:hover {
-    background-color: #4722d6;
+}
+
+@media (max-width: 480px) {
+  .profileCard {
+    padding: 20px;
+    width: 90%;
   }
-  
-  @media (max-width: 480px) {
-    .profileCard {
-      padding: 20px;
-    }
-  
-    .title {
-      font-size: 20px;
-    }
+
+  .title {
+    font-size: 1.5rem; /* Riduci la dimensione del titolo su schermi molto piccoli */
   }
-  
+
+  .field label {
+    font-size: 0.85rem; /* Adatta ulteriormente la dimensione dei font */
+    width: 40%; /* Larghezza etichetta ancora maggiore */
+  }
+
+  .field input {
+    font-size: 0.85rem;
+    padding: 10px;
+  }
+
+  .button {
+    padding: 10px 18px; /* Riduci il padding del bottone sui dispositivi più piccoli */
+  }
+}

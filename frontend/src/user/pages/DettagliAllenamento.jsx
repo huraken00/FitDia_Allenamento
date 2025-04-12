@@ -1,12 +1,17 @@
-import { useParams, Link } from 'react-router-dom';
+import { useNavigate,useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import styles from './DettagliAllenamento.module.css'; // Importa il modulo CSS
+
+
+
+
 
 const DettagliAllenamento = () => {
   const { id } = useParams();
   const [allenamento, setAllenamento] = useState(null);
   const [serie, setSerie] = useState([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAllenamento = async () => {
@@ -64,12 +69,14 @@ const DettagliAllenamento = () => {
         body: JSON.stringify({
           nome: allenamento.nome,
           appuntiAllenamento: allenamento.appuntiAllenamento || "",
+          dataCreazione: allenamento.dataCreazione,
           id_utente: utenteId,
           serie: [], // la aggiungeremo dopo
         }),
       });
 
       const nuovo = await resAllenamento.json();
+      
 
       if (!resAllenamento.ok) {
         throw new Error(nuovo.message || "Errore nella duplicazione dell'allenamento");
@@ -91,7 +98,8 @@ const DettagliAllenamento = () => {
         });
         alert("Allenamento avviato con successo");
       }
-
+      
+    navigate(`/dettagli-allenamento/${nuovo.allenamento._id}`)
     } catch (err) {
       console.error("Errore nell'avvio dell'allenamento:", err);
       alert("Errore durante la duplicazione dell'allenamento");

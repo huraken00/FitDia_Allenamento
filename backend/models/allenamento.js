@@ -14,7 +14,7 @@ const allenamentoSchema = new Schema(
     },
     dataCreazione: { 
       type: Date, 
-      default: Date.now // Data di creazione dell'allenamento
+       // Data di creazione dell'allenamento
     },
     appuntiAllenamento: { 
       type: String, 

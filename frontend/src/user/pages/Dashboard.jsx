@@ -1,6 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { FaUserCircle } from "react-icons/fa"; // ✅ importa l'icona
+import {useNavigate } from "react-router-dom";
 import Card from "../../components/ui/card";
 import styles from "./Dashboard.module.css"; // Importa il modulo CSS
 

@@ -14,8 +14,8 @@ import LoginEsperto from "./esperto_allenamento/LoginEsperto";
 //Routes direttore
 import HomePageDirettore from "./director/pages/Homepage";
 import ListaUtenti from "./director/pages/ListaUtenti";
-import EspertiAllenamento from "./director/pages/EspertiAllenamento"
-import InserimentoEspertiAllenamento from "./director/pages/InserimentoEspertiAllenamento"
+import EspertiAllenamento from "./director/pages/EspertiAllenamento";
+import InserimentoEspertiAllenamento from "./director/pages/InserimentoEspertiAllenamento";
 
 //Routes utenti
 import Dashboard from "./user/pages/Dashboard"; 
@@ -32,11 +32,12 @@ import Profilo from "./user/pages/Profilo";
 
 //Routes esperti
 import HomePageEsperto from "./esperto_allenamento/Homepage";
-import ListaEsercizi from "./esperto_allenamento/ListaEsercizi"
+import ListaEsercizi from "./esperto_allenamento/ListaEsercizi";
 import InserimentoEsercizi from "./esperto_allenamento/InserimentoEsercizi";
 import ModificaEsercizio from "./esperto_allenamento/ModificaEsercizio";
 import ProfiloEsperto from "./esperto_allenamento/ProfiloEsperto";
 
+// PrivateRoute: Protegge le pagine a seconda del ruolo
 const PrivateRoute = ({ children, requiredRole }) => {
   const { isLoggedIn, role } = useContext(AuthContext);
 
@@ -60,49 +61,50 @@ const PrivateRoute = ({ children, requiredRole }) => {
 
   return children;
 };
+
 const App = () => {
   return (
     <AuthProvider>
       <Router>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login-utente" element={<LoginUser />} />
-          <Route path="/register-utente" element={<RegisterUser />} />
-          <Route path="/login-direttore" element={<LoginDirettore />} />
-          <Route path="/login-esperto" element={<LoginEsperto />} />
+        <Layout> {/* Layout wrapper per le pagine */}
+          <Routes>
+            {/* Route pubbliche */}
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login-utente" element={<LoginUser />} />
+            <Route path="/register-utente" element={<RegisterUser />} />
+            <Route path="/login-direttore" element={<LoginDirettore />} />
+            <Route path="/login-esperto" element={<LoginEsperto />} />
 
-          {/* Pagine accessibili solo ai direttori */}
-          <Route path="/homepage-direttore" element={<PrivateRoute requiredRole="direttore"><HomePageDirettore /></PrivateRoute>} />
-          <Route path="/lista-utenti" element={<PrivateRoute requiredRole="direttore"><ListaUtenti /></PrivateRoute>} />
-          <Route path="/esperti-allenamento" element={<PrivateRoute requiredRole="direttore"><EspertiAllenamento /></PrivateRoute>} />
-          <Route path="/inserimento-esperti-allenamento" element={<PrivateRoute requiredRole="direttore"><InserimentoEspertiAllenamento /></PrivateRoute>} />
+            {/* Route accessibili solo ai direttori */}
+            <Route path="/homepage-direttore" element={<PrivateRoute requiredRole="direttore"><HomePageDirettore /></PrivateRoute>} />
+            <Route path="/lista-utenti" element={<PrivateRoute requiredRole="direttore"><ListaUtenti /></PrivateRoute>} />
+            <Route path="/esperti-allenamento" element={<PrivateRoute requiredRole="direttore"><EspertiAllenamento /></PrivateRoute>} />
+            <Route path="/inserimento-esperti-allenamento" element={<PrivateRoute requiredRole="direttore"><InserimentoEspertiAllenamento /></PrivateRoute>} />
 
-          {/* Pagine accessibili solo agli utenti */}
-          <Route path="/profilo" element={<PrivateRoute requiredRole="utente"><Profilo/></PrivateRoute>} />
-          <Route path="/dashboard" element={<PrivateRoute requiredRole="utente"><Dashboard /></PrivateRoute>} />
-          <Route path="/dashboard-allenamento" element={<PrivateRoute requiredRole="utente"><DashboardAllenamento /></PrivateRoute>} />
-          <Route path="/varianti-esercizi" element={<PrivateRoute requiredRole="utente"><VariantiEsercizi /></PrivateRoute>} />
-          <Route path="/varianti" element={<PrivateRoute requiredRole="utente"><ListaVarianti /></PrivateRoute>} />
-          <Route path="/crea-allenamento" element={<PrivateRoute requiredRole="utente"><InserimentoAllenamenti /></PrivateRoute>} />
-          <Route path="/lista-allenamenti" element={<PrivateRoute requiredRole="utente">< ListaAllenamenti/></PrivateRoute>} />
-          <Route path="/monitoraggio-progressi" element={<PrivateRoute requiredRole="utente"><MonitoraggioProgressi /></PrivateRoute>} />
+            {/* Route accessibili solo agli utenti */}
+            <Route path="/profilo" element={<PrivateRoute requiredRole="utente"><Profilo /></PrivateRoute>} />
+            <Route path="/dashboard" element={<PrivateRoute requiredRole="utente"><Dashboard /></PrivateRoute>} />
+            <Route path="/dashboard-allenamento" element={<PrivateRoute requiredRole="utente"><DashboardAllenamento /></PrivateRoute>} />
+            <Route path="/varianti-esercizi" element={<PrivateRoute requiredRole="utente"><VariantiEsercizi /></PrivateRoute>} />
+            <Route path="/varianti" element={<PrivateRoute requiredRole="utente"><ListaVarianti /></PrivateRoute>} />
+            <Route path="/crea-allenamento" element={<PrivateRoute requiredRole="utente"><InserimentoAllenamenti /></PrivateRoute>} />
+            <Route path="/lista-allenamenti" element={<PrivateRoute requiredRole="utente"><ListaAllenamenti /></PrivateRoute>} />
+            <Route path="/monitoraggio-progressi" element={<PrivateRoute requiredRole="utente"><MonitoraggioProgressi /></PrivateRoute>} />
+            <Route path="/modifica-allenamento/:id" element={<PrivateRoute requiredRole="utente"><ModificaAllenamento /></PrivateRoute>} />
+            <Route path="/dettagli-allenamento/:id" element={<PrivateRoute requiredRole="utente"><DettagliAllenamento /></PrivateRoute>} />
 
-          <Route path="/modifica-allenamento/:id" element={<PrivateRoute requiredRole="utente"><ModificaAllenamento /></PrivateRoute>} />
-          <Route path="/dettagli-allenamento/:id" element={<PrivateRoute requiredRole="utente"><DettagliAllenamento/></PrivateRoute>}/>
-
-
-         {/* Pagine accessibili solo agli esperti */}
-         <Route path="/profilo-esperto" element={<PrivateRoute requiredRole="esperto"><ProfiloEsperto /></PrivateRoute>} />
-         <Route path="/homepage-esperto" element={<PrivateRoute requiredRole="esperto"><HomePageEsperto /></PrivateRoute>} />
-         <Route path="/lista-esercizi" element={<PrivateRoute requiredRole="esperto"><ListaEsercizi /></PrivateRoute>} />
-         <Route path="/inserimento-esercizi" element = {<PrivateRoute requiredRole="esperto"><InserimentoEsercizi /></PrivateRoute>}></Route>
-         <Route path="/modifica-esercizio/:id" element = {<PrivateRoute requiredRole="esperto"><ModificaEsercizio /></PrivateRoute>}></Route>
-         <Route path="/modifica-esercizio" element = {<PrivateRoute requiredRole="esperto"><ModificaEsercizio /></PrivateRoute>}></Route>
-         <Route path="/lista-varianti" element = {<PrivateRoute requiredRole="esperto"><ListaVariantiEsperto /></PrivateRoute>}></Route>
-        </Routes>
-        <Layout/>
+            {/* Route accessibili solo agli esperti */}
+            <Route path="/profilo-esperto" element={<PrivateRoute requiredRole="esperto"><ProfiloEsperto /></PrivateRoute>} />
+            <Route path="/homepage-esperto" element={<PrivateRoute requiredRole="esperto"><HomePageEsperto /></PrivateRoute>} />
+            <Route path="/lista-esercizi" element={<PrivateRoute requiredRole="esperto"><ListaEsercizi /></PrivateRoute>} />
+            <Route path="/inserimento-esercizi" element={<PrivateRoute requiredRole="esperto"><InserimentoEsercizi /></PrivateRoute>} />
+            <Route path="/modifica-esercizio/:id" element={<PrivateRoute requiredRole="esperto"><ModificaEsercizio /></PrivateRoute>} />
+            <Route path="/lista-varianti" element={<PrivateRoute requiredRole="esperto"><ListaVariantiEsperto /></PrivateRoute>} />
+          </Routes>
+        </Layout>
       </Router>
     </AuthProvider>
   );
-}
-export default App
+};
+
+export default App;
