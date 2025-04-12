@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import {
   LineChart,
   Line,
@@ -23,13 +22,15 @@ const MonitoraggioProgressi = () => {
 
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [parametriEsercizio, setParametriEsercizio] = useState([]); // Stato per memorizzare i parametri dell'esercizio
 
   const userId = localStorage.getItem('userId'); // ID dell'utente
 
+  // Effetto per caricare gli esercizi
   useEffect(() => {
     const fetchEsercizi = async () => {
       try {
-        const res = await fetch("http://localhost:3001/api/esercizi");
+        const res = await fetch(`http://localhost:3001/api/esercizi/esercizi-utente/${userId}`);
         const data = await res.json();
         setEsercizi(data || []);
       } catch (err) {
@@ -38,15 +39,15 @@ const MonitoraggioProgressi = () => {
     };
 
     fetchEsercizi();
-  }, []);
+  }, [userId]);
 
+  // Effetto per caricare i progressi e i parametri quando un esercizio è selezionato
   useEffect(() => {
     if (!selectedEsercizio || !userId) return;
-
+    console.log("es",selectedEsercizio)
     const fetchProgressi = async () => {
       setLoading(true);
       setError("");
-
       try {
         const queryParams = new URLSearchParams();
         if (fromDate) queryParams.append("from", fromDate);
@@ -67,17 +68,27 @@ const MonitoraggioProgressi = () => {
       }
     };
 
+    // Carica i parametri specifici per l'esercizio selezionato
+    const fetchParametri = async () => {
+      try {
+        const res = await fetch(`http://localhost:3001/api/esercizi/parametri/${selectedEsercizio}`);
+        const data = await res.json();
+        setParametriEsercizio(data.parametri || []);
+      } catch (err) {
+        setError("Errore nel recupero dei parametri.");
+      }
+    };
+
     fetchProgressi();
+    fetchParametri();
   }, [selectedEsercizio, userId, fromDate, toDate]);
 
-  const parametriAllenanti = dati.length > 0
-    ? Object.keys(dati[0]).filter((key) => key !== "data")
-    : [];
+  const handleParametroChange = (e) => {
+    setSelectedParametro(e.target.value);
+  };
 
   return (
     <div className={styles.monitoraggioProgressiContainer}>
-      
-
       <h2 className={styles.titolo}>📊 Monitoraggio Progressi</h2>
 
       {/* Select esercizio */}
@@ -90,6 +101,7 @@ const MonitoraggioProgressi = () => {
               setSelectedEsercizio(e.target.value);
               setFromDate("");
               setToDate("");
+              setSelectedParametro(""); // Reset parametro quando si cambia esercizio
             }}
           >
             <option value="">-- Scegli --</option>
@@ -103,18 +115,18 @@ const MonitoraggioProgressi = () => {
       </div>
 
       {/* Select parametro */}
-      {dati.length > 0 && (
+      {parametriEsercizio.length > 0 && (
         <div className={styles.selectContainer} style={{ marginTop: "1rem" }}>
           <label>
             <strong>Parametro da visualizzare:</strong>
             <select
               value={selectedParametro}
-              onChange={(e) => setSelectedParametro(e.target.value)}
+              onChange={handleParametroChange}
             >
               <option value="">-- Scegli --</option>
-              {parametriAllenanti.map((param) => (
-                <option key={param} value={param}>
-                  {param}
+              {parametriEsercizio.map((param) => (
+                <option key={param._id} value={param.nome}>
+                  {param.nome}
                 </option>
               ))}
             </select>

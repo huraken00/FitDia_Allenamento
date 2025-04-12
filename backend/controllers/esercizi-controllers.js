@@ -1,8 +1,8 @@
 const Esercizio = require("../models/esercizio");
 const SportEsercizio = require("../models/sport_esercizio");
 const ParametroEsercizio = require("../models/parametro_esercizio");
-const Allenamento = require("../models/allenamento");
 const Serie = require ("../models/serie");
+const Allenamento = require('../models/allenamento'); // Modello per allenamento
 
 // Funzione per ottenere tutti gli esercizi con i dettagli di sport e parametri
 exports.getAllEsercizi = async (req, res) => {
@@ -51,7 +51,7 @@ exports.getAllEsercizi = async (req, res) => {
     ]);
 
     return res.status(200).json(esercizi);
-    console.log(esercizi)
+    
   } catch (err) {
     return res.status(500).json({ message: "Errore nel recupero degli esercizi", error: err });
   }
@@ -106,7 +106,6 @@ exports.getEsercizioById = async (req, res) => {
   }
 };
 
-// Funzione per aggiornare un esercizio
 // Funzione per aggiornare un esercizio
 exports.updateEsercizio = async (req, res) => {
   const { id } = req.params;
@@ -245,5 +244,80 @@ if (!isValidDate) {
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Errore nel recupero dei progressi", error: err });
+  }
+};
+
+// Funzione per ottenere nome e ID degli esercizi per un utente
+exports.getEserciziUtente = async (req, res) => {
+  const userId = req.params.userId;  // Otteniamo l'ID dell'utente dalla URL
+
+  try {
+    // Otteniamo gli allenamenti dell'utente
+    const allenamenti = await Allenamento.find({ id_utente: userId });
+
+    if (allenamenti.length === 0) {
+      return res.status(404).json({ message: "Nessun allenamento trovato per questo utente." });
+    }
+
+    // Per ogni allenamento, otteniamo gli ID degli esercizi delle serie
+    const eserciziUtente = await Promise.all(allenamenti.map(async (allenamento) => {
+      // Otteniamo le serie per ogni allenamento
+      const serie = await Serie.find({ id_allenamento: allenamento._id });
+
+      // Estraiamo solo gli ID degli esercizi dalle serie (senza duplicati)
+      const eserciziIds = serie.reduce((acc, s) => {
+        if (!acc.includes(s.id_esercizio.toString())) {
+          acc.push(s.id_esercizio.toString()); // Aggiungi solo se l'ID non è già presente
+        }
+        return acc;
+      }, []);
+
+      // Ottieni i dettagli degli esercizi utilizzando gli ID estratti
+      const eserciziDetails = await Esercizio.find({
+        '_id': { $in: eserciziIds }
+      }).select('_id nome'); // Selezioniamo solo ID e nome dell'esercizio
+
+      return eserciziDetails;
+    }));
+
+    /*
+    Senza flat(), avremmo un array di array:
+Se non usassimo flat(), eserciziUtente resterebbe un array di array, e quindi il nostro processo di riduzione dei duplicati 
+(reduce()) sarebbe un po' più complicato, perché dovremmo iterare attraverso gli array annidati.
+    */ 
+    const allEsercizi = eserciziUtente.flat();
+    
+    // Rimuoviamo i duplicati per ID e nome
+    const eserciziUnici = allEsercizi.reduce((acc, esercizio) => {
+      // Aggiungi l'esercizio solo se non esiste già un esercizio con lo stesso ID o nome
+      if (!acc.some(e => e._id.toString() === esercizio._id.toString() || e.nome === esercizio.nome)) {
+        acc.push(esercizio);
+      }
+      return acc;
+    }, []);
+
+    // Rispondiamo con l'elenco di esercizi con nome e ID, senza duplicati per ID e nome
+    return res.status(200).json(eserciziUnici);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Errore nel recupero degli allenamenti e degli esercizi." });
+  }
+};
+
+// Funzione per ottenere un esercizio con dettagli di sport e parametri
+exports.getParametriById = async (req, res) => {
+  try {
+    const esercizio = await Esercizio.findById(req.params.id);
+    if (!esercizio) {
+      return res.status(404).json({ message: "Esercizio non trovato" });
+    }
+
+
+    const parametri = await ParametroEsercizio.find({ id_esercizio: req.params.id }).populate("id_parametro");
+    return res.status(200).json({
+      parametri: parametri.map(p=>p.id_parametro)
+    });
+  } catch (err) {
+    return res.status(500).json({ message: "Errore nel recupero dell'esercizio", error: err });
   }
 };
