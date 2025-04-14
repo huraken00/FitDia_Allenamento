@@ -1,39 +1,68 @@
-/* Layout generale */
+/* ========== Layout generale ========== */
 .layout {
   display: flex;
   flex-direction: column;
-
+  height: 90vh;
 }
 
+/* Header */
 .header {
   display: flex;
-  justify-content: space-between;  /* Imposta lo spazio tra il logo e l'icona del profilo */
-  align-items: center; /* Centra verticalmente il logo e l'icona */
+  justify-content: space-between;
+  align-items: center;
   background-color: #ffffff;
-  position: absolute;
-  top: 2%;
+  position: fixed;
+  top: 0;
   left: 0;
   right: 0;
+  height: 8%;
   width: 100%;
-  z-index: 10%; /* Assicurati che l'header sia sopra il resto del contenuto */
+  z-index: 10;
+  padding: 0 4%;
 }
 
+/* Layout.module.css */
+
+/* Altri stili esistenti */
+
+/* ========== Title Styles ========== */
+.title {
+  font-size: 2rem;  /* Imposta la dimensione del font */
+  font-weight: bold;  /* Rende il titolo più evidente */
+  color: #833737;  /* Colore scuro per il titolo */
+  text-align: center;  /* Allinea il testo al centro */
+  margin-bottom: 20px;  /* Aggiungi un po' di spazio sotto il titolo */
+}
+
+/* ========== Main ========== */
+.main {
+  padding: 20px; /* Padding per il contenuto */
+  flex-grow: 1; /* Garantisce che il main prenda tutto lo spazio disponibile */
+  background-color: #ffffff; /* Colore di sfondo */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* ========== Logo e profilo ========== */
 .logo {
-  max-width: 5%; /* Limita la larghezza massima dell'immagine del logo */
-  margin-left: 4%; /* Distanza il logo dal bordo sinistro */
+  max-width: 60px;
+  height: auto;
 }
 
 .profileLink {
-  margin-right: 5%; /* Sposta l'icona del profilo a destra */
   display: flex;
-  justify-content: center; /* Centra l'icona del profilo orizzontalmente */
+  justify-content: center;
+  align-items: center;
 }
 
 .icon {
   color: #000000;
   cursor: pointer;
   transition: color 0.3s;
-  font-size: 32px; /* Imposta una dimensione adeguata per l'icona */
+  font-size: 32px;
 }
 
 .icon:hover {
@@ -42,33 +71,59 @@
 
 
 
-/* Media Queries per dispositivi più piccoli */
+/* ========== Media Queries ========== */
 @media (max-width: 740px) {
   .logo {
-    width: 20%; /* Riduci la larghezza del logo su tablet */
-    max-width: 80px; /* Limita la larghezza massima del logo */
+    max-width: 50px;
   }
 
   .header {
-    padding: 10px 15px; /* Riduci il padding dell'header */
+    height: 60px;
+    padding: 0 3%;
+  }
+
+  .icon {
+    font-size: 28px;
+  }
+
+  .title {
+    font-size: 0.8rem;
+  }
+
+  .description {
+    font-size: 1rem;
+  }
+
+  .button {
+    font-size: 0.95rem;
+    padding: 10px 20px;
   }
 }
 
 @media (max-width: 480px) {
   .logo {
-    width: 30%; /* Riduci ulteriormente la larghezza del logo su schermi piccoli */
-    max-width: 60px; /* Limita la larghezza massima del logo */
+    max-width: 40px;
   }
 
   .header {
-    padding: 8px 10px; /* Ancora meno padding sui dispositivi più piccoli */
-  }
-
-  .profileLink {
-    margin-left: 10px; /* Riduci il margine sinistro del profilo per adattarlo meglio */
+    height: 55px;
+    padding: 0 2%;
   }
 
   .icon {
-    font-size: 24px; /* Riduci la dimensione dell'icona per schermi piccoli */
+    font-size: 24px;
+  }
+
+  .title {
+    font-size: 0.01rem;
+  }
+
+  .description {
+    font-size: 0.95rem;
+  }
+
+  .button {
+    font-size: 0.9rem;
+    padding: 8px 16px;
   }
 }

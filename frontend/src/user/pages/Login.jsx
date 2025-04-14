@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../shared/context/auth-context";
 import styles from './LoginUser.module.css';
 
+
 const LoginUser = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,7 +38,7 @@ const LoginUser = () => {
         <h2 className={styles.title}>Login Utente</h2>
 
         <input
-          type="text"
+          type="email"
           className={styles.input}
           placeholder="Email"
           value={email}
