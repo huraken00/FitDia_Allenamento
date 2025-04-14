@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "./EspertiAllenamento.module.css"; // Importa il modulo CSS
+import styles from "./EspertiAllenamento.module.css";
 
 const EspertiAllenamento = () => {
   const [esperti, setEsperti] = useState([]);
+  const [filterText, setFilterText] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,16 +48,29 @@ const EspertiAllenamento = () => {
 
       if (!res.ok) throw new Error("Errore nell'eliminazione dell'esperto");
 
-      // Aggiorna la lista rimuovendo l'esperto eliminato
       setEsperti(esperti.filter((e) => e._id !== eid));
     } catch (err) {
       console.error("Errore durante l'eliminazione:", err);
     }
   };
 
+  // Filtra gli esperti in base al testo inserito
+  const filteredEsperti = esperti.filter((esperto) =>
+    esperto.username.toLowerCase().includes(filterText.toLowerCase())
+  );
+
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Lista Esperti Allenamento</h2>
+
+      <input
+        type="text"
+        placeholder="Filtra per nome..."
+        value={filterText}
+        onChange={(e) => setFilterText(e.target.value)}
+        className={styles.searchInput}
+      />
+
       <table className={styles.table}>
         <thead>
           <tr>
@@ -65,17 +79,25 @@ const EspertiAllenamento = () => {
           </tr>
         </thead>
         <tbody>
-          {esperti.map((esperto, index) => (
+          {filteredEsperti.map((esperto, index) => (
             <tr key={index}>
               <td>{esperto.username}</td>
               <td>
-                <button className={styles.deleteButton} onClick={() => handleDelete(esperto._id)}>Elimina</button>
+                <button
+                  className={styles.deleteButton}
+                  onClick={() => handleDelete(esperto._id)}
+                >
+                  Elimina
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <Link to="/inserimento-esperti-allenamento" className={styles.addLink}>Inserisci un nuovo esperto</Link>
+
+      <Link to="/inserimento-esperti-allenamento" className={styles.addLink}>
+        Inserisci un nuovo esperto
+      </Link>
     </div>
   );
 };
