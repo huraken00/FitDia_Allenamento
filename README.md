@@ -1,37 +1,37 @@
-# FitDia - Web App per il Monitoraggio dell'Allenamento
+# 💪 FitDia
 
-FitDia
-🏋️‍♂ Introduzione
-FitDia è una web app progettata per semplificare la gestione degli allenamenti e dell’alimentazione, offrendo un'unica piattaforma dove gli utenti possono monitorare e ottimizzare il proprio percorso di benessere.
+## 🧩 Introduzione
 
-⚙️ Funzionalità
-📋 Gestione Allenamenti
-Crea, modifica ed elimina i tuoi allenamenti.
+**FitDia** è una web app progettata per semplificare la gestione degli allenamenti e dell’alimentazione, offrendo un'unica piattaforma per ottimizzare il proprio percorso di benessere.
 
-Scegli esercizi da un elenco predefinito.
+La piattaforma integra tecnologia avanzata e personalizzazione, consentendo agli utenti di tracciare i propri progressi, gestire le sessioni di allenamento e ricevere suggerimenti intelligenti grazie all’intelligenza artificiale.
 
-Organizza la tua routine secondo le tue esigenze.
+---
 
-📈 Monitoraggio dei Progressi
-Visualizza grafici dettagliati sull’andamento delle performance.
+## ⚙️ Funzionalità
 
-Analizza diversi parametri a seconda del tipo di esercizio:
+### 📝 Gestione degli allenamenti
+- Creazione, modifica ed eliminazione degli allenamenti personalizzati.
+- Selezione di esercizi da un catalogo predefinito.
+- Organizzazione flessibile delle sessioni di training.
 
-Peso sollevato
+### 📊 Tracciamento dei progressi
+- Visualizzazione di grafici dettagliati per ogni esercizio.
+- Analisi dei parametri chiave:
+  - Peso utilizzato
+  - Tempo impiegato
+  - Distanza percorsa
+  - Numero di ripetizioni
+- I grafici si adattano automaticamente al tipo di esercizio selezionato.
 
-Tempo impiegato
+### 🤖 Suggerimenti intelligenti con AI
+- Ricezione di esercizi alternativi personalizzati in base a:
+  - **🏅 Sport praticato**: proposte mirate a discipline specifiche.
+  - **📍 Luogo di allenamento**: opzioni per palestra, casa o outdoor.
+  - **🔁 Esercizio di riferimento**: alternative intelligenti per esercizi specifici.
 
-Distanza percorsa
+---
 
-Numero di ripetizioni
+> FitDia è lo strumento ideale per chi vuole allenarsi in modo consapevole, flessibile e supportato dalla tecnologia.
 
-I grafici si adattano dinamicamente al tipo di esercizio selezionato.
 
-🧠 Suggerimenti Intelligenti con AI
-Ricevi esercizi alternativi personalizzati in base a:
-
-Sport praticato: proposte mirate a discipline specifiche.
-
-Luogo di allenamento: opzioni diverse per palestra, casa o outdoor.
-
-Esercizio di riferimento: suggerimenti adattati all’esercizio che vuoi sostituire.
