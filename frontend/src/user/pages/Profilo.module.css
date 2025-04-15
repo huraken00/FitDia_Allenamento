@@ -6,6 +6,7 @@
   align-items: center; /* Centra orizzontalmente */
   text-align: center;
   margin-top: 6%; /* Ridurre leggermente il margine superiore */
+  width: 100vw; /* Larghezza al 100% per una migliore reattività */
 }
 
 .profileCard {
