@@ -290,7 +290,7 @@ Se non usassimo flat(), eserciziUtente resterebbe un array di array, e quindi il
     // Rimuoviamo i duplicati per ID e nome
     const eserciziUnici = allEsercizi.reduce((acc, esercizio) => {
       // Aggiungi l'esercizio solo se non esiste già un esercizio con lo stesso ID o nome
-      if (!acc.some(e => e._id.toString() === esercizio._id.toString() || e.nome === esercizio.nome )) {
+      if (!acc.some(e => e._id.toString() === esercizio._id.toString() || e.nome === esercizio.nome)) {
         acc.push(esercizio);
       }
       return acc;

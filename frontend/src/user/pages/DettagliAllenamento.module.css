@@ -6,7 +6,7 @@
 /* Stile del contenitore principale */
 .container {
     padding: 2rem;
-    width: 90vw;
+    max-width: 1200px;
     margin: 0 auto;
     margin-top: 80px; /* Aggiunto margine superiore per evitare il sovrapporsi all'header */
   }

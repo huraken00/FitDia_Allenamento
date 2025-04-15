@@ -1,117 +1,74 @@
-/* ========== Layout generale ========== */
+/* Layout generale */
 .layout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Cambiato da height a min-height */
+
 }
 
-/* Header */
 .header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: space-between;  /* Imposta lo spazio tra il logo e l'icona del profilo */
+  align-items: center; /* Centra verticalmente il logo e l'icona */
   background-color: #ffffff;
-  position: fixed;
-  top: 0;
+  position:relative;
+  top: 2%;
   left: 0;
   right: 0;
-  height: 70px; /* Altezza fissa in pixel */
-  width: 94vw;
-  z-index: 10;
-  padding: 0 4%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Aggiunta ombra per separazione */
+  width: 100%;
+  z-index: 10%; /* Assicurati che l'header sia sopra il resto del contenuto */
 }
 
-/* Logo e profilo */
 .logo {
-  max-width: 60px;
-  height: auto;
+  max-width: 5%; /* Limita la larghezza massima dell'immagine del logo */
+  margin-left: 4%; /* Distanza il logo dal bordo sinistro */
 }
 
 .profileLink {
+  margin-right: 5%; /* Sposta l'icona del profilo a destra */
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Centra l'icona del profilo orizzontalmente */
 }
 
 .icon {
   color: #000000;
   cursor: pointer;
   transition: color 0.3s;
-  font-size: 32px;
-  right: 50px;
-
+  font-size: 32px; /* Imposta una dimensione adeguata per l'icona */
 }
 
 .icon:hover {
   color: #4722d6;
 }
 
-/* Main content */
-.main {
-  padding: 20px;
-  flex-grow: 1;
-  background-color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 70px; /* Deve corrispondere all'altezza dell'header */
-}
 
-/* Media Queries */
-@media (max-width: 1024px) {
-  .header {
-    height: 60px;
-    padding: 0 3%;
-  }
-  
-  .logo {
-    max-width: 50px;
-  }
-  
-  .icon {
-    font-size: 28px;
-  }
-}
 
+/* Media Queries per dispositivi più piccoli */
 @media (max-width: 740px) {
-  .header {
-    height: 55px;
-  }
-  
   .logo {
-    max-width: 45px;
+    width: 20%; /* Riduci la larghezza del logo su tablet */
+    max-width: 80px; /* Limita la larghezza massima del logo */
   }
-  
-  .icon {
-    font-size: 26px;
-  }
-  
-  .title {
-    font-size: 1.5rem; /* Manteniamo una dimensione leggibile */
+
+  .header {
+    padding: 10px 15px; /* Riduci il padding dell'header */
   }
 }
 
 @media (max-width: 480px) {
-  .header {
-    height: 50px;
-    padding: 0 15px; /* Padding fisso per mobile */
-  }
-  
   .logo {
-    max-width: 40px;
+    width: 30%; /* Riduci ulteriormente la larghezza del logo su schermi piccoli */
+    max-width: 60px; /* Limita la larghezza massima del logo */
   }
-  
+
+  .header {
+    padding: 8px 10px; /* Ancora meno padding sui dispositivi più piccoli */
+  }
+
+  .profileLink {
+    margin-left: 10px; /* Riduci il margine sinistro del profilo per adattarlo meglio */
+  }
+
   .icon {
-    font-size: 24px;
-  }
-  
-  .title {
-    font-size: 1.2rem; /* Dimensione minima leggibile */
-  }
-  
-  .main {
-    margin-top: 50px; /* Aggiornato per corrispondere all'header */
+    font-size: 24px; /* Riduci la dimensione dell'icona per schermi piccoli */
   }
 }

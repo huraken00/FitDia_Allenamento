@@ -6,7 +6,7 @@
 /* Contenitore principale */
 .container {
     padding: 2rem;
-    width: 90vw;
+    max-width: 1200px;
     margin: 0 auto;
     padding-top: 120px; /* Aggiungi un padding superiore per evitare che il titolo venga coperto */
   }
