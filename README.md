@@ -1,10 +1,10 @@
 # 💪 FitDia
 
-## 🧩 Introduzione
+## Introduzione
 
 **FitDia** è una web app progettata per semplificare la gestione degli allenamenti e dell’alimentazione, offrendo un'unica piattaforma per ottimizzare il proprio percorso di benessere.
 
-La piattaforma integra tecnologia avanzata e personalizzazione, consentendo agli utenti di tracciare i propri progressi, gestire le sessioni di allenamento e ricevere suggerimenti intelligenti grazie all’intelligenza artificiale.
+La piattaforma consente agli utenti di tracciare i propri progressi, gestire le sessioni di allenamento e ricevere suggerimenti grazie all’intelligenza artificiale.
 
 ---
 
