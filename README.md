@@ -1,10 +1,37 @@
-# FitDia - Web App per il Monitoraggio dell'Alimentazione
+# FitDia - Web App per il Monitoraggio dell'Allenamento
 
-FitDia è una web app pensata per aiutarti a tenere traccia della tua alimentazione, con l'obiettivo di promuovere un'alimentazione sana e uno stile di vita equilibrato. Puoi registrare i tuoi pasti giornalieri, visualizzare le calorie consumate e monitorare la tua dieta nel tempo.
+FitDia
+🏋️‍♂ Introduzione
+FitDia è una web app progettata per semplificare la gestione degli allenamenti e dell’alimentazione, offrendo un'unica piattaforma dove gli utenti possono monitorare e ottimizzare il proprio percorso di benessere.
 
-## 🚀 Funzionalità
+⚙️ Funzionalità
+📋 Gestione Allenamenti
+Crea, modifica ed elimina i tuoi allenamenti.
 
-- **Registrazione dei pasti**: Aggiungi gli alimenti che mangi durante la giornata.
-- **Calcolo delle calorie**: La web app calcola automaticamente le calorie e i nutrienti principali per ogni alimento.
-- **Storico alimentazione**: Monitora i tuoi progressi nel tempo con una cronologia dei pasti e delle calorie consumate.
-- **Suggerimenti nutrizionali**: Ottieni suggerimenti su come migliorare la tua dieta basata sui tuoi obiettivi.
+Scegli esercizi da un elenco predefinito.
+
+Organizza la tua routine secondo le tue esigenze.
+
+📈 Monitoraggio dei Progressi
+Visualizza grafici dettagliati sull’andamento delle performance.
+
+Analizza diversi parametri a seconda del tipo di esercizio:
+
+Peso sollevato
+
+Tempo impiegato
+
+Distanza percorsa
+
+Numero di ripetizioni
+
+I grafici si adattano dinamicamente al tipo di esercizio selezionato.
+
+🧠 Suggerimenti Intelligenti con AI
+Ricevi esercizi alternativi personalizzati in base a:
+
+Sport praticato: proposte mirate a discipline specifiche.
+
+Luogo di allenamento: opzioni diverse per palestra, casa o outdoor.
+
+Esercizio di riferimento: suggerimenti adattati all’esercizio che vuoi sostituire.
