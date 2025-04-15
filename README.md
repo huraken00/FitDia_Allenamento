@@ -13,7 +13,6 @@ La piattaforma consente agli utenti di tracciare i propri progressi, gestire le 
 ### 📝 Gestione degli allenamenti
 - Creazione, modifica ed eliminazione degli allenamenti personalizzati.
 - Selezione di esercizi da un catalogo predefinito.
-- Organizzazione flessibile delle sessioni di training.
 
 ### 📊 Tracciamento dei progressi
 - Visualizzazione di grafici dettagliati per ogni esercizio.
@@ -25,13 +24,10 @@ La piattaforma consente agli utenti di tracciare i propri progressi, gestire le 
 - I grafici si adattano automaticamente al tipo di esercizio selezionato.
 
 ### 🤖 Suggerimenti intelligenti con AI
-- Ricezione di esercizi alternativi personalizzati in base a:
+- Creazione di esercizi alternativi personalizzati in base a:
   - **🏅 Sport praticato**: proposte mirate a discipline specifiche.
   - **📍 Luogo di allenamento**: opzioni per palestra, casa o outdoor.
   - **🔁 Esercizio di riferimento**: alternative intelligenti per esercizi specifici.
 
----
-
-> FitDia è lo strumento ideale per chi vuole allenarsi in modo consapevole, flessibile e supportato dalla tecnologia.
 
 
