@@ -1,24 +1,26 @@
-/* DettagliAllenamento.module.css */
-
-/* Stile del contenitore principale */
-.container {
+/* ======================
+   Default styles (PC – larghezza >= 1025px)
+   ====================== */
+   .container {
+    background-color: #ffffff;
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    margin-top: 80px; /* Aggiunto margine superiore per evitare il sovrapporsi all'header */
+    margin-top: 80px;
   }
   
-  /* Stile del titolo */
-  h2 {
+  h2, .title {
     font-size: 2rem;
     color: #333;
     text-align: center;
     margin-bottom: 1rem;
-    margin-top: 0; /* Puoi personalizzarlo in base allo spazio necessario */
+    margin-top: 0;
   }
   
-  /* Altri stili... */
-  
+  .subtitle {
+    margin-top: 30px;
+    font-size: 20px;
+  }
   
   .profileLink {
     position: absolute;
@@ -36,26 +38,17 @@
     color: #4722d6;
   }
   
-  .title {
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .subtitle {
-    margin-top: 30px;
-    font-size: 20px;
-  }
-  
   .buttonGroup {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    align-items:center;
+    justify-content: center;
     margin-top: 30px;
   }
   
   .button {
     background-color: #5f2eff;
-    color: white;
+    color: rgb(255, 255, 255);
     padding: 12px 24px;
     border: none;
     border-radius: 12px;
@@ -69,15 +62,69 @@
     background-color: #4722d6;
   }
   
-  
-  @media (max-width: 500px) {
-    .card {
-      padding: 20px;
+  /* ======================
+     Tablet: 481px <= larghezza <= 1024px
+     ====================== */
+  @media (min-width: 481px) and (max-width: 1024px) {
+    .container {
+      padding: 1.2rem;
+      max-width: 95vw;
+      margin-top: 70px;
     }
   
+    h2, .title {
+      font-size: 1.5rem;
+      margin-bottom: 0.8rem;
+    }
+  
+    .subtitle {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    .buttonGroup {
+      flex-direction: row;
+      align-items: center;
+      gap: 20px;
+    }
     .button {
-      font-size: 14px;
-      padding: 12px;
+      font-size: 15px;
+      padding: 10px 18px;
+      margin-bottom: 12px;
     }
   }
   
+  /* ======================
+     Mobile: larghezza <= 480px
+     ====================== */
+  @media (max-width: 480px) {
+    .container {
+      padding: 0.5rem;
+      max-width: 99vw;
+      margin-top: 60px;
+    }
+  
+    h2, .title {
+      font-size: 1.1rem;
+      margin-bottom: 0.6rem;
+    }
+  
+    .subtitle {
+      margin-top: 14px;
+      font-size: 15px;
+    }
+
+    .buttonGroup {
+      flex-direction: row;
+      align-items: center;
+      gap: 20px;
+    }
+
+  
+    .button {
+      font-size: 0.5rem;
+      padding: 8px 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      gap: 100px;
+    }
+  }

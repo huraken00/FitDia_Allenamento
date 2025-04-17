@@ -8,10 +8,7 @@ const DashboardAllenamento = () => {
   return (
     <div className={styles.container}>
 
-      <h2 className={styles.title}>Dashboard Allenamento</h2>
-      <p>Benvenuto nella tua dashboard allenamento!</p>
-
-      <h3 className={styles.subtitle}>Lista degli Allenamenti</h3>
+     
       <ListaAllenamenti />
 
       <div className={styles.buttonGroup}>

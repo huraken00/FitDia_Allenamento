@@ -1,54 +1,56 @@
-/* Register.module.css */
+/* Default styles (PC – larghezza >= 1025px) */
 .container {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9f9fb;
-  min-height: 100vh;
+  background-color: #ffffff;
+  height: 95vh; /* Cambiato da 100vw a 100vh */
   display: flex;
   justify-content: center;
   align-items: center;
+ 
 }
 
 .formBox {
-  background-color: white;
-  padding: 40px;
+  background-color: rgb(255, 255, 255);
+  padding: 20px; /* Ridotto padding */
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
+  width: 100vh;
+  width: 400px;
+  max-height: 80vh; /* Ridotto da 90vh a 80vh */
+  overflow-y: auto; /* Permette lo scroll solo nel form se necessario */
 }
 
 .title {
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 24px;
+  margin-bottom: 15px; /* Ridotto margin */
+  font-size: 22px; /* Ridotto font size */
   color: #1e1e1e;
 }
 
 .label {
   display: block;
-  font-size: 14px;
-  margin-bottom: 6px;
+  font-size: 13px;
+  margin-bottom: 4px; /* Ridotto margin */
   color: #333;
 }
 
 .input {
-  width: 100%;
-  padding: 12px;
+  width: 97%; /* Cambiato da 90% a 100% */
+  padding: 8px 12px;
   border: 1px solid #dcdcdc;
   border-radius: 8px;
   background-color: #f5f8ff;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
   font-size: 14px;
   transition: border 0.3s;
-}
-
-.input:focus {
-  border-color: #7b61ff;
-  outline: none;
+  box-sizing: border-box;
+  height: 36px;
+  min-width: 0;
+  display: block;
 }
 
 .button {
-  width: 100%;
+  width: 97%; /* Cambiato da 90% a 100% */
   background-color: #5f2eff;
   color: white;
   padding: 12px;
@@ -56,9 +58,18 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 5px;
   transition: background-color 0.3s ease;
+  text-decoration: none;
+  height: 36px;
 }
+
+.input:focus {
+  border-color: #7b61ff;
+  outline: none;
+}
+
+
 
 .button:hover {
   background-color: #4722d6;
@@ -77,20 +88,48 @@
   font-size: 14px;
   color: #4caf50;
 }
-@media (max-width: 480px) {
+
+/* Tablet: 481px <= larghezza <= 1024px */
+@media (min-width: 481px) and (max-width: 1024px) {
   .formBox {
-    padding: 20px;
-    border-radius: 8px;
+    padding: 30px;
+    max-width: 350px;
   }
 
   .title {
-    font-size: 20px;
-    margin-bottom: 20px;
+    font-size: 22px;
+    margin-bottom: 25px;
+  }
+
+  .input {
+    padding: 12px;
+    font-size: 14px;
+    height: 40px;
+  }
+
+  .button {
+    padding: 12px;
+    font-size: 16px;
+  }
+}
+
+/* Mobile: larghezza <= 480px */
+@media (max-width: 480px) {
+  .formBox {
+    padding: 15px;
+    border-radius: 8px;
+    max-width: 95vw;
+  }
+
+  .title {
+    font-size: 18px;
+    margin-bottom: 18px;
   }
 
   .input {
     padding: 10px;
     font-size: 13px;
+    height: 38px;
   }
 
   .button {

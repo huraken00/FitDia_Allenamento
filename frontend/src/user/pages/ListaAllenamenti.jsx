@@ -54,11 +54,13 @@ const ListaAllenamenti = () => {
       console.error(err);
     }
   };
-
+  
   return (
+    
     <div className={styles.container}>
-      <h3 className={styles.title}>Lista degli Allenamenti</h3>
       <ul className={styles.list}>
+        <h3 className={styles.title}>Lista degli Allenamenti</h3>
+        
         {allenamenti.map((allenamento) => (
           <li key={allenamento._id} className={styles.listItem}>
             <div className={styles.itemContent}>
@@ -72,13 +74,13 @@ const ListaAllenamenti = () => {
                 <button className={styles.button}>Modifica</button>
               </Link>{" "}
               <Link to={`/dettagli-allenamento/${allenamento._id}`} className={styles.link}>
-                <button className={styles.button}>Visualizza Allenamento</button>
+                <button className={styles.button}>Visualizza</button>
               </Link>
               <button
                 onClick={() => handleEliminaAllenamento(allenamento._id)}
                 className={styles.deleteButton}
               >
-                Elimina Allenamento
+                Elimina
               </button>
             </div>
           </li>

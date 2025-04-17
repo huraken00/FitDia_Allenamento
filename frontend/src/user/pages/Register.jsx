@@ -52,15 +52,15 @@ function Register() {
         <h2 className={styles.title}>Registrati su FitDia</h2>
 
         <label className={styles.label}>Username:</label>
-        <input className={styles.input} type="text" name="username" value={formData.username} onChange={handleChange} />
+        <input className={styles.input} type="username" name="username" value={formData.username} onChange={handleChange} />
         {errors.username && <p className={styles.error}>{errors.username}</p>}
 
         <label className={styles.label}>Nome:</label>
-        <input className={styles.input} type="text" name="nome" value={formData.nome} onChange={handleChange} />
+        <input className={styles.input} type="nome" name="nome" value={formData.nome} onChange={handleChange} />
         {errors.nome && <p className={styles.error}>{errors.nome}</p>}
 
         <label className={styles.label}>Cognome:</label>
-        <input className={styles.input} type="text" name="cognome" value={formData.cognome} onChange={handleChange} />
+        <input className={styles.input} type="cognome" name="cognome" value={formData.cognome} onChange={handleChange} />
         {errors.cognome && <p className={styles.error}>{errors.cognome}</p>}
 
         <label className={styles.label}>Email:</label>

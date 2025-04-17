@@ -9,7 +9,7 @@
   
   .profileButton {
     background-color: #5f2eff;
-    color: white;
+    color: rgb(255, 255, 255);
     padding: 8px 16px; /* Ridotto il padding del bottone */
     border: none;
     border-radius: 8px;
@@ -53,12 +53,13 @@
   .date {
     font-size: 12px;
     color: gray;
-    margin-left: 10px;
+    margin-left: 0.1%;
+    
   }
   
   .buttonGroup {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 6px; /* Ridotto lo spazio tra i bottoni */
     flex-wrap: wrap;
     margin-top: 6px; /* Ridotto il margine tra gli item */
@@ -70,8 +71,8 @@
   
   .button {
     background-color: #5f2eff;
-    color: white;
-    padding: 6px 12px; /* Ridotto il padding del bottone */
+    color: rgb(255, 255, 255);
+    padding: 2px 8px; /* Ridotto il padding del bottone */
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -80,7 +81,7 @@
   
   .button:hover {
     background-color: #4722d6;
-  }
+  } 
   
   .deleteButton {
     background-color: #e57373; /* Rosso meno acceso */
@@ -97,63 +98,82 @@
   }
   
   /* Media Queries per dispositivi mobili */
-  @media (max-width: 768px) {
+  @media (min-width: 481px) and (max-width: 1024px) {
+    .container {
+      padding: 10px;
+    }
+    
     .title {
       font-size: 20px;
+      margin-bottom: 8px;
     }
-  
-    .itemContent {
-      font-size: 14px; /* Ridotto la dimensione del testo per rendere tutto più compatto */
-    }
-  
-    .date {
-      font-size: 10px;
-    }
-  
-    .button {
-      padding: 6px 10px; /* Ridotto il padding per adattarsi meglio a dispositivi mobili */
-    }
-  
-    .profileButton {
-      padding: 6px 12px; /* Ridotto il padding */
-    }
-  
+    
     .listItem {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 4px 8px; /* Ulteriore riduzione del padding */
+      padding: 8px 10px;
+      margin: 4px 0;
     }
-  
+    
+    .itemContent {
+      font-size: 15px;
+    }
+    
+    .date {
+      font-size: 11px;
+      margin-left: 0.1%; /* Maggiore distanza dal nome */
+    }
+    
     .buttonGroup {
-      flex-direction: column;
-      gap: 4px; /* Ulteriore riduzione dello spazio tra i bottoni */
-      align-items: flex-start;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    
+    .button,
+    .deleteButton {
+      padding: 5px 10px;
+      font-size: 14px;
+      margin-right: 0.1px;
     }
   }
   
-  @media (max-width: 600px) {
-    .profileButton {
-      padding: 6px 10px; /* Ulteriore riduzione per i dispositivi più piccoli */
+  /* ======================
+     Media Queries per Mobile (larghezza <= 480px)
+     ====================== */
+  @media (max-width: 480px) {
+    .container {
+      padding: 5px;
     }
-  
+    
     .title {
       font-size: 18px;
+      margin-bottom: 6px;
     }
-  
-    .itemContent {
-      font-size: 12px; /* Ridotto la dimensione del testo */
-    }
-  
-    .date {
-      font-size: 8px; /* Ancora più piccolo per la data */
-    }
-  
-    .button {
-      padding: 6px 8px; /* Ridotto il padding per adattarsi ancora meglio su schermi piccoli */
-    }
-  
+    
     .listItem {
-      padding: 4px 8px; /* Ancora più compatti */
+      padding: 4px 8px;
+      margin: 3px 0;
     }
-  }
+    
+    .itemContent {
+      font-size: 14px;
+    }
+    
+    .date {
+      font-size: 10px;
+      margin-left: 0.1%; /* Distanza aumentata rispetto al nome */
+    }
+    
+    .buttonGroup {
+      flex-direction: column; 
+      gap: 4px;
+      margin-top: 4px; 
   
+    }
+    
+    .button,
+    .deleteButton {
+      padding: 4px 6px;
+      font-size: 13px;
+      margin-right: 0.1px;
+    }
+    
+  }
