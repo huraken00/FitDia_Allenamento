@@ -2,6 +2,8 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../shared/context/auth-context";
 import styles from './LoginUser.module.css';
+import ErrorMessage from "../../components/ErrorMessage";
+
 
 const LoginUser = () => {
   const [email, setEmail] = useState("");
@@ -56,8 +58,9 @@ const LoginUser = () => {
 
         <button className={styles.button} type="submit">Login</button>
 
-        {error && <p className={styles.error}>{error}</p>}
+        <ErrorMessage message={error} />
       </form>
+      
     </div>
   );
 };

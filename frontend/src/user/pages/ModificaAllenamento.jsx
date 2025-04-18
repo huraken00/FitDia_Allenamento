@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import AggiungiSerie from '../../components/AggiungiSerie';
 import styles from './ModificaAllenamento.module.css'; // Importa il modulo CSS
+import ErrorMessage from '../../components/ErrorMessage';
 
 const ModificaAllenamento = () => {
   const { id } = useParams();
@@ -201,7 +202,7 @@ const ModificaAllenamento = () => {
         </button>
       </div>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <ErrorMessage message={error} />
     </div>
   );
 };

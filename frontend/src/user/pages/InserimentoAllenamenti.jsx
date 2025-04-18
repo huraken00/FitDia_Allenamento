@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AggiungiSerie from "../../components/AggiungiSerie";
 import styles from './InserimentoAllenamenti.module.css'; // Importazione del modulo CSS
+import ErrorMessage from "../../components/ErrorMessage";
+
 
 const InserimentoAllenamenti = () => {
   const navigate = useNavigate();
@@ -23,7 +25,7 @@ const InserimentoAllenamenti = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!utenteId) {
-      console.error("ID utente non disponibile");
+      setError("ID utente non disponibile");
       return;
     }
 
@@ -42,11 +44,11 @@ const InserimentoAllenamenti = () => {
       if (res.ok) {
         setAllenamento((prev) => ({ ...prev, _id: data.allenamento._id }));
       } else {
-        setError(data.message || "Errore nella creazione dell'allenamento");
+        setError(data.message);
       }
     } catch (err) {
       setError("Errore nel salvataggio dell'allenamento.");
-      console.error(err);
+      
     }
   };
 
@@ -106,7 +108,7 @@ const InserimentoAllenamenti = () => {
 
       <button onClick={() => navigate("/dashboard-allenamento")} className={styles.finishButton}>Termina</button>
 
-      {error && <p className={styles.error}>{error}</p>}
+      <ErrorMessage message={error} />
     </div>
   );
 };

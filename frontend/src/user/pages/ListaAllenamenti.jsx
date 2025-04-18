@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import styles from "./ListaAllenamenti.module.css"; // Assicurati di avere il CSS appropriato
+import styles from "./ListaAllenamenti.module.css";
+import ErrorMessage from "../../components/ErrorMessage";
 
 const ListaAllenamenti = () => {
   const [allenamenti, setAllenamenti] = useState([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchAllenamenti();
@@ -14,53 +16,55 @@ const ListaAllenamenti = () => {
       const utenteId = localStorage.getItem("userId");
 
       if (!utenteId) {
-        throw new Error("ID utente non trovato");
+        throw new Error("ID utente non trovato nel localStorage");
       }
-
-      console.log("Fetching allenamenti per utente:", utenteId); // DEBUG
 
       const res = await fetch(`http://localhost:3001/api/allenamenti/${utenteId}`);
 
-      if (!res.ok) {
-        throw new Error("Errore nel recupero degli allenamenti");
-      }
-
       const data = await res.json();
-      console.log("Allenamenti ricevuti:", data); // DEBUG
       setAllenamenti(data);
+      
     } catch (err) {
-      console.error("Errore nel recupero degli allenamenti:", err);
+
+      setError("Errore nel recupero degli allenamenti");
     }
   };
 
   const handleEliminaAllenamento = async (id) => {
     const conferma = window.confirm("Vuoi eliminare questo allenamento?");
     if (!conferma) return;
-
+  
     try {
       const res = await fetch(`http://localhost:3001/api/allenamenti/${id}`, {
         method: "DELETE",
       });
-
+  
+      const data = await res.json();
+  
       if (res.ok) {
         setAllenamenti((prev) => prev.filter((a) => a._id !== id));
         alert("Allenamento eliminato");
       } else {
-        alert("Allenamento non eliminato");
-        const data = await res.json();
-        console.log(data.message);
+        setError(data.message || "Errore durante l'eliminazione dell'allenamento");
       }
     } catch (err) {
-      console.error(err);
+      setError("Errore di rete o del server");
     }
   };
   
+
   return (
-    
     <div className={styles.container}>
+      <h3 className={styles.title}>Lista degli Allenamenti</h3>
+
+      {/* Mostra l'errore se presente */}
+      <ErrorMessage message={error} />
+
+      {allenamenti.length === 0 && !error && (
+        <p>Nessun allenamento disponibile.</p>
+      )}
+
       <ul className={styles.list}>
-        <h3 className={styles.title}>Lista degli Allenamenti</h3>
-        
         {allenamenti.map((allenamento) => (
           <li key={allenamento._id} className={styles.listItem}>
             <div className={styles.itemContent}>
@@ -72,7 +76,7 @@ const ListaAllenamenti = () => {
             <div className={styles.buttonGroup}>
               <Link to={`/modifica-allenamento/${allenamento._id}`} className={styles.link}>
                 <button className={styles.button}>Modifica</button>
-              </Link>{" "}
+              </Link>
               <Link to={`/dettagli-allenamento/${allenamento._id}`} className={styles.link}>
                 <button className={styles.button}>Visualizza</button>
               </Link>
@@ -91,4 +95,3 @@ const ListaAllenamenti = () => {
 };
 
 export default ListaAllenamenti;
-

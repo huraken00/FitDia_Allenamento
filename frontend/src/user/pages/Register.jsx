@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Register.module.css';
 import validateForm from "../../shared/utils/validateForm";
+import ErrorMessage from '../../components/ErrorMessage';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -20,6 +21,7 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
     const validationErrors = validateForm(formData);
 
     if (Object.keys(validationErrors).length === 0) {
@@ -52,30 +54,61 @@ function Register() {
         <h2 className={styles.title}>Registrati su FitDia</h2>
 
         <label className={styles.label}>Username:</label>
-        <input className={styles.input} type="username" name="username" value={formData.username} onChange={handleChange} />
+        <input
+          className={styles.input}
+          type="username"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+        />
         {errors.username && <p className={styles.error}>{errors.username}</p>}
 
         <label className={styles.label}>Nome:</label>
-        <input className={styles.input} type="nome" name="nome" value={formData.nome} onChange={handleChange} />
+        <input
+          className={styles.input}
+          type="nome"
+          name="nome"
+          value={formData.nome}
+          onChange={handleChange}
+        />
         {errors.nome && <p className={styles.error}>{errors.nome}</p>}
 
         <label className={styles.label}>Cognome:</label>
-        <input className={styles.input} type="cognome" name="cognome" value={formData.cognome} onChange={handleChange} />
+        <input
+          className={styles.input}
+          type="cognome"
+          name="cognome"
+          value={formData.cognome}
+          onChange={handleChange}
+        />
         {errors.cognome && <p className={styles.error}>{errors.cognome}</p>}
 
         <label className={styles.label}>Email:</label>
-        <input className={styles.input} type="email" name="email" value={formData.email} onChange={handleChange} />
+        <input
+          className={styles.input}
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+        />
         {errors.email && <p className={styles.error}>{errors.email}</p>}
 
         <label className={styles.label}>Password:</label>
-        <input className={styles.input} type="password" name="password" value={formData.password} onChange={handleChange} />
+        <input
+          className={styles.input}
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+        />
         {errors.password && <p className={styles.error}>{errors.password}</p>}
 
         <button className={styles.button} type="submit">Registrati</button>
-        {message && <p className={styles.message}>{message}</p>}
+        <ErrorMessage message={message} />
       </form>
     </div>
   );
 }
 
 export default Register;
+

@@ -37,6 +37,8 @@ import InserimentoEsercizi from "./esperto_allenamento/InserimentoEsercizi";
 import ModificaEsercizio from "./esperto_allenamento/ModificaEsercizio";
 import ProfiloEsperto from "./esperto_allenamento/ProfiloEsperto";
 
+
+
 // PrivateRoute: Protegge le pagine a seconda del ruolo
 const PrivateRoute = ({ children, requiredRole }) => {
   const { isLoggedIn, role } = useContext(AuthContext);

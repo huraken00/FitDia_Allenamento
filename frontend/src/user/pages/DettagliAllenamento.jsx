@@ -1,6 +1,11 @@
-import { useNavigate,useParams, Link } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+<<<<<<< Updated upstream
 import styles from './DettagliAllenamento.module.css'; // Importa il modulo CSS
+=======
+import styles from './DettagliAllenamento.module.css';
+import ErrorMessage from '../../components/ErrorMessage';
+>>>>>>> Stashed changes
 
 const DettagliAllenamento = () => {
   const { id } = useParams();
@@ -44,11 +49,10 @@ const DettagliAllenamento = () => {
           setAllenamento(data);
           setSerie(serieDettagliate);
         } else {
-          setError(data.message || "Errore nel caricamento");
+          setError(data.message);
         }
       } catch (err) {
-        console.error(err);
-        setError("Errore nel caricamento dell'allenamento");
+        setError("Errore di rete nel caricamento dell'allenamento.");
       }
     };
 
@@ -59,7 +63,6 @@ const DettagliAllenamento = () => {
     try {
       const utenteId = localStorage.getItem("userId");
 
-      // 1. Crea nuovo allenamento
       const resAllenamento = await fetch(`http://localhost:3001/api/allenamenti/${utenteId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -68,18 +71,16 @@ const DettagliAllenamento = () => {
           appuntiAllenamento: allenamento.appuntiAllenamento || "",
           dataCreazione: allenamento.dataCreazione,
           id_utente: utenteId,
-          serie: [], // la aggiungeremo dopo
+          serie: [],
         }),
       });
 
       const nuovo = await resAllenamento.json();
-      
 
       if (!resAllenamento.ok) {
         throw new Error(nuovo.message || "Errore nella duplicazione dell'allenamento");
       }
 
-      // 2. Duplica tutte le serie
       for (const s of serie) {
         await fetch("http://localhost:3001/api/serie", {
           method: "POST",
@@ -93,31 +94,22 @@ const DettagliAllenamento = () => {
             Ripetizioni: s.Ripetizioni || null,
           }),
         });
-        alert("Allenamento avviato con successo");
       }
-      
-    navigate(`/dettagli-allenamento/${nuovo.allenamento._id}`)
+
+      alert("Allenamento avviato con successo");
+      navigate(`/dettagli-allenamento/${nuovo.allenamento._id}`);
     } catch (err) {
-      console.error("Errore nell'avvio dell'allenamento:", err);
-      alert("Errore durante la duplicazione dell'allenamento");
+      setError(err.message);
     }
   };
 
-  if (!allenamento) return <p>Caricamento...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (!allenamento && !error) return <p>Caricamento...</p>;
 
   return (
     <div className={styles.container}>
       <h2>📋 Dettagli Allenamento</h2>
-      <p><strong>Nome:</strong> {allenamento.nome}</p>
-      <p><strong>Allenamento eseguito il:</strong> {new Date(allenamento.createdAt).toLocaleDateString()}</p>
-      <p><strong>Data Creazione Allenamento:</strong> {new Date(allenamento.dataCreazione).toLocaleDateString()}</p>
-      <p><strong>Note:</strong> {allenamento.appuntiAllenamento}</p>
-      <Link to={`/modifica-allenamento/${allenamento._id}`}>
-        <button>Modifica</button>
-      </Link>
-      <button onClick={avviaAllenamento}>Avvia Allenamento</button>
 
+<<<<<<< Updated upstream
       <h3>🏋️‍♂️ Serie</h3>
       {serie.length === 0 ? (
         <p>Nessuna serie registrata.</p>
@@ -132,19 +124,44 @@ const DettagliAllenamento = () => {
                 )}
 
             <p><strong>Sport:</strong> {s.sport.join(", ") || "N/A"}</p>
+=======
+      <ErrorMessage message={error} />
+>>>>>>> Stashed changes
 
-            <div>
-              <strong>Parametri:</strong>
-              <ul>
-                {s.parametri.map((p, i) => (
-                  <li key={i}>
-                    {p.nome}: <strong>{p.valore}</strong>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        ))
+      {allenamento && (
+        <>
+          <p><strong>Nome:</strong> {allenamento.nome}</p>
+          <p><strong>Allenamento eseguito il:</strong> {new Date(allenamento.createdAt).toLocaleDateString()}</p>
+          <p><strong>Data Creazione Allenamento:</strong> {new Date(allenamento.dataCreazione).toLocaleDateString()}</p>
+          <p><strong>Note:</strong> {allenamento.appuntiAllenamento}</p>
+          <Link to={`/modifica-allenamento/${allenamento._id}`}>
+            <button>Modifica</button>
+          </Link>
+          <button onClick={avviaAllenamento}>Avvia Allenamento</button>
+
+          <h3>🏋️‍♂️ Serie</h3>
+          {serie.length === 0 ? (
+            <p>Nessuna serie registrata.</p>
+          ) : (
+            serie.map((s) => (
+              <div key={s._id} className={styles.serieBox}>
+                <p><strong>Esercizio:</strong> {s.esercizio}</p>
+                <p><strong>Sport:</strong> {s.sport.join(", ") || "N/A"}</p>
+
+                <div>
+                  <strong>Parametri:</strong>
+                  <ul>
+                    {s.parametri.map((p, i) => (
+                      <li key={i}>
+                        {p.nome}: <strong>{p.valore}</strong>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))
+          )}
+        </>
       )}
     </div>
   );

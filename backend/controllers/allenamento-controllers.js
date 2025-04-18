@@ -107,7 +107,6 @@ exports.getAllenamentoDettagli = async (req, res) => {
     return res.status(200).json({ ...allenamento.toObject(), serie });
 
   } catch (err) {
-    console.error("Errore durante il recupero dei dettagli dell'allenamento:", err);
     return res.status(500).json({ message: "Errore interno del server" });
   }
 };

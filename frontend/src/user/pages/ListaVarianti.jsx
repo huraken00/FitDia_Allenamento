@@ -1,29 +1,28 @@
 import React, { useEffect, useState } from "react";
-
 import styles from "./ListaVarianti.module.css";
+import ErrorMessage from "../../components/ErrorMessage"; // importa il componente
 
 const ListaVarianti = () => {
   const [varianti, setVarianti] = useState([]);
   const [filter, setFilter] = useState("tutte");
+  const [error, setError] = useState(""); // nuovo stato per errore
   const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const fetchVarianti = async () => {
       try {
+        // 🔧 Usa un endpoint errato per testare ErrorMessage:
         const res = await fetch(`http://localhost:3001/api/varianti/utente/${userId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
 
-        if (!res.ok) {
-          throw new Error(`Errore nel recupero delle varianti: ${res.status}`);
-        }
-
         const data = await res.json();
         setVarianti(data);
+        setError(""); // rimuove eventuali errori precedenti
       } catch (err) {
-        console.error("Errore nel recupero delle varianti:", err);
+        setError("Errore nel recupero delle varianti:");
       }
     };
 
@@ -31,6 +30,7 @@ const ListaVarianti = () => {
       fetchVarianti();
     } else {
       console.log("User ID non trovato");
+      setError("User ID non trovato");
     }
   }, [userId]);
 
@@ -45,6 +45,9 @@ const ListaVarianti = () => {
   return (
     <div className={styles.listaVariantiContainer}>
       <h2>Le mie varianti generate</h2>
+
+      {/* Mostra l'errore se presente */}
+      <ErrorMessage message={error} />
 
       <div className={styles.filtroContainer}>
         <label htmlFor="filter">Filtra per stato:</label>
@@ -61,7 +64,8 @@ const ListaVarianti = () => {
         </select>
       </div>
 
-      {filteredVarianti.length === 0 ? (
+      {/* Mostra messaggio se non ci sono varianti e nessun errore */}
+      {filteredVarianti.length === 0 && !error ? (
         <p className={styles.noVarianti}>Nessuna variante disponibile.</p>
       ) : (
         filteredVarianti.map((v) => (

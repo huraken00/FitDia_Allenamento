@@ -11,6 +11,7 @@ const allenamentoSchema = new Schema(
     nome: { 
       type: String, 
       required: true // Nome dell'allenamento
+     
     },
     dataCreazione: { 
       type: Date, 

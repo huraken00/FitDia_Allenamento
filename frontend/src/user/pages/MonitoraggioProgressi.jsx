@@ -1,15 +1,9 @@
 import { useEffect, useState } from "react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  CartesianGrid
-} from "recharts";
+
 import styles from "./MonitoraggioProgressi.module.css"; // Importa il modulo CSS
+import ErrorMessage from "../../components/ErrorMessage";
+import GraficoProgressi from "../../components/GraficoProgressi"; // <-- aggiungi questa riga
+
 
 const MonitoraggioProgressi = () => {
   const [esercizi, setEsercizi] = useState([]);
@@ -23,6 +17,7 @@ const MonitoraggioProgressi = () => {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [parametriEsercizio, setParametriEsercizio] = useState([]); // Stato per memorizzare i parametri dell'esercizio
+
 
   const userId = localStorage.getItem('userId'); // ID dell'utente
 
@@ -156,29 +151,22 @@ const MonitoraggioProgressi = () => {
 
       {/* Caricamento o errori */}
       {loading && <p>Caricamento progressi...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <ErrorMessage message={error} />
 
       {/* Grafico */}
-      {selectedParametro && dati.length > 0 && (
-        <div className={styles.chartContainer}>
-          <h3>📈 Progressi di {nomeEsercizio} - {selectedParametro}</h3>
-          <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={dati}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="data" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey={selectedParametro}
-                stroke="#8884d8"
-                strokeWidth={2}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      )}
+      {selectedParametro && (
+  dati.length > 0 ? (
+    <GraficoProgressi
+      dati={dati}
+      parametro={selectedParametro}
+      nomeEsercizio={nomeEsercizio}
+    />
+  ) : (
+    <ErrorMessage message="Non ci sono parametri da visualizzare per le date scelte." />
+  )
+)}
+
+
     </div>
   );
 };
