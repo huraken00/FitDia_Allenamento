@@ -32,8 +32,9 @@ const ModificaAllenamento = () => {
 
                 return {
                   ...s,
-                  sport: extra.sport || [],
                   esercizio: extra.nomeEsercizio,
+                  esercizioCancellato: extra.esercizioCancellato,
+                  sport: extra.sport || [],
                   parametri
                 };
               } catch (err) {
@@ -160,6 +161,11 @@ const ModificaAllenamento = () => {
         {serie.map((s, index) => (
           <div key={s._id} className={styles.serieBox}>
             <p><strong>Esercizio:</strong> {s.esercizio}</p>
+            { s.esercizioCancellato && (
+               <p className={styles.warning}>
+                ⚠️ Questo esercizio è stato eliminato e non sarà più disponibile nei nuovi allenamenti.
+                 </p>
+                )}
             <p><strong>Sport:</strong> {s.sport?.join(", ") || "N/A"}</p>
 
             <div>

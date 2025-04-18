@@ -99,6 +99,7 @@ const App = () => {
             <Route path="/lista-esercizi" element={<PrivateRoute requiredRole="esperto"><ListaEsercizi /></PrivateRoute>} />
             <Route path="/inserimento-esercizi" element={<PrivateRoute requiredRole="esperto"><InserimentoEsercizi /></PrivateRoute>} />
             <Route path="/modifica-esercizio/:id" element={<PrivateRoute requiredRole="esperto"><ModificaEsercizio /></PrivateRoute>} />
+            <Route path="/modifica-esercizio" element={<PrivateRoute requiredRole="esperto"><ModificaEsercizio /></PrivateRoute>} />
             <Route path="/lista-varianti" element={<PrivateRoute requiredRole="esperto"><ListaVariantiEsperto /></PrivateRoute>} />
           </Routes>
         </Layout>

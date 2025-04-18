@@ -2,10 +2,6 @@ import { useNavigate,useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import styles from './DettagliAllenamento.module.css'; // Importa il modulo CSS
 
-
-
-
-
 const DettagliAllenamento = () => {
   const { id } = useParams();
   const [allenamento, setAllenamento] = useState(null);
@@ -34,6 +30,7 @@ const DettagliAllenamento = () => {
                 return {
                   ...s,
                   esercizio: extra.nomeEsercizio,
+                  esercizioCancellato: extra.esercizioCancellato,
                   sport: extra.sport || [],
                   parametri
                 };
@@ -128,6 +125,12 @@ const DettagliAllenamento = () => {
         serie.map((s) => (
           <div key={s._id} className={styles.serieBox}>
             <p><strong>Esercizio:</strong> {s.esercizio}</p>
+            {s.esercizioCancellato && (
+                <p style={{ color: "red", fontWeight: "bold" }}>
+                  ⚠️ Questo esercizio è stato eliminato e non sarà disponibile nei prossimi allenamenti.
+                  </p>
+                )}
+
             <p><strong>Sport:</strong> {s.sport.join(", ") || "N/A"}</p>
 
             <div>

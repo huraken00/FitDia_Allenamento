@@ -8,6 +8,7 @@ const Allenamento = require('../models/allenamento'); // Modello per allenamento
 exports.getAllEsercizi = async (req, res) => {
   try {
     const esercizi = await Esercizio.aggregate([
+      { $match: { cancellato: { $ne: true } } },
       {
         $lookup: {
           from: "SportEsercizio",
@@ -159,19 +160,22 @@ exports.updateEsercizio = async (req, res) => {
 
 
 // Funzione per eliminare un esercizio e le sue relazioni
-exports.deleteEsercizio = async (req, res) => {
+exports.softDeleteEsercizio = async (req, res) => {
   try {
-    const esercizioEliminato = await Esercizio.findByIdAndDelete(req.params.id);
-    if (!esercizioEliminato) {
+    const esercizioId = req.params.id;
+    const esercizio = await Esercizio.findByIdAndUpdate(
+      esercizioId,
+      { cancellato: true },
+      { new: true }
+    );
+
+    if (!esercizio) {
       return res.status(404).json({ message: "Esercizio non trovato" });
     }
 
-    await SportEsercizio.deleteMany({ id_esercizio: req.params.id });
-    await ParametroEsercizio.deleteMany({ id_esercizio: req.params.id });
-
-    return res.status(200).json({ message: "Esercizio eliminato con successo" });
+    return res.status(200).json({ message: "Esercizio marcato come cancellato" });
   } catch (err) {
-    return res.status(500).json({ message: "Errore nella cancellazione dell'esercizio", error: err });
+    return res.status(500).json({ message: "Errore nella cancellazione soft", error: err });
   }
 };
 

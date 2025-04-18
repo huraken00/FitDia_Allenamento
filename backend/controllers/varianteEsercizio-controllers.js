@@ -6,21 +6,31 @@ const Variante=require("../models/variante-esercizio");
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 exports.inserisciVariante = async (req, res) => {
-  const { nome, sport, luogo, livello, userId } = req.body; // userId passato nel body
+  const { nome, sport, luogo, livello, userId } = req.body;
 
-  const prompt = `Come un esperto di sport, genera una descrizione semplice (massimo 100 parole) di una variante per l'esercizio "${nome}" adattata a chi pratica ${sport}, si allena in ${luogo} ed è di livello ${livello}.`;
+  const prompt = `Come un esperto di sport, crea una variante originale dell'esercizio "${nome}" adatta a chi pratica ${sport}, si allena in ${luogo} ed è di livello ${livello}.
+Rispondi nel seguente formato:
+Nome: <nome descrittivo della variante>
+Descrizione: <una descrizione semplice (massimo 100 parole)>`;
 
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
     const result = await model.generateContent(prompt);
     const response = await result.response;
-    const descrizione = response.text(); // Potresti voler fare un controllo su response.text()
+    const text = response.text();
 
-    // Crea la variante associata all'utente
+    // Regex robusto con tolleranza a spazi, trattini, ecc.
+    const nomeMatch = text.match(/(?:Nome|Titolo)\s*[:\-–]\s*(.+)/i);
+    const descrizioneMatch = text.match(/Descrizione\s*[:\-–]\s*([\s\S]+)/i);
+
+    const nomeGenerato = nomeMatch?.[1]?.trim() || `${nome} Variante`;
+    const descrizione = descrizioneMatch?.[1]?.trim() || "Descrizione non disponibile";
+
+    // Salva nel DB
     const nuovaVariante = new Variante({
-      nome,
+      nome: nomeGenerato,
       descrizione,
-      utente: userId, // Associa l'ID dell'utente
+      utente: userId,
     });
 
     await nuovaVariante.save();
@@ -31,6 +41,8 @@ exports.inserisciVariante = async (req, res) => {
     res.status(500).json({ error: "Errore nella generazione della variante" });
   }
 };
+
+
 exports.getVariantiByUtente = async (req, res) => {
     const userId = req.params.userId; // Assumiamo che l'ID utente venga passato come parametro
     try {

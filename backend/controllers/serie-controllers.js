@@ -57,13 +57,14 @@ exports.getPropEsercizio = async (req, res) => {
     const sportEsercizio = await SportEsercizio.find({ id_esercizio: req.params.id_esercizio })
       .populate("id_sport", "nome");
 
-    const esercizio = await Esercizio.findById(req.params.id_esercizio).select("nome");
+      const esercizio = await Esercizio.findById(req.params.id_esercizio).select("nome cancellato");
 
     // Se ci sono più sport associati, crea un array con i nomi degli sport
     const sportNames = sportEsercizio.map(se => se.id_sport.nome);
     const parametriNames=parametri.map(p=>p.id_parametro);
     res.json({
       nomeEsercizio: esercizio ? esercizio.nome : "Sconosciuto",
+      esercizioCancellato: esercizio ? esercizio.cancellato : true,
       sport: sportNames.length > 0 ? sportNames : ["Sconosciuto"], // Restituisci un array di sport
       parametri: parametriNames.length > 0 ? parametriNames :["Sconosciuto"],
     });

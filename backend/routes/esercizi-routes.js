@@ -5,7 +5,7 @@ const {
   addEsercizio, 
   getEsercizioById, 
   updateEsercizio, 
-  deleteEsercizio,
+  softDeleteEsercizio,
   getProgressiEsercizio,
   getEserciziUtente,
   getParametriById
@@ -24,7 +24,7 @@ router.post("/", addEsercizio);
 router.put("/:id", updateEsercizio);
 
 // Rotta per eliminare un esercizio
-router.delete("/:id", deleteEsercizio);
+router.delete("/:id", softDeleteEsercizio);
 
 router.get("/esercizi-utente/:userId", getEserciziUtente);
 
