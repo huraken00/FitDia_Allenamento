@@ -1,90 +1,117 @@
-/* Contenitore principale */
+/* ==========================================
+   Default styles (PC – larghezza >= 1025px)
+=========================================== */
 .container {
-    padding: 2rem;
-    max-width: 600px;
-    margin: 0 auto;
-    margin-top: 100px;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  margin-top: 100px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.title {
+  font-size: 2rem;
+  text-align: center;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup {
+  margin-bottom: 1rem;
+}
+
+.label {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.input {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  border-color: #4CAF50;
+}
+
+.submitButton {
+  padding: 0.8rem;
+  font-size: 1.1rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submitButton:hover {
+  background-color: #45a049;
+}
+
+/* ==========================================
+   Media Queries per Tablet (481px <= larghezza <= 1024px)
+=========================================== */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .container {
+    padding: 1.5rem;
+    max-width: 550px;
+    margin-top: 80px;
   }
   
-  /* Titolo della pagina */
   .title {
-    font-size: 2rem;
-    text-align: center;
-    color: #333;
-    margin-bottom: 1.5rem;
+    font-size: 1.75rem;
+    margin-bottom: 1.2rem;
   }
   
-  /* Form */
-  .form {
-    display: flex;
-    flex-direction: column;
+  .input {
+    padding: 0.75rem;
+    font-size: 0.95rem;
   }
   
-  /* Gruppo di input */
-  .inputGroup {
+  .submitButton {
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+}
+
+/* ==========================================
+   Media Queries per Mobile (larghezza <= 480px)
+=========================================== */
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem;
+    max-width: 95%;
+    margin-top: 60px;
+  }
+  
+  .title {
+    font-size: 1.5rem;
     margin-bottom: 1rem;
   }
   
-  /* Etichetta per input */
-  .label {
-    font-size: 1rem;
-    color: #333;
-    margin-bottom: 0.5rem;
-    display: block;
-  }
-  
-  /* Campo di input */
   .input {
-    width: 100%;
-    padding: 0.8rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-    transition: border-color 0.3s;
+    padding: 0.7rem;
+    font-size: 0.9rem;
   }
   
-  .input:focus {
-    border-color: #4CAF50;
-  }
-  
-  /* Bottone di invio */
   .submitButton {
-    padding: 0.8rem;
-    font-size: 1.1rem;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    padding: 0.7rem;
+    font-size: 0.9rem;
   }
-  
-  .submitButton:hover {
-    background-color: #45a049;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .container {
-      padding: 1rem;
-      margin-top: 60px;
-    }
-  
-    .title {
-      font-size: 1.5rem;
-    }
-  
-    .input {
-      font-size: 0.9rem;
-    }
-  
-    .submitButton {
-      font-size: 1rem;
-      padding: 0.7rem;
-    }
-  }
-  
+}

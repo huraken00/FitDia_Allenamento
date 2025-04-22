@@ -1,100 +1,136 @@
+/* ==========================================
+   Default styles (PC – larghezza >= 1025px)
+=========================================== */
 .listaVariantiContainer {
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    margin-top: 100px; /* Per dare spazio sopra il contenuto */
-  }
-  
-  .titoloPagina {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-    margin-bottom: 1rem;
-  }
-  
-  .noVarianti {
-    font-size: 1.2rem;
-    color: #888;
-    text-align: center;
-  }
-  
-  .varianteCard {
-    border: 1px solid #ddd;
-    border-radius: 8px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+.titoloPagina {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.noVarianti {
+  font-size: 1.2rem;
+  color: #888;
+  text-align: center;
+}
+
+.varianteCard {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.varianteCard h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.varianteCard p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.bottoniContainer {
+  margin-top: 1rem;
+}
+
+.approvaButton,
+.scartaButton {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.approvaButton {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+}
+
+.approvaButton:hover {
+  background-color: #45a049;
+}
+
+.scartaButton {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  margin-left: 1rem;
+}
+
+.scartaButton:hover {
+  background-color: #e53935;
+}
+
+/* ==========================================
+   Media Queries per Tablet (481px <= larghezza <= 1024px)
+=========================================== */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .listaVariantiContainer {
     padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    width: 100%;
-    max-width: 600px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
+    max-width: 900px;
+    margin-top: 80px;
   }
-  
-  .varianteCard h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    color: #333;
+
+  .titoloPagina {
+    font-size: 1.75rem;
+    margin-bottom: 1.2rem;
   }
-  
-  .varianteCard p {
-    font-size: 1rem;
-    color: #555;
+
+  .varianteCard {
+    padding: 1.2rem;
+    max-width: 500px;
   }
-  
-  .bottoniContainer {
-    margin-top: 1rem;
-  }
-  
+
   .approvaButton,
   .scartaButton {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    padding: 0.45rem 0.9rem;
+    font-size: 1.2rem !important;
   }
-  
-  .approvaButton {
-    background-color: #4caf50;
-    color: white;
-    border: none;
+}
+
+/* ==========================================
+   Media Queries per Mobile (larghezza <= 480px)
+=========================================== */
+@media (max-width: 480px) {
+  .listaVariantiContainer {
+    padding: 1rem;
+    max-width: 95%;
+    margin-top: 60px;
   }
-  
-  .approvaButton:hover {
-    background-color: #45a049;
+
+  .titoloPagina {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
   }
-  
+
+  .varianteCard {
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  .approvaButton,
   .scartaButton {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    margin-left: 1rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 1rem !important;
   }
-  
-  .scartaButton:hover {
-    background-color: #e53935;
-  }
-  
-  @media (max-width: 768px) {
-    .listaVariantiContainer {
-      padding: 1rem;
-    }
-  
-    .varianteCard {
-      width: 100%;
-      padding: 1rem;
-    }
-  
-    .titoloPagina {
-      font-size: 1.5rem;
-    }
-  
-    .approvaButton,
-    .scartaButton {
-      font-size: 0.9rem;
-    }
-  }
-  
+}

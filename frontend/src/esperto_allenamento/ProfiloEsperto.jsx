@@ -40,7 +40,7 @@ const ProfiloEsperto = () => {
           <label htmlFor="username" className={styles.label}>Username:</label>
           <input
             id="username"
-            type="text"
+            type="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             className={styles.input}

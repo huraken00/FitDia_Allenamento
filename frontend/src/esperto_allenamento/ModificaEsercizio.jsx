@@ -133,13 +133,13 @@ const ModificaEsercizio = () => {
       <form onSubmit={handleSubmit}>
         <label>Nome:</label>
         <input
-          type="text"
+          type="nome"
           value={esercizio.nome}
           onChange={(e) => setEsercizio({ ...esercizio, nome: e.target.value })}
         />
         <label>Descrizione:</label>
         <input
-          type="text"
+          type="descrizione"
           value={esercizio.descrizione}
           onChange={(e) => setEsercizio({ ...esercizio, descrizione: e.target.value })}
         />

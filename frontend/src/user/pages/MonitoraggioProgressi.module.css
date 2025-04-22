@@ -1,93 +1,153 @@
-/* Container principale */
+/* ==========================================
+   Default styles (PC – larghezza >= 1025px)
+=========================================== */
 .titolo {
-    margin-top: 80px; /* Regola questo valore in base all'altezza dell'header */
+    margin-top: 80px; /* Spazio per l'header */
     font-size: 2rem;
     text-align: center;
     color: #333;
   }
-.monitoraggioProgressiContainer {
+  
+  .monitoraggioProgressiContainer {
     padding: 1rem;
     max-width: 1200px;
     margin: 0 auto;
-}
-
-/* Titolo */
-.monitoraggioProgressiContainer h2 {
+  }
+  
+  .monitoraggioProgressiContainer h2 {
     text-align: center;
     font-size: 2rem;
     color: #333;
     margin-bottom: 1rem;
-}
-
-/* Sezione Select per l'esercizio */
-.selectContainer {
+  }
+  
+  /* Sezione Select per l'esercizio */
+  .selectContainer {
     margin-bottom: 1rem;
-}
-
-.selectContainer label {
+  }
+  
+  .selectContainer label {
     font-weight: bold;
     display: block;
     margin-bottom: 0.5rem;
-}
-
-.selectContainer select {
+  }
+  
+  .selectContainer select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 16px;
     transition: border-color 0.3s ease;
-}
-
-.selectContainer select:focus {
+  }
+  
+  .selectContainer select:focus {
     border-color: #5f2eff;
     outline: none;
-}
-
-/* Sezione selezione data */
-.dateInputContainer {
+  }
+  
+  /* Sezione per le date */
+  .dateInputContainer {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
     margin-top: 1rem;
-}
-
-.dateInputContainer label {
+  }
+  
+  .dateInputContainer label {
     font-weight: bold;
-}
-
-.dateInputContainer input {
-    width: 45%;
+  }
+  
+  .dateInputContainer input {
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 16px;
     transition: border-color 0.3s ease;
-}
-
-.dateInputContainer input:focus {
+  }
+  
+  .dateInputContainer input:focus {
     border-color: #5f2eff;
     outline: none;
-}
-
-/* Sezione per il grafico */
-.chartContainer {
+  }
+  
+  /* Sezione per il Grafico */
+  .chartContainer {
     margin-top: 2rem;
     text-align: center;
-}
-
-/* Responsivo */
-@media (max-width: 768px) {
-    .dateInputContainer {
-        flex-direction: column;
-        gap: 0.5rem;
+  }
+  
+  /* ==========================================
+     Tablet: 481px <= larghezza <= 1024px
+  =========================================== */
+  @media (min-width: 481px) and (max-width: 1024px) {
+    .titolo {
+      margin-top: 60px;
+      font-size: 1.75rem;
+    }
+    
+    .monitoraggioProgressiContainer {
+      padding: 0.8rem;
+      max-width: 1000px;
+      margin-top: 60px;
     }
 
-    .dateInputContainer input {
-        width: 100%;
+    
+    .monitoraggioProgressiContainer h2 {
+      font-size: 1.75rem;
+      margin-bottom: 0.8rem;
     }
-
+    
     .selectContainer select {
-        width: 100%;
+      padding: 8px;
+      font-size: 15px;
     }
-}
+    
+    .dateInputContainer {
+      flex-direction: row;
+      gap: 0.8rem;
+    }
+    
+    .dateInputContainer input {
+      font-size: 15px;
+      padding: 7px;
+      width: 48%;
+    }
+  }
+  
+  /* ==========================================
+     Mobile: larghezza <= 480px
+  =========================================== */
+  @media (max-width: 480px) {
+    .titolo {
+      margin-top: 40px;
+      font-size: 1.5rem;
+    }
+    
+    .monitoraggioProgressiContainer {
+      padding: 0.5rem;
+      max-width: 95%;
+      margin-top: 40px;
+    }
+    
+    .monitoraggioProgressiContainer h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.8rem;
+    }
+    
+    .selectContainer select {
+      padding: 6px;
+      font-size: 14px;
+    }
+    
+    .dateInputContainer {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .dateInputContainer input {
+      font-size: 14px;
+      padding: 6px;
+      width: 100%;
+    }
+  }

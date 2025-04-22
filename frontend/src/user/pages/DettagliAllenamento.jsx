@@ -1,6 +1,7 @@
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import styles from './DettagliAllenamento.module.css'; // Importa il modulo CSS
+
+import styles from './DettagliAllenamento.module.css';
 import ErrorMessage from '../../components/ErrorMessage';
 
 

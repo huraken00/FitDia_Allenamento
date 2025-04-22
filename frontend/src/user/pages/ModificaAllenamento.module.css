@@ -1,181 +1,236 @@
-/* ModificaAllenamento.module.css */
-
-/* Contenitore principale */
-/* ModificaAllenamento.module.css */
-
-/* Contenitore principale */
+/* ==========================================
+   Default styles (PC – larghezza >= 1025px)
+=========================================== */
 .container {
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-top: 120px; /* Aggiungi un padding superiore per evitare che il titolo venga coperto */
+  background-color: #ffffff;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 120px; /* Spazio per l'header */
+  box-sizing: border-box;
+}
+
+/* Dettagli dell'allenamento */
+.dettagliAllenamento {
+  margin-bottom: 2rem;
+}
+
+.dettagliAllenamento label {
+  font-weight: bold;
+  display: block;
+  margin: 1rem 0 0.5rem;
+}
+
+.dettagliAllenamento input,
+.dettagliAllenamento textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+}
+
+.dettagliAllenamento textarea {
+  min-height: 100px;
+}
+
+.dettagliAllenamento input:focus,
+.dettagliAllenamento textarea:focus {
+  border-color: #5f2eff;
+  outline: none;
+}
+
+/* Sezione Serie */
+.serieContainer {
+  margin-top: 2rem;
+}
+
+.serieContainer h3 {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.serieBox {
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+}
+
+.serieBox p {
+  margin-bottom: 0.5rem;
+}
+
+.serieBox label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.serieBox input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* Input specifico per parametri (usato all'interno di serieBox, se separato) */
+.input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* Bottone per eliminare una serie */
+.eliminaSerieBtn {
+  padding: 8px 16px;
+  background-color: #5f2eff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.eliminaSerieBtn:hover {
+  background-color: #e53935;
+  transform: scale(1.05);
+}
+
+.eliminaSerieBtn:focus {
+  outline: none;
+}
+
+.eliminaSerieBtn:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+}
+
+/* Container dei bottoni finali (Salva / Elimina Allenamento) */
+.buttonContainer {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.buttonContainer button {
+  padding: 10px 20px;
+  background-color: #5f2eff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buttonContainer button:hover {
+  background-color: #3e1fdd;
+}
+
+/* Bottone specifico per eliminare l'allenamento */
+.deleteButton {
+  background-color: red;
+}
+
+.deleteButton:hover {
+  background-color: darkred;
+}
+
+/* ==========================================
+   Media Queries per Tablet (481px <= larghezza <= 1024px)
+=========================================== */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .container {
+    padding: 1.5rem;
+    padding-top: 80px;
   }
   
-  /* Titolo principale */
   h2 {
-    text-align: center;
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 1.5rem;
-    margin-top: 0; /* Assicurati che non ci siano margini aggiuntivi sopra il titolo */
-  }
-  
-  
-  /* Sezione dettagli allenamento */
-  .dettagliAllenamento {
-    margin-bottom: 2rem;
-  }
-  
-  .dettagliAllenamento label {
-    font-weight: bold;
-    margin-top: 1rem;
-    display: block;
+    font-size: 1.75rem;
+    margin-bottom: 1.2rem;
   }
   
   .dettagliAllenamento input,
   .dettagliAllenamento textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-  }
-  
-  .dettagliAllenamento textarea {
-    min-height: 100px;
-  }
-  
-  .dettagliAllenamento input:focus,
-  .dettagliAllenamento textarea:focus {
-    border-color: #5f2eff;
-    outline: none;
-  }
-  
-  /* Sezione Serie */
-  .serieContainer {
-    margin-top: 2rem;
+    font-size: 0.95rem;
+    padding: 8px;
   }
   
   .serieBox {
-    border: 1px solid gray;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+    padding: 0.8rem;
   }
   
-  .serieBox p {
-    margin-bottom: 0.5rem;
-  }
-  
-  .serieBox label {
-    font-weight: bold;
-  }
-  
-  .serieBox input {
-    width: 100%;
+  .serieBox input,
+  .input {
+    font-size: 0.95rem;
     padding: 8px;
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
   }
   
-  /* Bottoni */
   .buttonContainer {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: space-between;
+    flex-direction: row;
+    gap: 0.75rem;
+    justify-content: center;
   }
   
   .buttonContainer button {
-    padding: 10px 20px;
-    background-color: #5f2eff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    padding: 10px 16px;
+    font-size: 0.95rem;
   }
-  
-  .buttonContainer button:hover {
-    background-color: #3e1fdd;
-  }
-  
-  .buttonContainer button:disabled {
-    background-color: #aaa;
-    cursor: not-allowed;
-  }
-  
-  .deleteButton {
-    background-color: red;
-  }
-  
-  .deleteButton:hover {
-    background-color: darkred;
-  }
-  /* ModificaAllenamento.module.css */
+}
 
-/* Bottone Elimina Serie */
-.eliminaSerieBtn {
-    padding: 8px 16px;
-    background-color: #f44336; /* Rosso per richiamare l'azione di eliminazione */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+/* ==========================================
+   Media Queries per Mobile (larghezza <= 480px)
+=========================================== */
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem;
+    padding-top: 60px;
   }
   
-  .eliminaSerieBtn:hover {
-    background-color: #e53935; /* Un rosso più scuro per l'effetto hover */
-    transform: scale(1.05); /* Effetto di ingrandimento quando il mouse passa sopra */
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
   }
   
-  .eliminaSerieBtn:focus {
-    outline: none; /* Rimuove il bordo di focus per un look più pulito */
+  .dettagliAllenamento input,
+  .dettagliAllenamento textarea {
+    font-size: 0.9rem;
+    padding: 6px;
   }
   
-  .eliminaSerieBtn:disabled {
-    background-color: #e0e0e0; /* Colore disabilitato */
-    cursor: not-allowed;
+  .serieBox {
+    padding: 0.6rem;
   }
   
-  
-  /* Responsività */
-  @media (max-width: 768px) {
-    h2 {
-      font-size: 1.5rem;
-    }
-  
-    .container {
-      padding: 1rem;
-    }
-  
-    .dettagliAllenamento input,
-    .dettagliAllenamento textarea {
-      font-size: 14px;
-      padding: 8px;
-    }
-  
-    .serieBox {
-      padding: 0.8rem;
-    }
-  
-    .serieBox input {
-      font-size: 14px;
-      padding: 8px;
-    }
-  
-    .buttonContainer {
-      flex-direction: column;
-      gap: 1rem;
-    }
-  
-    .buttonContainer button {
-      width: 100%;
-      padding: 12px 0;
-    }
+  .serieBox input,
+  .input {
+    font-size: 0.9rem;
+    padding: 6px;
   }
   
+  .buttonContainer {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .buttonContainer button {
+    width: 100%;
+    padding: 8px 0;
+    font-size: 0.9rem;
+  }
+}

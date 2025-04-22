@@ -1,142 +1,218 @@
-/* Container principale */
+/* ==========================================
+   Default styles (PC – larghezza >= 1025px)
+=========================================== */
 .container {
-    margin: 20px;
-    padding: 20px;
-    background-color: #f4f4f9;
-    border-radius: 8px;
-    max-width: 800px;
-    margin: 0 auto;
-    margin-top: 80px; /* Spazio per evitare la sovrapposizione con l'header */
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 80px; /* Spazio per l'header */
+  box-sizing: border-box;
+}
+
+.title {
+  text-align: center;
+  font-size: 2em;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.profileButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.profileButton:hover {
+  background-color: #5a2d98; /* Viola scuro */
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.label {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.input,
+.textarea {
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.submitButton {
+  background-color: #5f2eff;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submitButton:hover {
+  background-color: #5a2d98;
+}
+
+.finishButton {
+  background-color: #5f2eff;
+  color: white;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+  display: block;
+  width: 100%;
+}
+
+.finishButton:hover {
+  background-color: #5a2d98;
+}
+
+/* Sezione Serie */
+.serieContainer {
+  margin-top: 20px;
+}
+
+.serieTitle {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.serieItem {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.serieItem p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Messaggio di errore */
+.error {
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* ==========================================
+   Media Queries per Tablet (481px <= larghezza <= 1024px)
+=========================================== */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .container {
+    padding: 15px;
+    max-width: 700px;
+    margin-top: 70px;
   }
-  
-  /* Titolo */
   .title {
-    text-align: center;
-    font-size: 2em;
-    color: #333;
-    margin-bottom: 20px;
+    font-size: 1.75em;
+    margin-bottom: 15px;
   }
-  
-  /* Bottone Profilo */
   .profileButton {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 14px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 20px;
+    padding: 8px 16px;
+    font-size: 13px;
   }
-  
-  .profileButton:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Formulario */
   .form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    gap: 12px;
   }
-  
   .label {
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
   }
-  
   .input,
   .textarea {
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    width: 100%;
+    padding: 8px;
+    font-size: 13px;
   }
-  
-  .input:focus,
-  .textarea:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-  
-  .textarea {
-    min-height: 120px;
-    resize: vertical;
-  }
-  
-  /* Bottone Profilo */
-
-  
-  .profileButton:hover {
-    background-color: #5a2d98; /* Viola scuro */
-  }
-  
-  /* Bottone per inviare */
-  .submitButton {
-    background-color: #5f2eff; /* Viola */
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .submitButton:hover {
-    background-color: #5a2d98; /* Viola scuro */
-  }
-  
-  /* Bottone per terminare */
+  .submitButton,
   .finishButton {
-    background-color: #5f2eff; /* Viola */
-    color: white;
-    padding: 12px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 20px;
-    display: block;
-    width: 100%;
-  }
-  
-  .finishButton:hover {
-    background-color: #5a2d98; /* Viola scuro */
-  }
-  
-  
-  /* Sezione Serie */
-  .serieContainer {
-    margin-top: 20px;
-  }
-  
-  .serieTitle {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-    color: #333;
-  }
-  
-  .serieItem {
-    background-color: #f8f9fa;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-  }
-  
-  .serieItem p {
-    margin: 0;
+    padding: 10px 16px;
     font-size: 14px;
   }
-  
-  /* Messaggio di errore */
-  .error {
-    color: red;
-    text-align: center;
-    margin-top: 20px;
+  .serieTitle {
+    font-size: 1.3em;
+    margin-bottom: 8px;
   }
-  
-  
+  .serieItem {
+    padding: 8px;
+  }
+}
+
+/* ==========================================
+   Media Queries per Mobile (larghezza <= 480px)
+=========================================== */
+@media (max-width: 480px) {
+  .container {
+    padding: 10px;
+    max-width: 95%;
+    margin-top: 60px;
+  }
+  .title {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+  }
+  .profileButton {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+  .form {
+    gap: 10px;
+  }
+  .label {
+    margin-bottom: 3px;
+  }
+  .input,
+  .textarea {
+    padding: 6px;
+    font-size: 12px;
+  }
+  .submitButton,
+  .finishButton {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  .serieTitle {
+    font-size: 1.2em;
+    margin-bottom: 6px;
+  }
+  .serieItem {
+    padding: 6px;
+  }
+  .error {
+    margin-top: 15px;
+    font-size: 12px;
+  }
+}

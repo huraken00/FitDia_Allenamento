@@ -42,7 +42,7 @@ const LoginEsperto = () => {
         <h2 className={styles.formTitle}>Esperto Login</h2>
         <form onSubmit={handleSubmit}>
           <input
-            type="text"
+            type="username"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}

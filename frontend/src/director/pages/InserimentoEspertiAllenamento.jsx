@@ -42,7 +42,7 @@ const InserimentoEspertiAllenamento = () => {
           <label className={styles.label}>Username:</label>
           <input
             className={styles.input}
-            type="text"
+            type="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
