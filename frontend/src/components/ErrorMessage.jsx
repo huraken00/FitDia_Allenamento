@@ -1,7 +1,7 @@
 // components/Error.js
 import React from 'react';
 
-import styles from './ErrorMessage.module.css'; // crea anche il relativo CSS
+import styles from './ErrorMessage.module.css'; 
 
 const ErrorMessage = ({ message }) => {
   if (!message) return null;

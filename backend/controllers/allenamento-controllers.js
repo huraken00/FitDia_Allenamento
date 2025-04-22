@@ -14,19 +14,17 @@ exports.getAllAllenamenti = async (req, res) => {
 
     return res.status(200).json(allenamenti);
   } catch (err) {
-    console.error("Errore durante il recupero degli allenamenti:", err);
     return res.status(500).json({ message: "Errore interno del server" });
   }
 };
 
 // Aggiunge un allenamento e le sue serie al database
 exports.createAllenamento = async (req, res) => {
+  const { nome, appuntiAllenamento, id_utente, serie, dataCreazione } = req.body;
+  if (!id_utente) {
+    return res.status(400).json({ message: "id_utente non trovato" });
+  }
   try {
-    const { nome, appuntiAllenamento, id_utente, serie, dataCreazione } = req.body;
-
-    if (!nome || !id_utente) {
-      return res.status(400).json({ message: "Nome e id_utente sono obbligatori" });
-    }
  // Creazione dell'allenamento con la data automatica
  const nuovoAllenamento = new Allenamento({
   nome,

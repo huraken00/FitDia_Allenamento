@@ -25,22 +25,24 @@ const ModificaAllenamento = () => {
                 const esercizioId = typeof s.id_esercizio === "object" ? s.id_esercizio._id : s.id_esercizio;
                 const resExtra = await fetch(`http://localhost:3001/api/serie/esercizio/${esercizioId}`);
                 const extra = await resExtra.json();
-
-                const parametri = (extra.parametri || []).map(p => ({
-                  nome: p.nome,
-                  valore: s[p.nome] ?? ""
-                }));
-
-                return {
-                  ...s,
-                  esercizio: extra.nomeEsercizio,
-                  esercizioCancellato: extra.esercizioCancellato,
-                  sport: extra.sport || [],
-                  parametri
-                };
+                  if(resExtra.ok){
+                    const parametri = (extra.parametri || []).map(p => ({
+                      nome: p.nome,
+                      valore: s[p.nome] ?? ""
+                    }));
+    
+                    return {
+                      ...s,
+                      esercizio: extra.nomeEsercizio,
+                      esercizioCancellato: extra.esercizioCancellato,
+                      sport: extra.sport || [],
+                      parametri
+                    };
+                  }else{
+                    throw new Error (extra.message);
+                  }
               } catch (err) {
-                console.error("Errore recupero parametri/sport:", err);
-                return { ...s, sport: [], parametri: [] };
+               setError(err.message)
               }
             })
           );
@@ -48,11 +50,10 @@ const ModificaAllenamento = () => {
           setAllenamento(data);
           setSerie(serieArricchite);
         } else {
-          setError(data.message);
+          throw new Error(data.message);
         }
       } catch (err) {
-        console.error(err);
-        setError("Errore nel recupero dell'allenamento");
+        setError(err.message);
       }
     };
 
@@ -81,17 +82,23 @@ const ModificaAllenamento = () => {
       const res = await fetch(`http://localhost:3001/api/serie/${serieId}`, {
         method: "DELETE",
       });
+      const data = await res.json(); // 👈 prendi il message
+  
       if (res.ok) {
         setSerie((prev) => prev.filter((s) => s._id !== serieId));
+      } else {
+        throw new Error(data.message );
       }
     } catch (err) {
-      console.error("Errore eliminazione serie:", err);
+      console.error(err);
     }
   };
+  
 
   const handleSalvaModifiche = async () => {
     try {
-      const res = await fetch(`http://localhost:3001/api/allenamenti/${id}`, {
+      // Aggiorna l'allenamento
+      const resAllenamento = await fetch(`http://localhost:3001/api/allenamenti/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -99,50 +106,65 @@ const ModificaAllenamento = () => {
           appuntiAllenamento: allenamento.appuntiAllenamento,
         }),
       });
-
+  
+      const dataAllenamento = await resAllenamento.json();
+      if (!resAllenamento.ok) {
+        throw new Error(dataAllenamento.message || "Errore aggiornamento allenamento");
+      }
+  
+      // Aggiorna tutte le serie
       for (const s of serie) {
-        await fetch(`http://localhost:3001/api/serie/${s._id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            parametri: s.parametri,
-          }),
-        });
+        try {
+          const resSerie = await fetch(`http://localhost:3001/api/serie/${s._id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              parametri: s.parametri,
+            }),
+          });
+  
+          const dataSerie = await resSerie.json();
+          if (!resSerie.ok) {
+            throw new Error(dataSerie.message || `Errore aggiornamento serie con ID ${s._id}`);
+          }
+        } catch (err) {
+         setError(err.message)
+        }
       }
-
-      if (res.ok) {
-        alert("Allenamento aggiornato con successo");
-        navigate("/dashboard-allenamento");
-      } else {
-        const data = await res.json();
-        setError(data.message || "Errore aggiornamento");
-      }
+  
+      alert("Allenamento aggiornato con successo");
+      navigate("/dashboard-allenamento");
     } catch (err) {
-      console.error(err);
+      console.error("Errore durante il salvataggio:", err);
+      setError(err.message || "Errore imprevisto durante il salvataggio");
     }
   };
+  
 
   const handleEliminaAllenamento = async () => {
     const conferma = window.confirm("Vuoi eliminare questo allenamento?");
     if (!conferma) return;
-
+  
     try {
       const res = await fetch(`http://localhost:3001/api/allenamenti/${id}`, {
         method: "DELETE",
       });
-
-      if (res.ok) {
-        alert("Allenamento eliminato");
-        navigate("/dashboard-allenamento");
-      } else {
-        const data = await res.json();
-        setError(data.message);
+  
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || "Errore eliminazione allenamento");
       }
+  
+      alert("Allenamento eliminato");
+      navigate("/dashboard-allenamento");
     } catch (err) {
-      console.error(err);
+      console.error("Errore eliminazione:", err);
+      setError(err.message || "Errore di rete o del server");
     }
   };
 
+  <ErrorMessage message={error}/>
+  
   if (!allenamento) return <p>Caricamento...</p>;
 
   return (

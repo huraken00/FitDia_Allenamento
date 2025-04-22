@@ -37,7 +37,6 @@ Descrizione: <una descrizione semplice (massimo 100 parole)>`;
 
     res.json({ variante: nuovaVariante });
   } catch (error) {
-    console.error("Errore generazione variante:", error);
     res.status(500).json({ error: "Errore nella generazione della variante" });
   }
 };

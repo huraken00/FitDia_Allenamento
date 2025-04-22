@@ -22,11 +22,12 @@ const ListaAllenamenti = () => {
       const res = await fetch(`http://localhost:3001/api/allenamenti/${utenteId}`);
 
       const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
       setAllenamenti(data);
       
     } catch (err) {
 
-      setError("Errore nel recupero degli allenamenti");
+      setError(err.message);
     }
   };
 
@@ -45,10 +46,10 @@ const ListaAllenamenti = () => {
         setAllenamenti((prev) => prev.filter((a) => a._id !== id));
         alert("Allenamento eliminato");
       } else {
-        setError(data.message || "Errore durante l'eliminazione dell'allenamento");
+        throw new Error(data.message);
       }
     } catch (err) {
-      setError("Errore di rete o del server");
+      setError(err.message);
     }
   };
   

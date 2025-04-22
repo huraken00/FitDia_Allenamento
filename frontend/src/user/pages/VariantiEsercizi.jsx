@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import CercaEsercizio from "../../components/CercaEsercizio";
 import Modal from "../../components/Modal"; // Importa la modale
 import styles from "./VariantiEsercizi.module.css"; // Importa il modulo CSS
+import ErrorMessage from "../../components/ErrorMessage";
 
 const VariantiEsercizi = () => {
   const [selectedExercise, setSelectedExercise] = useState(null);
+  const [errore,setError] = useState("");
   const [sport, setSport] = useState("pallavolo");
   const [luogo, setLuogo] = useState("casa");
   const [livello, setLivello] = useState("principiante");
@@ -15,14 +17,17 @@ const VariantiEsercizi = () => {
 
   const navigate = useNavigate();
 
+
+
   const generaVariante = async () => {
     if (!selectedExercise) return;
     setLoading(true);
-
+    setError(""); // Reset errore precedente
+  
     const token = localStorage.getItem("token");
     const decodedToken = JSON.parse(atob(token.split('.')[1]));
     const userId = decodedToken.id;
-
+  
     try {
       const res = await fetch("http://localhost:3001/api/varianti", {
         method: "POST",
@@ -38,14 +43,23 @@ const VariantiEsercizi = () => {
           userId,
         }),
       });
-
+  
       const data = await res.json();
+  
+      if (!res.ok) {
+        throw new Error(data.error || "Errore");
+      }
+  
       setVariante(data.variante);
-    } catch (err) {
-      console.error("Errore durante la generazione:", err);
+    } catch (error) {
+      console.error("Errore durante la richiesta:", error.message);
+      setError(error.message); // Mostra l'esatto messaggio dal backend
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
+  
+    
 
   const handleModalResponse = (accept) => {
     setShowModal(false);
@@ -56,6 +70,7 @@ const VariantiEsercizi = () => {
 
   return (
     <div className={styles.variantiContainer}>
+     
       {showModal && (
         <Modal
           title="Attenzione"
@@ -131,6 +146,7 @@ const VariantiEsercizi = () => {
           </div>
         </>
       )}
+       <ErrorMessage message={errore}/>
     </div>
   );
 };

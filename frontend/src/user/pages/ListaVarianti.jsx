@@ -11,7 +11,7 @@ const ListaVarianti = () => {
   useEffect(() => {
     const fetchVarianti = async () => {
       try {
-        // 🔧 Usa un endpoint errato per testare ErrorMessage:
+      
         const res = await fetch(`http://localhost:3001/api/varianti/utente/${userId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -22,14 +22,13 @@ const ListaVarianti = () => {
         setVarianti(data);
         setError(""); // rimuove eventuali errori precedenti
       } catch (err) {
-        setError("Errore nel recupero delle varianti:");
+        setError(err.message);
       }
     };
 
     if (userId) {
       fetchVarianti();
     } else {
-      console.log("User ID non trovato");
       setError("User ID non trovato");
     }
   }, [userId]);

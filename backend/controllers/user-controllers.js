@@ -92,7 +92,7 @@ exports.register = async (req, res) => {
 
     res.status(201).json({ message: "User registered successfully", token });
   } catch (err) {
-    res.status(500).json({ message: "SONO GAY", error: err.message });
+    res.status(500).json({ message: "Email già utilizzata", error: err.message });
   }
 };
 
@@ -108,8 +108,8 @@ exports.login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+   
     const currentDate = new Date();
-
     //controllo della data scadenza abbonamento
     if (new Date(user.scadenza_abbonamento) < currentDate) {
       return res.status(403).json({ message: "Subscription expired. Please renew your subscription." });

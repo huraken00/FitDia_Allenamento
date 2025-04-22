@@ -29,7 +29,7 @@ const MonitoraggioProgressi = () => {
         const data = await res.json();
         setEsercizi(data || []);
       } catch (err) {
-        setError("Errore nel recupero degli esercizi.");
+        setError(data.message);
       }
     };
 
@@ -54,10 +54,10 @@ const MonitoraggioProgressi = () => {
           setDati(data.dati || []);
           setNomeEsercizio(data.nomeEsercizio || "Esercizio");
         } else {
-          setError(data.message || "Errore nel recupero dei progressi");
+          setError(data.message);
         }
       } catch (err) {
-        setError("Errore nel fetch dei progressi.");
+        setError(data.message);
       } finally {
         setLoading(false);
       }

@@ -25,8 +25,7 @@ const InserimentoAllenamenti = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!utenteId) {
-      setError("ID utente non disponibile");
-      return;
+      throw new Error("ID utente non trovato nel localStorage");
     }
 
     try {
@@ -44,10 +43,10 @@ const InserimentoAllenamenti = () => {
       if (res.ok) {
         setAllenamento((prev) => ({ ...prev, _id: data.allenamento._id }));
       } else {
-        setError(data.message);
+        throw new Error(data.message);
       }
     } catch (err) {
-      setError("Errore nel salvataggio dell'allenamento.");
+      setError(err.message);
       
     }
   };

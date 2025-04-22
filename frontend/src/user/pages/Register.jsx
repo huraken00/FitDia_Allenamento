@@ -13,7 +13,7 @@ function Register() {
   });
 
   const [errors, setErrors] = useState({});
-  const [message, setMessage] = useState("");
+  const [serverMessage, setServerMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,7 +21,9 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
+    setErrors({});
+    setServerMessage("");
+
     const validationErrors = validateForm(formData);
 
     if (Object.keys(validationErrors).length === 0) {
@@ -35,13 +37,15 @@ function Register() {
         });
 
         const data = await response.json();
-        if (response.ok) {
-          setMessage("Registrazione avvenuta con successo!");
-        } else {
-          setMessage(data.message || "Errore nella registrazione");
+
+        if (!response.ok) {
+          // Mostra il messaggio dal backend
+          throw new Error(data.message || "Errore nella registrazione");
         }
+
+        setServerMessage("Registrazione avvenuta con successo!");
       } catch (error) {
-        setMessage("Errore di connessione al server");
+        setServerMessage(error.message);
       }
     } else {
       setErrors(validationErrors);
@@ -56,7 +60,7 @@ function Register() {
         <label className={styles.label}>Username:</label>
         <input
           className={styles.input}
-          type="username"
+          type="text"
           name="username"
           value={formData.username}
           onChange={handleChange}
@@ -66,7 +70,7 @@ function Register() {
         <label className={styles.label}>Nome:</label>
         <input
           className={styles.input}
-          type="nome"
+          type="text"
           name="nome"
           value={formData.nome}
           onChange={handleChange}
@@ -76,7 +80,7 @@ function Register() {
         <label className={styles.label}>Cognome:</label>
         <input
           className={styles.input}
-          type="cognome"
+          type="text"
           name="cognome"
           value={formData.cognome}
           onChange={handleChange}
@@ -104,7 +108,8 @@ function Register() {
         {errors.password && <p className={styles.error}>{errors.password}</p>}
 
         <button className={styles.button} type="submit">Registrati</button>
-        <ErrorMessage message={message} />
+
+        <ErrorMessage message={serverMessage} />
       </form>
     </div>
   );

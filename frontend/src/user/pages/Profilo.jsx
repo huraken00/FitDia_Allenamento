@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../shared/context/auth-context";
 import styles from "./Profilo.module.css"; // nuovo file CSS
+import ErrorMessage from "../../components/ErrorMessage";
 
 
 
@@ -9,6 +10,7 @@ const Profilo = () => {
   const [editing, setEditing] = useState(false);
   const [updatedUser, setUpdatedUser] = useState({});
   const auth = useContext(AuthContext);
+  const [errore, setError] = useState("");
   const uid = auth.userId;
   const token = auth.token;
 
@@ -23,15 +25,18 @@ const Profilo = () => {
           },
         });
 
-        if (!res.ok) {
+        const data = await res.json();
+
+        if (res.ok) {
           throw new Error("Errore nel recupero del profilo utente");
         }
 
-        const data = await res.json();
+        
         setUser(data);
         setUpdatedUser(data);
       } catch (error) {
-        console.error(error.message);
+       
+        setError(error.message)
       }
     };
 
@@ -62,25 +67,33 @@ const Profilo = () => {
         body: JSON.stringify(updatedUser),
       });
 
+      const data = await res.json();
+
       if (!res.ok) throw new Error("Errore nel salvataggio delle modifiche");
 
-      const data = await res.json();
+      
       setUser(data);
       setEditing(false);
     } catch (error) {
-      console.error(error.message);
+      setError(error.message)
     }
   };
 
+ 
   if (!user) return <p>Caricamento...</p>;
+  
+  
 
   return (
     <div className={styles.container}>
+        {/* Visualizza l'errore sopra il resto del contenuto */}
+      {error && <ErrorMessage message={errore} />}
       <div className={styles.profileCard}>
        
       
 
         <div className={styles.field}>
+          
           <label>Nome:</label>
           {editing ? (
             <input type="text" name="nome" value={updatedUser.nome} onChange={handleChange} />
@@ -129,7 +142,9 @@ const Profilo = () => {
         ) : (
           <button className={styles.button} onClick={() => setEditing(true)}>Modifica</button>
         )}
+        
       </div>
+     
     </div>
   );
 };
