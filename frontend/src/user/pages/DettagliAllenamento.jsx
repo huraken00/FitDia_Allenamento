@@ -1,11 +1,7 @@
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-<<<<<<< Updated upstream
-import styles from './DettagliAllenamento.module.css'; // Importa il modulo CSS
-=======
 import styles from './DettagliAllenamento.module.css';
 import ErrorMessage from '../../components/ErrorMessage';
->>>>>>> Stashed changes
 
 const DettagliAllenamento = () => {
   const { id } = useParams();
@@ -109,24 +105,7 @@ const DettagliAllenamento = () => {
     <div className={styles.container}>
       <h2>📋 Dettagli Allenamento</h2>
 
-<<<<<<< Updated upstream
-      <h3>🏋️‍♂️ Serie</h3>
-      {serie.length === 0 ? (
-        <p>Nessuna serie registrata.</p>
-      ) : (
-        serie.map((s) => (
-          <div key={s._id} className={styles.serieBox}>
-            <p><strong>Esercizio:</strong> {s.esercizio}</p>
-            {s.esercizioCancellato && (
-                <p style={{ color: "red", fontWeight: "bold" }}>
-                  ⚠️ Questo esercizio è stato eliminato e non sarà disponibile nei prossimi allenamenti.
-                  </p>
-                )}
-
-            <p><strong>Sport:</strong> {s.sport.join(", ") || "N/A"}</p>
-=======
       <ErrorMessage message={error} />
->>>>>>> Stashed changes
 
       {allenamento && (
         <>

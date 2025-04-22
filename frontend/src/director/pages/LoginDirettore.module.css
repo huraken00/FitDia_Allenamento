@@ -1,83 +1,128 @@
-/* Contenitore principale */
+/* ==========================================
+   Default styles (PC – larghezza >= 1025px)
+=========================================== */
 .loginContainer {
-    padding: 2rem;
-    max-width: 400px;
-    margin: 0 auto;
-    margin-top: 100px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  max-width: 400px;
+  margin: 0 auto;
+  margin-top: 100px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.titoloPagina {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup {
+  margin-bottom: 1rem;
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  background-color: #f5f8ff;
+  margin-bottom: 18px;
+  font-size: 14px;
+  box-sizing: border-box;
+  height: 40px;
+}
+
+.loginButton {
+  padding: 0.8rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.loginButton:hover {
+  background-color: #45a049;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+
+/* ==========================================
+   Media Queries per Tablet (481px <= larghezza <= 1024px)
+=========================================== */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .loginContainer {
+    padding: 1.5rem;
+    max-width: 350px;
+    margin-top: 80px;
   }
   
   .titoloPagina {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-    margin-bottom: 1.5rem;
+    font-size: 1.75rem;
+    margin-bottom: 1.2rem;
   }
   
-  .form {
-    display: flex;
-    flex-direction: column;
+  .input {
+    padding: 10px;
+    font-size: 0.95rem;
+    height: 38px;
   }
   
-  .inputGroup {
+  .loginButton {
+    padding: 0.75rem;
+    font-size: 0.95rem;
+  }
+  
+  .errorMessage {
+    font-size: 0.8rem;
+  }
+}
+
+
+/* ==========================================
+   Media Queries per Mobile (larghezza <= 480px)
+=========================================== */
+@media (max-width: 480px) {
+  .loginContainer {
+    padding: 1rem;
+    max-width: 95%;
+    margin-top: 60px;
+  }
+  
+  .titoloPagina {
+    font-size: 1.5rem;
     margin-bottom: 1rem;
   }
   
   .input {
-    padding: 0.8rem;
-    font-size: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    width: 100%;
+    padding: 8px;
+    font-size: 0.9rem;
+    height: 36px;
   }
   
   .loginButton {
-    padding: 0.8rem;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 1rem;
-  }
-  
-  .loginButton:hover {
-    background-color: #45a049;
+    padding: 0.7rem;
+    font-size: 0.9rem;
   }
   
   .errorMessage {
-    color: red;
-    font-size: 0.9rem;
-    text-align: center;
-    margin-top: 1rem;
+    font-size: 0.8rem;
   }
-  
-  @media (max-width: 768px) {
-    .loginContainer {
-      padding: 1rem;
-      max-width: 100%;
-    }
-  
-    .titoloPagina {
-      font-size: 1.5rem;
-    }
-  
-    .input {
-      padding: 0.7rem;
-      font-size: 0.9rem;
-    }
-  
-    .loginButton {
-      font-size: 0.9rem;
-    }
-  
-    .errorMessage {
-      font-size: 0.8rem;
-    }
-  }
-  
+}

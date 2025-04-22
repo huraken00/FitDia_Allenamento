@@ -1,87 +1,157 @@
+/* ==========================================
+   Default styles (PC – larghezza >= 1025px)
+=========================================== */
 .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 2rem;
-    max-width: 800px;
-    margin: 0 auto;
-    padding-top: 80px; /* Aggiungi spazio sopra per evitare sovrapposizione */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-top: 80px; /* Spazio sopra per evitare sovrapposizione */
+}
+
+h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  margin-top: 40px;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+input[type="text"] {
+  padding: 0.8rem;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 1rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.checkboxGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.checkboxGroup label {
+  display: inline-block;
+  width: 100%;
+  max-width: 200px;
+  color: #333;
+}
+
+.checkboxGroup input {
+  margin-right: 0.5rem;
+}
+
+/* ==========================================
+   Media Queries per Tablet (481px <= larghezza <= 1024px)
+=========================================== */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .container {
+    padding: 1.5rem;
+    max-width: 700px;
+    padding-top: 70px;
   }
   
   h2 {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 1.5rem;
-    margin-top: 40px; /* Spazio sopra al titolo */
-  }
-  
-  form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+    font-size: 1.75rem;
+    margin-top: 35px;
+    margin-bottom: 1.2rem;
   }
   
   label {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-    color: #333;
+    font-size: 1rem;
   }
   
   input[type="text"] {
-    padding: 0.8rem;
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+    margin-bottom: 1.2rem;
   }
   
   button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 1rem;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #45a049;
+    padding: 0.85rem;
+    font-size: 1rem;
   }
   
   .checkboxGroup {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+    gap: 0.8rem;
   }
   
   .checkboxGroup label {
-    display: inline-block;
-    width: 100%;
-    max-width: 200px;
+    max-width: 180px;
+    font-size: 0.95rem;
+  }
+}
+
+/* ==========================================
+   Media Queries per Mobile (larghezza <= 480px)
+=========================================== */
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem;
+    max-width: 95%;
+    padding-top: 60px;
   }
   
-  .checkboxGroup input {
-    margin-right: 0.5rem;
+  h2 {
+    font-size: 1.5rem;
+    margin-top: 30px;
+    margin-bottom: 1rem;
   }
   
-  @media (max-width: 768px) {
-    .container {
-      padding: 1rem;
-    }
-  
-    h2 {
-      font-size: 1.5rem;
-    }
-  
-    input[type="text"] {
-      padding: 0.6rem;
-    }
-  
-    button {
-      padding: 0.8rem;
-    }
+  label {
+    font-size: 0.95rem;
   }
   
+  input[type="text"] {
+    padding: 0.7rem;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  button {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+  
+  .checkboxGroup {
+    gap: 0.5rem;
+  }
+  
+  .checkboxGroup label {
+    max-width: 100%;
+    font-size: 0.9rem;
+  }
+}

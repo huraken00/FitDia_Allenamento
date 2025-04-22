@@ -1,101 +1,143 @@
-/* Contenitore principale */
 .container {
-    padding: 2rem;
-    text-align: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    margin-top: 100px;
+  padding: 2rem;
+  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+.table th,
+.table td {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.table th {
+  background-color: #4caf50;
+  color: white;
+}
+
+.table td {
+  background-color: #f9f9f9;
+}
+
+.table tr:nth-child(even) td {
+  background-color: #f1f1f1;
+}
+
+.deleteButton {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.deleteButton:hover {
+  background-color: #e53935;
+}
+
+.addLink {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #4caf50;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: 2px solid #4caf50;
+  border-radius: 8px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.addLink:hover {
+  background-color: #4caf50;
+  color: white;
+}
+
+/* ==========================================
+   Media Queries per Tablet (481px <= larghezza <= 1024px)
+=========================================== */
+@media (min-width: 481px) and (max-width: 1024px) {
+
+  .container {
+    padding: 1.5rem;
+    max-width: 900px;
+    margin-top: 80px;
   }
   
-  /* Titolo della pagina */
   .title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 2rem;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
   }
   
-  /* Stile per la tabella */
   .table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 2rem;
+    font-size: 0.9rem;
   }
   
-  .table th, .table td {
-    padding: 1rem;
-    border: 1px solid #ddd;
-    text-align: left;
-  }
-  
-  .table th {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
+  .table th, 
   .table td {
-    background-color: #f9f9f9;
+    padding: 0.8rem;
   }
   
-  .table tr:nth-child(even) td {
-    background-color: #f1f1f1;
-  }
-  
-  /* Bottone per eliminare un esperto */
   .deleteButton {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
   }
   
-  .deleteButton:hover {
-    background-color: #e53935;
-  }
-  
-  /* Link per inserire un nuovo esperto */
   .addLink {
-    display: inline-block;
-    margin-top: 1rem;
-    color: #4CAF50;
-    font-weight: bold;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border: 2px solid #4CAF50;
-    border-radius: 8px;
-    transition: background-color 0.3s, color 0.3s;
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+/* ==========================================
+   Media Queries per Mobile (larghezza <= 480px)
+=========================================== */
+@media (max-width: 480px) {
+  
+  .container {
+    padding: 1rem;
+    max-width: 95%;
+    margin-top: 60px;
   }
   
-  .addLink:hover {
-    background-color: #4CAF50;
-    color: white;
+  .title {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
   }
   
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .container {
-      padding: 1rem;
-      margin-top: 60px;
-    }
-  
-    .title {
-      font-size: 2rem;
-    }
-  
-    .table {
-      font-size: 0.9rem;
-    }
-  
-    .table th, .table td {
-      padding: 0.8rem;
-    }
-  
-    .addLink {
-      font-size: 1rem;
-      padding: 0.4rem 0.8rem;
-    }
+  .table {
+    font-size: 0.8rem;
   }
   
+  .table th, 
+  .table td {
+    padding: 0.6rem;
+  }
+  
+  .deleteButton {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  .addLink {
+    font-size: 0.9rem;
+    padding: 0.3rem 0.6rem;
+  }
+}
