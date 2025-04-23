@@ -17,7 +17,7 @@ exports.getAllSerie = async (req, res) => {
 
     return res.status(200).json(serie);
   } catch (err) {
-    console.error("Errore durante il recupero delle serie:", err);
+    
     return res.status(500).json({ message: "Errore interno del server" });
   }
 };
@@ -62,15 +62,14 @@ exports.getPropEsercizio = async (req, res) => {
     // Se ci sono più sport associati, crea un array con i nomi degli sport
     const sportNames = sportEsercizio.map(se => se.id_sport.nome);
     const parametriNames=parametri.map(p=>p.id_parametro);
-    res.json({
+    return res.status(200).json({
       nomeEsercizio: esercizio ? esercizio.nome : "Sconosciuto",
       esercizioCancellato: esercizio ? esercizio.cancellato : true,
       sport: sportNames.length > 0 ? sportNames : ["Sconosciuto"], // Restituisci un array di sport
       parametri: parametriNames.length > 0 ? parametriNames :["Sconosciuto"],
-    });
-
+    }); 
   } catch (err) {
-    res.status(500).json({ error: "Errore nel recupero dei parametri e dello sport" });
+    return res.status(500).json({ message: "Errore nel recupero dei parametri e dello sport" });
   }
 };
 

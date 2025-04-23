@@ -37,7 +37,7 @@ Descrizione: <una descrizione semplice (massimo 100 parole)>`;
 
     res.json({ variante: nuovaVariante });
   } catch (error) {
-    res.status(500).json({ error: "Errore nella generazione della variante" });
+    res.status(500).json({ message: "Errore nella generazione della variante" });
   }
 };
 
@@ -46,9 +46,9 @@ exports.getVariantiByUtente = async (req, res) => {
     const userId = req.params.userId; // Assumiamo che l'ID utente venga passato come parametro
     try {
       const varianti = await Variante.find({ utente: userId }).sort({ _id: -1 });
-      res.json(varianti);
+      return  res.json(varianti);
     } catch (err) {
-      res.status(500).json({ error: "Errore nel recupero delle varianti" });
+       return res.status(500).json({ message: "Errore nel recupero delle varianti" });
     }
   };
   exports.getAllVarianti = async (req, res) => {

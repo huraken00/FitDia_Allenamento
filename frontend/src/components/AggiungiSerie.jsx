@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styles from "./AggiungiSerie.module.css"; // Importa il modulo di stile
 import CercaEsercizio from "./CercaEsercizio";
+import ErrorMessage from "./ErrorMessage";
+import { Error } from "mongoose";
 
 const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
   const [serie, setSerie] = useState({
@@ -15,7 +17,7 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
 
   const [parametriDisponibili, setParametriDisponibili] = useState([]);
   const [sportDisponibili, setSportDisponibili] = useState([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
 
   const handleSelectExercise = async (exercise) => {
     setSerie((prev) => ({
@@ -27,7 +29,7 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
     try {
       const res = await fetch(`http://localhost:3001/api/serie/esercizio/${exercise._id}`);
       const data = await res.json();
-
+       if (!res.ok) throw new Error(data.message)
       if (!data.parametri || !Array.isArray(data.parametri)) {
         setParametriDisponibili([]);
         setSportDisponibili([]);
@@ -41,7 +43,7 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
         sport: data.sport || [],
       }));
     } catch (err) {
-      console.error("Errore nel recupero dei parametri:", err);
+      setError(err.message)
       setParametriDisponibili([]);
       setSportDisponibili([]);
     }
@@ -51,6 +53,8 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
     if (!serie.esercizio) {
       setError("Seleziona un esercizio!");
       return;
+    }else{
+      setError("")
     }
 
     try {
@@ -89,10 +93,10 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
           sport: serie.sport,
         });
       } else {
-        setError(data.message || "Errore nell'aggiunta della serie");
+        throw new Error(data.message)
       }
     } catch (err) {
-      setError("Errore nel salvataggio della serie.");
+      setError(err.message);
       console.error(err);
     }
   };
@@ -100,7 +104,7 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
   return (
     <div className={styles.aggiungiSerieContainer}>
       <h3>Aggiungi Serie</h3>
-      
+     
       {/* Selezione Esercizio */}
       <label htmlFor="esercizio">Esercizio:</label>
       <CercaEsercizio onSelect={handleSelectExercise} />
@@ -134,14 +138,13 @@ const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
           </ul>
         </div>
       )}
-
+    <ErrorMessage message={error}/>
       {/* Bottone per aggiungere serie */}
       <button type="button" className={styles.btnAggiungi} onClick={handleAggiungiSerie}>
         Aggiungi Serie
       </button>
 
-      {/* Messaggio di errore */}
-      {error && <p className={styles.errorMessage}>{error}</p>}
+     
     </div>
   );
 };

@@ -34,15 +34,7 @@ const Layout = ({ children }) => {
       );
     }
 
-    if (role === "direttore") {
-      return (
-        <div className={styles.profileLink}>
-          <Link to="/profilo-direttore" title="Profilo Direttore">
-            <FaUserCircle size={32} className={styles.icon} />
-          </Link>
-        </div>
-      );
-    }
+    
 
     return null;
   };

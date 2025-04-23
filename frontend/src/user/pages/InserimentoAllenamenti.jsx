@@ -24,11 +24,10 @@ const InserimentoAllenamenti = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!utenteId) {
-      throw new Error("ID utente non trovato nel localStorage");
-    }
+    
 
     try {
+     
       const res = await fetch(`http://localhost:3001/api/allenamenti/${utenteId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -59,8 +58,11 @@ const InserimentoAllenamenti = () => {
   };
 
   return (
+    
     <div className={styles.container}>
+     
       <h2 className={styles.title}>Crea Nuovo Allenamento</h2>
+      <ErrorMessage message={error} />
       <form onSubmit={handleSubmit} className={styles.form}>
         <label className={styles.label}>Nome Allenamento:</label>
         <input
@@ -107,7 +109,7 @@ const InserimentoAllenamenti = () => {
 
       <button onClick={() => navigate("/dashboard-allenamento")} className={styles.finishButton}>Termina</button>
 
-      <ErrorMessage message={error} />
+      
     </div>
   );
 };

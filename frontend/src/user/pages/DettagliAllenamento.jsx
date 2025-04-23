@@ -1,8 +1,9 @@
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-import styles from './DettagliAllenamento.module.css';
+import styles from './DettagliAllenamento.module.css'; // Importa il modulo CSS
 import ErrorMessage from '../../components/ErrorMessage';
+
 
 
 const DettagliAllenamento = () => {
@@ -24,21 +25,21 @@ const DettagliAllenamento = () => {
               try {
                 const resExtra = await fetch(`http://localhost:3001/api/serie/esercizio/${s.id_esercizio}`);
                 const extra = await resExtra.json();
-
-                const parametri = (extra.parametri || []).map(p => ({
-                  nome: p.nome,
-                  valore: s[p.nome] ?? "N/A"
-                }));
-
-                return {
-                  ...s,
-                  esercizio: extra.nomeEsercizio,
-                  esercizioCancellato: extra.esercizioCancellato,
-                  sport: extra.sport || [],
-                  parametri
-                };
+               
+                  const parametri = (extra.parametri || []).map(p => ({
+                    nome: p.nome,
+                    valore: s[p.nome] ?? "N/A"
+                  }));
+  
+                  return {
+                    ...s,
+                    esercizio: extra.nomeEsercizio,
+                    esercizioCancellato: extra.esercizioCancellato,
+                    sport: extra.sport || [],
+                    parametri
+                  };    
               } catch (err) {
-                setError(err.message)
+                setError(err.message )
                 return { ...s, esercizio: "Sconosciuto", sport: [], parametri: [] };
               }
             })
@@ -50,7 +51,7 @@ const DettagliAllenamento = () => {
           throw new Error(data.message);
         }
       } catch (err) {
-        setError(err.message);
+        setError(err.message );
       }
     };
 
@@ -76,7 +77,7 @@ const DettagliAllenamento = () => {
       const nuovo = await resAllenamento.json();
 
       if (!resAllenamento.ok) {
-        throw new Error(nuovo.message || "Errore nella duplicazione dell'allenamento");
+        throw new Error(nuovo.message);
       }
 
       for (const s of serie) {

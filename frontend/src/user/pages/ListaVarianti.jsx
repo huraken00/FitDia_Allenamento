@@ -19,9 +19,11 @@ const ListaVarianti = () => {
         });
 
         const data = await res.json();
+        if(!res.ok) throw new Error(data.message)
         setVarianti(data);
-        setError(""); // rimuove eventuali errori precedenti
+       
       } catch (err) {
+        console.log("Erroree",err.message)
         setError(err.message);
       }
     };

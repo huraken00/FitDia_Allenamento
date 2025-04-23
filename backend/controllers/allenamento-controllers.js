@@ -8,7 +8,7 @@ exports.getAllAllenamenti = async (req, res) => {
     console.log("Richiesta allenamenti per utente:", req.params.utenteId); // DEBUG
     const allenamenti = await Allenamento.find({ id_utente: req.params.utenteId }).exec();
 
-    if (!allenamenti || allenamenti.length === 0) {
+     if (!allenamenti || allenamenti.length === 0) {
       return res.status(404).json({ message: "Nessun allenamento trovato" });
     }
 
@@ -32,9 +32,6 @@ exports.createAllenamento = async (req, res) => {
   id_utente,
   dataCreazione : (dataCreazione) ? dataCreazione : new Date(), 
 });
-
-
-   
 
     const allenamentoSalvato = await nuovoAllenamento.save();
 

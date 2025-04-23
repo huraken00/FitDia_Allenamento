@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ErrorMessage from "./ErrorMessage";
 import styles from "./CercaEsercizio.module.css"; // Importa il modulo CSS senza trattini
 
 const CercaEsercizio = ({ onSelect }) => {
@@ -6,6 +7,7 @@ const CercaEsercizio = ({ onSelect }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredExercises, setFilteredExercises] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [error, setError] = useState("");
 
   const [sportOptions, setSportOptions] = useState([]);
   const [parametroOptions, setParametroOptions] = useState([]);
@@ -46,7 +48,7 @@ const CercaEsercizio = ({ onSelect }) => {
         setSportOptions(sportData);
         setParametroOptions(parametriData);
       } catch (err) {
-        console.error("Errore nel fetch di sport/parametri:", err);
+        setError("Errore nel fetch di sport/parametri:", err);
       }
     };
 
@@ -90,6 +92,7 @@ const CercaEsercizio = ({ onSelect }) => {
 
   return (
     <div className={styles.cercaEsercizioContainer}>
+      <ErrorMessage message = {error}/>
       <input
         className={styles.searchInput}
         type="text"
