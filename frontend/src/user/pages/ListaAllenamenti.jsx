@@ -89,7 +89,7 @@ const ListaAllenamenti = () => {
               </button>
             </div>
           </li>
-        ))}
+        )).reverse()}
       </ul>
     </div>
   );

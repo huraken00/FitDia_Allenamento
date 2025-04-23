@@ -81,7 +81,7 @@ const VariantiEsercizi = () => {
           onConfirm={() => handleModalResponse(true)}
           onCancel={() => handleModalResponse(false)}
           confirmText="Accetto"
-          cancelText="Rifiuto"
+          cancelText="Rifiuto" 
         />
       )}
 

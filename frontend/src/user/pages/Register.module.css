@@ -6,17 +6,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
- 
+
 }
 
 .formBox {
   background-color: rgb(255, 255, 255);
   padding: 20px; /* Ridotto padding */
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 100vh;
   width: 400px;
-  max-height: 80vh; /* Ridotto da 90vh a 80vh */
+  height: 90vh; /* Ridotto da 90vh a 80vh */
   overflow-y: auto; /* Permette lo scroll solo nel form se necessario */
 }
 
@@ -50,18 +49,16 @@
 }
 
 .button {
-  width: 97%; /* Cambiato da 90% a 100% */
+  font-size: 15px !important; 
+  width: 100%;
   background-color: #5f2eff;
   color: white;
-  padding: 12px;
-  font-size: 16px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  margin-top: 5px;
+  margin-top: 10px;
   transition: background-color 0.3s ease;
-  text-decoration: none;
-  height: 36px;
+  height: 40px;
 }
 
 .input:focus {
@@ -103,13 +100,13 @@
 
   .input {
     padding: 12px;
-    font-size: 14px;
+    font-size: 14px ;
     height: 40px;
   }
 
   .button {
     padding: 12px;
-    font-size: 16px;
+    font-size: 10px ;
   }
 }
 
@@ -134,6 +131,6 @@
 
   .button {
     padding: 10px;
-    font-size: 15px;
+    font-size: 10px;
   }
 }

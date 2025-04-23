@@ -60,7 +60,7 @@ function Register() {
         <label className={styles.label}>Username:</label>
         <input
           className={styles.input}
-          type="text"
+          type="username"
           name="username"
           value={formData.username}
           onChange={handleChange}
@@ -70,7 +70,7 @@ function Register() {
         <label className={styles.label}>Nome:</label>
         <input
           className={styles.input}
-          type="text"
+          type="name"
           name="nome"
           value={formData.nome}
           onChange={handleChange}
@@ -80,7 +80,7 @@ function Register() {
         <label className={styles.label}>Cognome:</label>
         <input
           className={styles.input}
-          type="text"
+          type="cognome"
           name="cognome"
           value={formData.cognome}
           onChange={handleChange}

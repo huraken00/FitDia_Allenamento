@@ -127,6 +127,16 @@
     background-color: #666;
   }
   
+  /* Stile base per i bottoni del modal */
+  .modalButton {
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem ;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
   /* Responsività per schermi più piccoli */
   @media (max-width: 768px) {
     /* Titolo */
@@ -172,3 +182,10 @@
     }
   }
   
+  /* Media Query per dispositivi mobili: aumentiamo le dimensioni del bottone */
+  @media (max-width: 480px) {
+    .modalButton {
+      padding: 1rem 2rem ;
+      font-size: 1.2rem ;
+    }
+  }
