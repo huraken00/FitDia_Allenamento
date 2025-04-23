@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styles from "./AggiungiSerie.module.css"; // Importa il modulo di stile
 import CercaEsercizio from "./CercaEsercizio";
 import ErrorMessage from "./ErrorMessage";
-import { Error } from "mongoose";
 
 const AggiungiSerie = ({ allenamentoId, onSerieAggiunta }) => {
   const [serie, setSerie] = useState({

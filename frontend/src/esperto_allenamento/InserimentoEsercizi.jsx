@@ -1,34 +1,45 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from './InserimentoEsercizi.module.css';
+import ErrorMessage from '../components/ErrorMessage'; // opzionale
 
 const InserisciEsercizio = () => {
   const navigate = useNavigate();
-
-  const espertoId = localStorage.userId;
+  const espertoId = localStorage.getItem("userId");
 
   const [esercizio, setEsercizio] = useState({ nome: "", descrizione: "" });
   const [sport, setSport] = useState([]);
   const [parametri, setParametri] = useState([]);
   const [selectedSport, setSelectedSport] = useState([]);
   const [selectedParametri, setSelectedParametri] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchSport();
-    fetchParametri();
+    const fetchData = async () => {
+      try {
+        const [resSport, resParametri] = await Promise.all([
+          fetch("http://localhost:3001/api/sport"),
+          fetch("http://localhost:3001/api/parametri"),
+        ]);
+
+        const sportData = await resSport.json();
+        const parametriData = await resParametri.json();
+
+        if (!resSport.ok) throw new Error(sportData.message || "Errore nel caricamento degli sport");
+        if (!resParametri.ok) throw new Error(parametriData.message || "Errore nel caricamento dei parametri");
+
+        setSport(sportData || []);
+        setParametri(parametriData || []);
+      } catch (err) {
+        setError(err.message || "Errore imprevisto nel caricamento dei dati.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
-
-  const fetchSport = async () => {
-    const res = await fetch("http://localhost:3001/api/sport");
-    const data = await res.json();
-    setSport(data || []);
-  };
-
-  const fetchParametri = async () => {
-    const res = await fetch("http://localhost:3001/api/parametri");
-    const data = await res.json();
-    setParametri(data || []);
-  };
 
   const handleCheckboxChange = (id, setSelected, selected) => {
     setSelected(selected.includes(id) ? selected.filter((s) => s !== id) : [...selected, id]);
@@ -36,10 +47,17 @@ const InserisciEsercizio = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!espertoId) {
-      console.error("ID esperto non disponibile");
+      setError("ID esperto non disponibile.");
       return;
     }
+
+    if (!esercizio.nome.trim() || !esercizio.descrizione.trim()) {
+      setError("Nome e descrizione sono obbligatori.");
+      return;
+    }
+
     try {
       const res = await fetch("http://localhost:3001/api/esercizi", {
         method: "POST",
@@ -54,21 +72,25 @@ const InserisciEsercizio = () => {
       });
 
       const responseData = await res.json();
-      console.log("Risposta del server:", responseData);
 
-      if (res.ok) {
-        navigate("/lista-esercizi", { replace: true });
-      } else {
-        console.error("Errore nell'inserimento dell'esercizio:", responseData);
+      if (!res.ok) {
+        throw new Error(responseData.message || "Errore durante l'inserimento dell'esercizio.");
       }
-    } catch (error) {
-      console.error("Errore nell'inserimento dell'esercizio:", error);
+
+      navigate("/lista-esercizi", { replace: true });
+    } catch (err) {
+      setError(err.message || "Errore imprevisto durante l'invio.");
     }
   };
+
+  if (loading) return <p>Caricamento...</p>;
 
   return (
     <div className={styles.container}>
       <h2>Inserisci Nuovo Esercizio</h2>
+
+      {error && <ErrorMessage message={error} />} 
+
       <form onSubmit={handleSubmit}>
         <label>Nome:</label>
         <input
@@ -127,3 +149,4 @@ const InserisciEsercizio = () => {
 };
 
 export default InserisciEsercizio;
+

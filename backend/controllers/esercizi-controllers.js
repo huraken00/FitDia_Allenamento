@@ -54,7 +54,7 @@ exports.getAllEsercizi = async (req, res) => {
     return res.status(200).json(esercizi);
     
   } catch (err) {
-    return res.status(500).json({ message: "Errore nel recupero degli esercizi", error: err });
+    return res.status(500).json({ message: "Errore nel recupero degli esercizi" });
   }
 };
 

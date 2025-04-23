@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
-
+import { useEffect, useState } from "react"; 
 import styles from "./MonitoraggioProgressi.module.css"; // Importa il modulo CSS
-import ErrorMessage from "../../components/ErrorMessage";
+import ErrorMessage from "../../components/ErrorMessage"; // Componente per errori
 import GraficoProgressi from "../../components/GraficoProgressi"; // <-- aggiungi questa riga
-
 
 const MonitoraggioProgressi = () => {
   const [esercizi, setEsercizi] = useState([]);
@@ -18,7 +16,6 @@ const MonitoraggioProgressi = () => {
   const [toDate, setToDate] = useState("");
   const [parametriEsercizio, setParametriEsercizio] = useState([]); // Stato per memorizzare i parametri dell'esercizio
 
-
   const userId = localStorage.getItem('userId'); // ID dell'utente
 
   // Effetto per caricare gli esercizi
@@ -27,9 +24,10 @@ const MonitoraggioProgressi = () => {
       try {
         const res = await fetch(`http://localhost:3001/api/esercizi/esercizi-utente/${userId}`);
         const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Errore nel recupero degli esercizi.");
         setEsercizi(data || []);
       } catch (err) {
-        setError(data.message);
+        setError(err.message || "Si è verificato un errore nel recupero degli esercizi.");
       }
     };
 
@@ -39,10 +37,10 @@ const MonitoraggioProgressi = () => {
   // Effetto per caricare i progressi e i parametri quando un esercizio è selezionato
   useEffect(() => {
     if (!selectedEsercizio || !userId) return;
-    console.log("es",selectedEsercizio)
+    
     const fetchProgressi = async () => {
       setLoading(true);
-      setError("");
+      setError(""); // Reset dell'errore prima di una nuova chiamata
       try {
         const queryParams = new URLSearchParams();
         if (fromDate) queryParams.append("from", fromDate);
@@ -50,14 +48,13 @@ const MonitoraggioProgressi = () => {
 
         const res = await fetch(`http://localhost:3001/api/esercizi/progressi-esercizio/${selectedEsercizio}/${userId}?${queryParams.toString()}`);
         const data = await res.json();
-        if (res.ok) {
-          setDati(data.dati || []);
-          setNomeEsercizio(data.nomeEsercizio || "Esercizio");
-        } else {
-          setError(data.message);
-        }
+
+        if (!res.ok) throw new Error(data.message || "Errore nel recupero dei progressi.");
+        
+        setDati(data.dati || []);
+        setNomeEsercizio(data.nomeEsercizio || "Esercizio");
       } catch (err) {
-        setError(data.message);
+        setError(err.message || "Si è verificato un errore nel recupero dei progressi.");
       } finally {
         setLoading(false);
       }
@@ -68,9 +65,11 @@ const MonitoraggioProgressi = () => {
       try {
         const res = await fetch(`http://localhost:3001/api/esercizi/parametri/${selectedEsercizio}`);
         const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Errore nel recupero dei parametri.");
+
         setParametriEsercizio(data.parametri || []);
       } catch (err) {
-        setError("Errore nel recupero dei parametri.");
+        setError(err.message || "Errore nel recupero dei parametri.");
       }
     };
 
@@ -155,18 +154,16 @@ const MonitoraggioProgressi = () => {
 
       {/* Grafico */}
       {selectedParametro && (
-  dati.length > 0 ? (
-    <GraficoProgressi
-      dati={dati}
-      parametro={selectedParametro}
-      nomeEsercizio={nomeEsercizio}
-    />
-  ) : (
-    <ErrorMessage message="Non ci sono parametri da visualizzare per le date scelte." />
-  )
-)}
-
-
+        dati.length > 0 ? (
+          <GraficoProgressi
+            dati={dati}
+            parametro={selectedParametro}
+            nomeEsercizio={nomeEsercizio}
+          />
+        ) : (
+          <ErrorMessage message="Non ci sono parametri da visualizzare per le date scelte." />
+        )
+      )}
     </div>
   );
 };

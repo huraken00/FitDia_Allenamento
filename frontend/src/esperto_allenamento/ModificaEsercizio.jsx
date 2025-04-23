@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import styles from './ModificaEsercizio.module.css'; // Importa il modulo CSS
+import styles from './ModificaEsercizio.module.css';
+import ErrorMessage from "../components/ErrorMessage"; // Componente per mostrare gli errori
 
 const ModificaEsercizio = () => {
-  const { id } = useParams(); // Se presente, è modifica. Se assente, è validazione
+  const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -16,54 +17,60 @@ const ModificaEsercizio = () => {
   const [selectedSport, setSelectedSport] = useState([]);
   const [selectedParametri, setSelectedParametri] = useState([]);
   const [variante, setVariante] = useState(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchSport();
     fetchParametri();
 
     if (id) {
-      // Modifica esercizio
       fetchEsercizio();
     } else {
-      // Validazione variante
-      let v = varianteFromLocation;
-
-      if (!v && varianteFromStorage) {
-        v = JSON.parse(varianteFromStorage);
-      }
-
+      let v = varianteFromLocation || (varianteFromStorage && JSON.parse(varianteFromStorage));
       if (v) {
         setVariante(v);
         setEsercizio({ nome: v.nome, descrizione: v.descrizione });
         setSelectedSport(v.sport ? [v.sport] : []);
         setSelectedParametri(v.parametri || []);
-
-        // Salva nel localStorage per il fallback refresh
         localStorage.setItem("varianteInValidazione", JSON.stringify(v));
       }
     }
   }, []);
 
   const fetchEsercizio = async () => {
-    const res = await fetch(`http://localhost:3001/api/esercizi/${id}`);
-    const data = await res.json();
-    if (data) {
+    try {
+      const res = await fetch(`http://localhost:3001/api/esercizi/${id}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Errore nel caricamento dell'esercizio.");
       setEsercizio({ nome: data.nome, descrizione: data.descrizione });
       setSelectedSport(data.sport?.map((s) => s._id) || []);
       setSelectedParametri(data.parametri?.map((p) => p._id) || []);
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
     }
   };
 
   const fetchSport = async () => {
-    const res = await fetch("http://localhost:3001/api/sport");
-    const data = await res.json();
-    setSport(data || []);
+    try {
+      const res = await fetch("http://localhost:3001/api/sport");
+      const data = await res.json();
+      setSport(data || []);
+    } catch (err) {
+      console.error(err);
+      setError("Errore nel caricamento degli sport.");
+    }
   };
 
   const fetchParametri = async () => {
-    const res = await fetch("http://localhost:3001/api/parametri");
-    const data = await res.json();
-    setParametri(data || []);
+    try {
+      const res = await fetch("http://localhost:3001/api/parametri");
+      const data = await res.json();
+      setParametri(data || []);
+    } catch (err) {
+      console.error(err);
+      setError("Errore nel caricamento dei parametri.");
+    }
   };
 
   const handleCheckboxChange = (id, setSelected, selected) => {
@@ -72,6 +79,7 @@ const ModificaEsercizio = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     const payload = {
       nome: esercizio.nome,
@@ -82,22 +90,22 @@ const ModificaEsercizio = () => {
     };
 
     try {
+      let res;
       if (id) {
-        // Modifica esercizio esistente
-        const res = await fetch(`http://localhost:3001/api/esercizi/${id}`, {
+        res = await fetch(`http://localhost:3001/api/esercizi/${id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
 
-        if (res.ok) {
-          navigate("/lista-esercizi", { replace: true });
-        } else {
-          console.error("Errore aggiornamento");
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.message || "Errore durante l'aggiornamento.");
         }
+
+        navigate("/lista-esercizi", { replace: true });
       } else {
-        // Creazione nuovo esercizio da variante
-        const res = await fetch("http://localhost:3001/api/esercizi", {
+        res = await fetch("http://localhost:3001/api/esercizi", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -106,40 +114,42 @@ const ModificaEsercizio = () => {
           body: JSON.stringify(payload),
         });
 
-        if (res.ok && variante) {
-          // Elimina la variante approvata
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Errore nella creazione dell'esercizio.");
+
+        if (variante) {
           await fetch(`http://localhost:3001/api/varianti/${variante._id}`, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           });
-
-          alert("Variante validata e convertita con successo!");
-          localStorage.removeItem("varianteInValidazione"); // Pulisce lo storage
-          navigate("/lista-esercizi", { replace: true });
-        } else {
-          console.error("Errore nella validazione");
         }
+
+        alert("Variante validata e convertita con successo!");
+        localStorage.removeItem("varianteInValidazione");
+        navigate("/lista-esercizi", { replace: true });
       }
-    } catch (error) {
-      console.error("Errore submit:", error);
+    } catch (err) {
+      console.error("Errore submit:", err);
+      setError(err.message);
     }
   };
 
   return (
     <div className={styles.container}>
       <h2>{id ? "Modifica Esercizio" : "Valida Variante"}</h2>
+      <ErrorMessage message={error} />
       <form onSubmit={handleSubmit}>
         <label>Nome:</label>
         <input
-          type="nome"
+          type="text"
           value={esercizio.nome}
           onChange={(e) => setEsercizio({ ...esercizio, nome: e.target.value })}
         />
         <label>Descrizione:</label>
         <input
-          type="descrizione"
+          type="text"
           value={esercizio.descrizione}
           onChange={(e) => setEsercizio({ ...esercizio, descrizione: e.target.value })}
         />

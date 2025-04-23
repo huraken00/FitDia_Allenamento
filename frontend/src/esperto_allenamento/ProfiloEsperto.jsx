@@ -1,17 +1,21 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../shared/context/auth-context";
 import { useNavigate } from "react-router-dom";
-import styles from "./ProfiloEsperto.module.css"; // Importa il modulo CSS
+import styles from "./ProfiloEsperto.module.css";
+import ErrorMessage from "../components/ErrorMessage"; // Componente per errori
 
 const ProfiloEsperto = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const eid = auth.userId;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // Reset errori precedenti
+
     try {
       const res = await fetch(`http://localhost:3001/api/esperti-allenamento/${eid}`, {
         method: "PUT",
@@ -21,26 +25,28 @@ const ProfiloEsperto = () => {
         body: JSON.stringify({ username, password }),
       });
 
-      if (res.ok) {
-        alert("Esperto aggiornato con successo!");
-        navigate("/homepage-esperto");
-      } else {
-        alert("Errore: Impossibile aggiornare l'esperto");
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || "Errore: Impossibile aggiornare l'esperto.");
       }
+
+      navigate("/homepage-esperto");
     } catch (err) {
-      alert("Si è verificato un errore durante l'aggiornamento.");
+      console.error("Errore aggiornamento profilo:", err);
+      setError(err.message || "Errore imprevisto.");
     }
   };
 
   return (
     <div className={styles.profiloContainer}>
       <h2 className={styles.titoloPagina}>Profilo Esperto</h2>
+      <ErrorMessage message={error} />
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.inputGroup}>
           <label htmlFor="username" className={styles.label}>Username:</label>
           <input
             id="username"
-            type="username"
+            type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             className={styles.input}

@@ -1,13 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../shared/context/auth-context";
-import styles from "./LoginEsperto.module.css"; // Importa il modulo CSS
+import styles from "./LoginEsperto.module.css";
+import ErrorMessage from "../components/ErrorMessage";
 
 const LoginEsperto = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const auth = useContext(AuthContext); // Usa il contesto
+  const auth = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -22,19 +23,25 @@ const LoginEsperto = () => {
       });
 
       const data = await res.json();
-      
+
       if (!res.ok) {
-        throw new Error(data.message);
+        throw new Error(data.message || "Credenziali non valide.");
       }
 
-      // Salva i dati nel contesto con il ruolo
       auth.login(data.id, data.token, "esperto");
-     
-      navigate("/homepage-esperto"); // Reindirizza alla dashboard esperto
+      navigate("/homepage-esperto");
     } catch (err) {
+      console.error("Errore login:", err);
       setError(err.message);
     }
   };
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   return (
     <div className={styles.loginContainer}>
@@ -42,7 +49,7 @@ const LoginEsperto = () => {
         <h2 className={styles.formTitle}>Esperto Login</h2>
         <form onSubmit={handleSubmit}>
           <input
-            type="username"
+            type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -59,10 +66,12 @@ const LoginEsperto = () => {
           />
           <button type="submit" className={styles.submitButton}>Login</button>
         </form>
-        {error && <p className={styles.errorMessage}>{error}</p>}
+
+        <ErrorMessage message={error} />
       </div>
     </div>
   );
 };
 
 export default LoginEsperto;
+

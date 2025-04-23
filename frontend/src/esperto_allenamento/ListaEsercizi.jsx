@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import styles from "./ListaEsercizi.module.css"; // Importa il modulo CSS
+import styles from "./ListaEsercizi.module.css";
+import ErrorMessage from "../components/ErrorMessage";
 
 const Esercizi = () => {
   const [esercizi, setEsercizi] = useState([]);
@@ -10,6 +11,7 @@ const Esercizi = () => {
   const [parametroFilter, setParametroFilter] = useState("");
   const [sportOptions, setSportOptions] = useState([]);
   const [parametroOptions, setParametroOptions] = useState([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchEsercizi();
@@ -20,6 +22,13 @@ const Esercizi = () => {
     filterEsercizi();
   }, [search, sportFilter, parametroFilter, esercizi]);
 
+  useEffect(() => {
+    if (error) {
+      const timeout = setTimeout(() => setError(""), 5000);
+      return () => clearTimeout(timeout);
+    }
+  }, [error]);
+
   const fetchEsercizi = async () => {
     try {
       const res = await fetch("http://localhost:3001/api/esercizi", {
@@ -28,28 +37,39 @@ const Esercizi = () => {
         },
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        throw new Error("Errore nel recupero degli esercizi");
+        throw new Error(data.message || "Errore sconosciuto nel recupero degli esercizi");
       }
 
-      const data = await res.json();
       setEsercizi(data);
       setFilteredEsercizi(data);
     } catch (err) {
       console.error("Errore nel recupero degli esercizi:", err);
+      setError(err.message);
     }
   };
 
   const fetchSportAndParametri = async () => {
     try {
-      const sportRes = await fetch("http://localhost:3001/api/sport");
-      const parametriRes = await fetch("http://localhost:3001/api/parametri");
+      const [sportRes, parametriRes] = await Promise.all([
+        fetch("http://localhost:3001/api/sport"),
+        fetch("http://localhost:3001/api/parametri")
+      ]);
+
       const sportData = await sportRes.json();
       const parametriData = await parametriRes.json();
+
+      if (!sportRes.ok || !parametriRes.ok) {
+        throw new Error("Errore nel recupero di sport o parametri");
+      }
+
       setSportOptions(sportData);
       setParametroOptions(parametriData);
     } catch (err) {
       console.error("Errore nel recupero di sport e parametri:", err);
+      setError(err.message);
     }
   };
 
@@ -65,13 +85,16 @@ const Esercizi = () => {
         },
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        throw new Error("Errore nella cancellazione dell'esercizio");
+        throw new Error(data.message || "Errore nella cancellazione dell'esercizio");
       }
 
-      setEsercizi(esercizi.filter((esercizio) => esercizio._id !== id));
+      setEsercizi((prev) => prev.filter((esercizio) => esercizio._id !== id));
     } catch (err) {
       console.error("Errore durante la cancellazione:", err);
+      setError(err.message);
     }
   };
 
@@ -98,6 +121,7 @@ const Esercizi = () => {
   return (
     <div className={styles.container}>
       <h2>Lista di tutti gli esercizi</h2>
+      <ErrorMessage message={error} />
       <input
         type="text"
         placeholder="Cerca per nome..."
@@ -137,7 +161,7 @@ const Esercizi = () => {
                 <td>{esercizio.nome}</td>
                 <td>{esercizio.descrizione}</td>
                 <td>
-                  {esercizio.parametri && esercizio.parametri.length > 0 ? (
+                  {esercizio.parametri?.length ? (
                     <ul>
                       {esercizio.parametri.map((parametro) => (
                         <li key={parametro._id}>{parametro.nome}</li>
@@ -148,7 +172,7 @@ const Esercizi = () => {
                   )}
                 </td>
                 <td>
-                  {esercizio.sport && esercizio.sport.length > 0 ? (
+                  {esercizio.sport?.length ? (
                     <ul>
                       {esercizio.sport.map((sport) => (
                         <li key={sport._id}>{sport.nome}</li>
@@ -162,7 +186,9 @@ const Esercizi = () => {
                   <Link to={`/modifica-esercizio/${esercizio._id}`}>
                     <button className={styles.button}>Modifica</button>
                   </Link>
-                  <button onClick={() => handleDelete(esercizio._id)} className={styles.button}>Elimina</button>
+                  <button onClick={() => handleDelete(esercizio._id)} className={styles.button}>
+                    Elimina
+                  </button>
                 </td>
               </tr>
             ))}

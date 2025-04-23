@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./EspertiAllenamento.module.css";
+import ErrorMessage from "../../components/ErrorMessage"; // Importa la componente ErrorMessage
 
 const EspertiAllenamento = () => {
   const [esperti, setEsperti] = useState([]);
   const [filterText, setFilterText] = useState("");
+  const [error, setError] = useState("");  // Stato per la gestione degli errori
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -12,6 +14,7 @@ const EspertiAllenamento = () => {
   }, []);
 
   const fetchData = async () => {
+    setError("");  // Reset dell'errore prima di una nuova richiesta
     try {
       const res = await fetch("http://localhost:3001/api/esperti-allenamento", {
         headers: {
@@ -31,13 +34,14 @@ const EspertiAllenamento = () => {
       const data = await res.json();
       setEsperti(data);
     } catch (err) {
-      console.error("Errore nel recupero degli esperti:", err);
+      setError(err.message || "Si è verificato un errore durante il recupero degli esperti.");
     }
   };
 
   const handleDelete = async (eid) => {
     if (!window.confirm("Sei sicuro di voler eliminare questo esperto?")) return;
 
+    setError(""); // Reset dell'errore prima della cancellazione
     try {
       const res = await fetch(`http://localhost:3001/api/esperti-allenamento/${eid}`, {
         method: "DELETE",
@@ -50,7 +54,7 @@ const EspertiAllenamento = () => {
 
       setEsperti(esperti.filter((e) => e._id !== eid));
     } catch (err) {
-      console.error("Errore durante l'eliminazione:", err);
+      setError(err.message || "Si è verificato un errore durante l'eliminazione dell'esperto.");
     }
   };
 
@@ -62,6 +66,9 @@ const EspertiAllenamento = () => {
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Lista Esperti Allenamento</h2>
+
+      {/* Se c'è un errore, lo visualizziamo usando ErrorMessage */}
+      {error && <ErrorMessage message={error} />}
 
       <input
         type="text"

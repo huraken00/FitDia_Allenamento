@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./ListaVariantiEsperto.module.css"; // Importa il modulo CSS
+import styles from "./ListaVariantiEsperto.module.css";
+import ErrorMessage from "../components/ErrorMessage";
 
 const ListaVariantiEsperto = () => {
   const [varianti, setVarianti] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const fetchVarianti = async () => {
+    setLoading(true);
+    setError("");
+
     try {
       const res = await fetch("http://localhost:3001/api/varianti");
       const data = await res.json();
 
-      // Filtra varianti approvate
+      if (!res.ok) {
+        throw new Error(data.message || "Errore sconosciuto nel caricamento delle varianti");
+      }
+
       const nonApprovate = data.filter(
         (v) => !v.validazione || v.validazione.stato !== "approvata"
       );
@@ -20,6 +28,7 @@ const ListaVariantiEsperto = () => {
       setVarianti(nonApprovate);
     } catch (err) {
       console.error("Errore nel caricamento delle varianti:", err);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -36,19 +45,22 @@ const ListaVariantiEsperto = () => {
         body: JSON.stringify({ stato, messaggio }),
       });
 
-      if (res.ok) {
-        const variante = varianti.find((v) => v._id === id);
+      const data = await res.json();
 
-        if (stato === "approvata") {
-          // Reindirizza a modifica-esercizio con variante
-          navigate("/modifica-esercizio", { state: variante });
-        } else {
-          // Rimuove dalla lista le scartate
-          fetchVarianti();
-        }
+      if (!res.ok) {
+        throw new Error(data.message || "Errore durante la validazione della variante");
+      }
+
+      const variante = varianti.find((v) => v._id === id);
+
+      if (stato === "approvata") {
+        navigate("/modifica-esercizio", { state: variante });
+      } else {
+        fetchVarianti();
       }
     } catch (err) {
       console.error("Errore nella validazione:", err);
+      setError(err.message);
     }
   };
 
@@ -56,11 +68,20 @@ const ListaVariantiEsperto = () => {
     fetchVarianti();
   }, []);
 
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
   if (loading) return <p>Caricamento varianti...</p>;
 
   return (
     <div className={styles.listaVariantiContainer}>
       <h2 className={styles.titoloPagina}>Lista Varianti Generate dagli Utenti</h2>
+      <ErrorMessage message={error} />
+
       {varianti.length === 0 ? (
         <p className={styles.noVarianti}>Nessuna variante disponibile.</p>
       ) : (
@@ -100,3 +121,4 @@ const ListaVariantiEsperto = () => {
 };
 
 export default ListaVariantiEsperto;
+

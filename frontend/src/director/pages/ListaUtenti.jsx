@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./ListaUtenti.module.css";
+import ErrorMessage from "../../components/ErrorMessage"; // Importa il componente ErrorMessage
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [filter, setFilter] = useState("all");
+  const [error, setError] = useState(null); // Stato per gestire gli errori
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,17 +16,22 @@ const UserList = () => {
   const fetchData = async () => {
     try {
       const res = await fetch("http://localhost:3001/api/user");
-      if (!res.ok) throw new Error("Errore nel recupero degli utenti");
+      
+      if (!res.ok) {
+        if (res.status === 401) {
+          // Gestione errore di accesso non autorizzato
+          localStorage.removeItem("token");
+          navigate("/login-direttore");
+          return;
+        }
+        throw new Error("Errore nel recupero degli utenti");
+      }
 
       const data = await res.json();
       setUsers(data);
     } catch (err) {
-      if (err.message === "Accesso non autorizzato") {
-        localStorage.removeItem("token");
-        navigate("/login-direttore");
-      } else {
-        console.error("Errore nel recupero degli utenti:", err);
-      }
+      setError("Si è verificato un errore durante il recupero degli utenti."); // Settiamo l'errore
+      console.error("Errore nel recupero degli utenti:", err);
     }
   };
 
@@ -40,6 +47,9 @@ const UserList = () => {
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Lista Utenti</h2>
+
+      {/* Se c'è un errore, lo mostriamo */}
+      {error && <ErrorMessage message={error} />}
 
       <div className={styles.filterWrapper}>
         <label htmlFor="filterSelect">Filtra per abbonamento: </label>
@@ -63,13 +73,19 @@ const UserList = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredUsers.map((user) => (
-            <tr key={user._id}>
-              <td>{user.nome}</td>
-              <td>{user.cognome}</td>
-              <td>{new Date(user.scadenza_abbonamento).toLocaleDateString()}</td>
+          {filteredUsers.length > 0 ? (
+            filteredUsers.map((user) => (
+              <tr key={user._id}>
+                <td>{user.nome}</td>
+                <td>{user.cognome}</td>
+                <td>{new Date(user.scadenza_abbonamento).toLocaleDateString()}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="3">Nessun utente trovato.</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

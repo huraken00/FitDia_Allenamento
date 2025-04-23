@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../shared/context/auth-context";
 import styles from "./LoginDirettore.module.css"; // Importa il modulo CSS
+import ErrorMessage from "../../components/ErrorMessage"; // Importa il componente ErrorMessage
 
 const LoginDirettore = () => {
   const [username, setUsername] = useState("");
@@ -12,7 +13,7 @@ const LoginDirettore = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError(""); // Reset errore prima della richiesta
 
     try {
       const res = await fetch("http://localhost:3001/api/direttore/login", {
@@ -22,17 +23,25 @@ const LoginDirettore = () => {
       });
 
       const data = await res.json();
-      console.log("data", data);
-      if (!res.ok) {
-        throw new Error(data.message);
-      }
-      console.log("id login", data.id);
-      // Salva i dati nel contesto con il ruolo
-      auth.login(data.id, data.token, "direttore");
 
-      navigate("/homepage-direttore"); // Reindirizza alla homepage direttore
+      // Se la risposta non è ok, lancia un errore con il messaggio dalla risposta
+      if (!res.ok) {
+        throw new Error(data.message || "Errore sconosciuto durante il login.");
+      }
+
+      // Se la risposta è positiva, salviamo i dati nel contesto
+      auth.login(data.id, data.token, "direttore");
+      
+      // Reindirizza alla homepage del direttore
+      navigate("/homepage-direttore");
+
     } catch (err) {
-      setError(err.message);
+      // Gestione errore di rete o credenziali non valide
+      if (err.message === "Failed to fetch") {
+        setError("Errore di connessione. Controlla la tua connessione a Internet.");
+      } else {
+        setError(err.message); // Mostra il messaggio dell'errore
+      }
     }
   };
 
@@ -42,7 +51,7 @@ const LoginDirettore = () => {
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.inputGroup}>
           <input
-            type="Username"
+            type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -64,7 +73,9 @@ const LoginDirettore = () => {
           Login
         </button>
       </form>
-      {error && <p className={styles.errorMessage}>{error}</p>}
+
+      {/* Se c'è un errore, visualizzalo */}
+      {error && <ErrorMessage message={error} />}
     </div>
   );
 };
