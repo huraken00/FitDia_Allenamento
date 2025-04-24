@@ -27,7 +27,7 @@ const Profilo = () => {
 
         const data = await res.json();
 
-        if (res.ok) {
+        if (!res.ok) {
           throw new Error("Errore nel recupero del profilo utente");
         }
 
@@ -87,7 +87,7 @@ const Profilo = () => {
   return (
     <div className={styles.container}>
         {/* Visualizza l'errore sopra il resto del contenuto */}
-      {error && <ErrorMessage message={errore} />}
+      {errore && <ErrorMessage message={errore} />}
       <div className={styles.profileCard}>
        
       
