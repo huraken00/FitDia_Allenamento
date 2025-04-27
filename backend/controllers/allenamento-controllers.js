@@ -5,7 +5,6 @@ const Serie = require("../models/serie");
 // Recupera tutti gli allenamenti per un determinato utente
 exports.getAllAllenamenti = async (req, res) => {
   try {
-    console.log("Richiesta allenamenti per utente:", req.params.utenteId); // DEBUG
     const allenamenti = await Allenamento.find({ id_utente: req.params.utenteId }).exec();
 
      if (!allenamenti || allenamenti.length === 0) {

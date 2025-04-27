@@ -5,13 +5,12 @@ import ErrorMessage from "../../components/ErrorMessage"; // importa il componen
 const ListaVarianti = () => {
   const [varianti, setVarianti] = useState([]);
   const [filter, setFilter] = useState("tutte");
-  const [error, setError] = useState(""); // nuovo stato per errore
+  const [error, setError] = useState(""); 
   const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const fetchVarianti = async () => {
       try {
-      
         const res = await fetch(`http://localhost:3001/api/varianti/utente/${userId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -19,11 +18,11 @@ const ListaVarianti = () => {
         });
 
         const data = await res.json();
-        if(!res.ok) throw new Error(data.message)
+        if (!res.ok) throw new Error(data.message);
         setVarianti(data);
-       
+
       } catch (err) {
-        console.log("Erroree",err.message)
+        console.log("Errore:", err.message);
         setError(err.message);
       }
     };
@@ -37,8 +36,9 @@ const ListaVarianti = () => {
 
   const filteredVarianti = varianti.filter((v) => {
     const stato = v.validazione?.stato;
+
     if (filter === "validate") return stato === "approvata";
-    if (filter === "nonValidate") return !stato;
+    if (filter === "nonValidate") return stato === "in_attesa";
     if (filter === "rifiutate") return stato === "scartata";
     return true;
   });
@@ -47,7 +47,6 @@ const ListaVarianti = () => {
     <div className={styles.listaVariantiContainer}>
       <h2>Le mie varianti generate</h2>
 
-      {/* Mostra l'errore se presente */}
       <ErrorMessage message={error} />
 
       <div className={styles.filtroContainer}>
@@ -65,7 +64,6 @@ const ListaVarianti = () => {
         </select>
       </div>
 
-      {/* Mostra messaggio se non ci sono varianti e nessun errore */}
       {filteredVarianti.length === 0 && !error ? (
         <p className={styles.noVarianti}>Nessuna variante disponibile.</p>
       ) : (
@@ -76,20 +74,18 @@ const ListaVarianti = () => {
 
             <p>
               <strong className={styles.statoApprovazione}>Stato:</strong>{" "}
-              {v.validazione?.stato ? (
+              {v.validazione?.stato && (
                 <span
                   className={`${styles.statoApprovazione} ${
                     v.validazione.stato === "approvata"
-                      ? "approvata"
+                      ? styles.approvata
                       : v.validazione.stato === "scartata"
-                      ? "scartata"
-                      : ""
+                      ? styles.scartata
+                      : styles.inAttesa
                   }`}
                 >
-                  {v.validazione.stato.toUpperCase()}
+                  {v.validazione.stato.replace("_", " ").toUpperCase()}
                 </span>
-              ) : (
-                "In attesa di validazione"
               )}
             </p>
 
@@ -106,3 +102,4 @@ const ListaVarianti = () => {
 };
 
 export default ListaVarianti;
+

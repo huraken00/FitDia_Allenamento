@@ -95,6 +95,24 @@ exports.updateEsperto = async (req, res) => {
   }
 };
 
+// controller per ottenere un esperto specifico
+exports.getEspertoById = async (req, res) => {
+  const id = req.params.eid;
+
+  try {
+    const esperto = await Esperto.findById(id, "username");
+    if (!esperto) {
+      return res.status(404).json({ message: "Esperto non trovato" });
+    }
+
+    res.status(200).json(esperto);
+  } catch (error) {
+    console.error("Errore nel recupero esperto:", error);
+    res.status(500).json({ message: "Errore nel recupero esperto", error });
+  }
+};
+
+
 // controller per eliminare un esperto
 exports.eliminaEsperto = async (req, res) => {
   const id = req.params.eid;

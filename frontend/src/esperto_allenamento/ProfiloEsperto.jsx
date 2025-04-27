@@ -1,8 +1,8 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../shared/context/auth-context";
 import { useNavigate } from "react-router-dom";
 import styles from "./ProfiloEsperto.module.css";
-import ErrorMessage from "../components/ErrorMessage"; // Componente per errori
+import ErrorMessage from "../components/ErrorMessage"; 
 
 const ProfiloEsperto = () => {
   const [username, setUsername] = useState("");
@@ -12,9 +12,30 @@ const ProfiloEsperto = () => {
   const auth = useContext(AuthContext);
   const eid = auth.userId;
 
+  useEffect(() => {
+    const fetchEsperto = async () => {
+      try {
+        const res = await fetch(`http://localhost:3001/api/esperti-allenamento/${eid}`);
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.message || "Errore nel caricamento dati.");
+        }
+        setUsername(data.username);
+        // Per sicurezza, non possiamo ricevere la password dal server (normale per motivi di sicurezza).
+        // Puoi mettere una stringa placeholder tipo "********" o lasciare vuoto
+        setPassword(""); 
+      } catch (err) {
+        console.error("Errore nel caricamento esperto:", err);
+        setError(err.message || "Errore imprevisto.");
+      }
+    };
+
+    fetchEsperto();
+  }, [eid]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Reset errori precedenti
+    setError("");
 
     try {
       const res = await fetch(`http://localhost:3001/api/esperti-allenamento/${eid}`, {

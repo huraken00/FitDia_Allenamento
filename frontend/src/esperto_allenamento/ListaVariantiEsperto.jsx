@@ -22,8 +22,9 @@ const ListaVariantiEsperto = () => {
       }
 
       const nonApprovate = data.filter(
-        (v) => !v.validazione || v.validazione.stato !== "approvata"
+        (v) => !v.validazione || (v.validazione.stato !== "approvata" && v.validazione.stato !== "scartata")
       );
+      
 
       setVarianti(nonApprovate);
     } catch (err) {
@@ -121,4 +122,3 @@ const ListaVariantiEsperto = () => {
 };
 
 export default ListaVariantiEsperto;
-
