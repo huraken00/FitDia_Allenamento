@@ -1,113 +1,81 @@
+/* Aggiungere stili per il contenuto della HomePage */
 .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 90vh;
-    width: 100vw;
-    background-color: #ffffff;
-  }
-  
-  .title {
-    font-size: 24px;
-    color: #1e1e1e;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .description {
-    font-size: 18px;
-    color: #1e1e1e;
-    text-align: center;
-    margin-bottom: 30px; /* Maggiore spazio sotto la descrizione */
-  }
-  
-  .button {
-    background-color: #5f2eff;
-    color: white;
-    padding: 12px 20px;  /* Aggiunta di padding orizzontale per maggiore leggibilità */
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: center;
-    margin-bottom: 20px;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-  }
-  
-  .button:hover {
-    background-color: #4722d6;
-  }
-  
-  .linkContainer {
-    display: flex;
-    gap: 20px; /* Spazio di 20px tra i bottoni */
-    justify-content: center;
-    align-items: center;
-  }
-  
-  /* Responsive per dispositivi mobili 1024 740 480*/
-  @media (max-width: 1024px) { 
-    .title {
-      font-size: 20px;
-      margin-bottom: 15px;
-    }
-  
-    .description {
-      font-size: 16px;
-      margin-bottom: 20px;
-    }
-
-    .button {
-      padding: 10px 15px; /* Riduzione del padding per dispositivi più piccoli */
-    }
-  
-    .linkContainer {
-      flex-direction: column;
-      gap: 10px;
-    }
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra verticalmente */
+  align-items: center; /* Centra orizzontalmente */
+  text-align: center;
+  margin-top: 15%;
 }
 
-    @media (max-width: 740px) { 
-        .title {
-        font-size: 18px;
-        margin-bottom: 10px;
-        }
-    
-        .description {
-        font-size: 14px;
-        margin-bottom: 15px;
-        }
-    
-        .button {
-        padding: 8px 12px; /* Ulteriore riduzione del padding per dispositivi più piccoli */
-        }
-    
-        .linkContainer {
-        flex-direction: column;
-        gap: 5px;
-        }
-    }
+.title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
 
+.description {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
 
-    @media (max-width: 480px) { 
-        .title {
-        font-size: 16px;
-        margin-bottom: 5px;
-        }
-    
-        .description {
-        font-size: 12px;
-        margin-bottom: 10px;
-        }
-    
-        .button {
-        padding: 6px 10px; /* Ulteriore riduzione del padding per dispositivi più piccoli */
-        }
-    
-        .linkContainer {
-        flex-direction: column;
-        gap: 5px;
-        }
-    }
+.linkContainer {
+  display: flex;
+  gap: 20px; /* Distanza tra i bottoni */
+  flex-wrap: wrap; /* Permette ai bottoni di andare a capo se lo schermo è piccolo */
+  justify-content: center; /* Centra i bottoni orizzontalmente */
+}
+
+.button {
+  padding: 10px 20px; /* Impostare padding per definire la grandezza del bottone */
+  font-size: 1rem;
+  background-color: #5f2eff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 30; /* Imposta una larghezza fissa per i bottoni */
+  text-align: center; /* Centra il testo nel bottone */
+}
+
+.button:hover {
+  background-color: #4722d6;
+}
+
+/* Media Queries per schermi più piccoli */
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.8rem; /* Riduci la dimensione del titolo su schermi più piccoli */
+  }
+
+  .description {
+    font-size: 1rem; /* Riduci la dimensione della descrizione */
+  }
+
+  .button {
+    width: 130px; /* Riduci la larghezza dei bottoni su dispositivi tablet */
+    font-size: 0.9rem; /* Riduci la dimensione del testo nei bottoni */
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.5rem; /* Riduci ulteriormente la dimensione del titolo per dispositivi mobili */
+  }
+
+  .description {
+    font-size: 0.9rem; /* Riduci ulteriormente la descrizione */
+    margin-bottom: 20px; /* Riduci il margine inferiore per una maggiore compattezza */
+  }
+
+  .button {
+    width: 120px; /* Riduci la larghezza dei bottoni su schermi piccoli */
+    font-size: 0.8rem; /* Riduci ulteriormente la dimensione del testo nei bottoni */
+    padding: 8px 16px; /* Riduci il padding per adattarsi meglio su schermi piccoli */
+  }
+
+  .linkContainer {
+    gap: 10px; /* Riduci lo spazio tra i bottoni su dispositivi molto piccoli */
+  }
+}
