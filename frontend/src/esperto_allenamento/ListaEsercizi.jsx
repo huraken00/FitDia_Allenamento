@@ -184,9 +184,9 @@ const Esercizi = () => {
                 </td>
                 <td>
                   <Link to={`/modifica-esercizio/${esercizio._id}`}>
-                    <button className={styles.button}>Modifica</button>
+                    <button className={styles.buttonle}>Modifica</button>
                   </Link>
-                  <button onClick={() => handleDelete(esercizio._id)} className={styles.button}>
+                  <button onClick={() => handleDelete(esercizio._id)} className={styles.buttonle}>
                     Elimina
                   </button>
                 </td>

@@ -107,7 +107,7 @@ function Register() {
         />
         {errors.password && <p className={styles.error}>{errors.password}</p>}
 
-        <button className={styles.button} type="submit">Registrati</button>
+        <button className={styles.buttonr} type="submit">Registrati</button>
 
         <ErrorMessage message={serverMessage} />
       </form>

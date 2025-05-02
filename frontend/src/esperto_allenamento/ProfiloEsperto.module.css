@@ -1,85 +1,125 @@
+/* ==========================================
+   Default styles (PC – larghezza >= 1025px)
+=========================================== */
 .profiloContainer {
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 800px;
-    margin: 0 auto;
-    margin-top: 100px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+.titoloPagina {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+}
+
+.label {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.input {
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.salvaButton {
+  padding: 1.2rem 2rem;
+  font-size: 1.2rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.salvaButton:hover {
+  background-color: #45a049;
+}
+
+
+/* ==========================================
+   Tablet (481px <= larghezza <= 1024px)
+=========================================== */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .profiloContainer {
+    padding: 1.5rem;
+    max-width: 650px;
+    margin-top: 80px;
   }
   
   .titoloPagina {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 1rem;
+    font-size: 1.75rem;
+    margin-bottom: 0.8rem;
   }
   
   .form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .inputGroup {
-    margin-bottom: 1rem;
+    max-width: 350px;
   }
   
   .label {
-    font-size: 1rem;
-    color: #333;
-    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
   }
   
   .input {
-    padding: 0.8rem;
-    font-size: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    width: 100%;
+    padding: 0.7rem;
+    font-size: 0.95rem;
   }
   
   .salvaButton {
-    padding: 0.8rem;
-    font-size: 1rem;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    padding: 1.7rem 1.8rem;
+    font-size: 1.3rem;
+  }
+}
+
+
+/* ==========================================
+   Mobile (larghezza <= 480px)
+=========================================== */
+@media (max-width: 480px) {
+  .profiloContainer {
+    padding: 1rem;
+    max-width: 95%;
+    margin-top: 60px;
   }
   
-  .salvaButton:hover {
-    background-color: #45a049;
+  .titoloPagina {
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
   }
   
-  @media (max-width: 768px) {
-    .profiloContainer {
-      padding: 1rem;
-    }
-  
-    .titoloPagina {
-      font-size: 1.5rem;
-    }
-  
-    .form {
-      width: 100%;
-      max-width: 300px;
-    }
-  
-    .label {
-      font-size: 0.9rem;
-    }
-  
-    .input {
-      padding: 0.6rem;
-      font-size: 0.9rem;
-    }
-  
-    .salvaButton {
-      font-size: 0.9rem;
-    }
+  .form {
+    max-width: 300px;
   }
   
+  .label {
+    font-size: 0.9rem;
+  }
+  
+  .input {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+  
+  .salvaButton {
+    padding: 1.1rem 1.6rem;
+    font-size: 1.1rem;
+  }
+}

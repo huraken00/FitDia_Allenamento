@@ -6,7 +6,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
+  
 }
 
 .formBox {
@@ -48,8 +48,8 @@
   display: block;
 }
 
-.button {
-  font-size: 15px !important; 
+.buttonr {
+  font-size: 15px ; 
   width: 100%;
   background-color: #5f2eff;
   color: white;

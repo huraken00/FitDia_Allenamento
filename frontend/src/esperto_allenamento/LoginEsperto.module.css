@@ -45,7 +45,7 @@
   background-color: #248b07;
   color: white;
   padding: 12px;
-  font-size: 20px;
+  font-size: 17px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -84,7 +84,7 @@
   }
   .submitButton {
     padding: 12px;
-    font-size: 30px;
+    font-size: 15px;
     height: 40px;
   }
  
@@ -110,7 +110,7 @@
   }
   .submitButton {
     padding: 10px;
-    font-size: 30px;
+    font-size: 15px;
     height: 38px;
   }
   

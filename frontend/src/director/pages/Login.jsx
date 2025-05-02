@@ -51,7 +51,7 @@ const LoginDirettore = () => {
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.inputGroup}>
           <input
-            type="text"
+            type="username"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
