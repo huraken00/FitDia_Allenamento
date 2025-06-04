@@ -95,7 +95,7 @@ const InserimentoAllenamenti = () => {
           {allenamento.serie.map((s, index) => (
             <li key={index} className={styles.serieItem}>
               <p>
-                <strong>Esercizio:</strong> {s.id_esercizio?.nome || "Sconosciuto"} <br />
+                <strong>Esercizio:</strong> {s.id_esercizio?.nome || s.esercizio || "Sconosciuto"} <br />
                 <strong>Sport:</strong> {s.sport.join(", ") || "Sconosciuto"} <br />
                 {s.Peso && <><strong>Peso:</strong> {s.Peso} kg <br /></>}
                 {s.Distanza && <><strong>Distanza:</strong> {s.Distanza} m <br /></>}
