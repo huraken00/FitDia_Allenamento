@@ -1,33 +1,76 @@
-# 💪 FitDia
+# FitDia — Workout Management Module
 
-## Introduzione
+Full-stack web application developed as the **Workout Management module** of **FitDia**, a modular fitness platform built across multiple development teams. While nutrition features were handled by a separate team, this module manages workout planning, exercise catalogs, progress tracking, and **AI-assisted exercise generation** powered by **Google Generative AI (Gemini)**.
 
-**FitDia** è una web app progettata per semplificare la gestione degli allenamenti e dell’alimentazione, offrendo un'unica piattaforma per ottimizzare il proprio percorso di benessere.
+## Key Features
 
-La piattaforma consente agli utenti di tracciare i propri progressi, gestire le sessioni di allenamento e ricevere suggerimenti grazie all’intelligenza artificiale.
+- **Generative AI Exercise Creation:** Integrates `@google/generative-ai` to dynamically generate tailored exercises and training variants.
+- **Workout & Progress Tracking:** Full CRUD workflows for creating, editing, and logging workouts, sets (`serie`), exercise parameters, and sport categories, paired with visual progress charts (`GraficoProgressi`).
+- **Role-Based Access Control (RBAC):** Dedicated interfaces and JWT-protected REST endpoints for three user roles:
+  - **User:** Manages personal workouts, tracks sets and progress over time, searches exercises, and explores variants.
+  - **Training Expert (`Esperto Allenamento`):** Creates, updates, and curates exercises and exercise variants.
+  - **Director (`Direttore`):** Oversees registered users and manages training expert accounts.
+- **Secure Backend Architecture:** Modular Express + Mongoose REST API with request validation (`express-validator`), password hashing (`bcryptjs`), and token-based authentication (`jsonwebtoken`).
 
----
+## Tech Stack
 
-## ⚙️ Funzionalità
+- **Frontend:** React, Vite, CSS Modules, Context API
+- **Backend:** Node.js, Express.js, MongoDB (Mongoose)
+- **Authentication & Validation:** JWT, bcryptjs, express-validator
+- **AI Integration:** Google Generative AI SDK (`@google/generative-ai`)
 
-### 📝 Gestione degli allenamenti
-- Creazione, modifica ed eliminazione degli allenamenti personalizzati.
-- Selezione di esercizi da un catalogo predefinito.
+## Project Structure
 
-### 📊 Tracciamento dei progressi
-- Visualizzazione di grafici dettagliati per ogni esercizio.
-- Analisi dei parametri chiave:
-  - Peso utilizzato
-  - Tempo impiegato
-  - Distanza percorsa
-  - Numero di ripetizioni
-- I grafici si adattano automaticamente al tipo di esercizio selezionato.
+```text
+FitDia_Allenamento/
+├── backend/
+│   ├── controllers/     # Business logic (workouts, exercises, sets, users, roles)
+│   ├── models/          # Mongoose schemas (User, Allenamento, Esercizio, Serie, Sport, ...)
+│   ├── routes/          # Express API routes
+│   └── index.js         # Server entry point
+└── frontend/
+    └── src/
+        ├── components/           # Shared UI components (charts, modals, search, sets)
+        ├── user/                 # User dashboard, workouts, and progress tracking pages
+        ├── esperto_allenamento/  # Training expert exercise management pages
+        ├── director/             # Director administration pages
+        └── shared/               # Auth context and form validation utilities
+```
+## Local Setup
 
-### 🤖 Suggerimenti intelligenti con AI
-- Creazione di esercizi alternativi personalizzati in base a:
-  - **🏅 Sport praticato**: proposte mirate a discipline specifiche.
-  - **📍 Luogo di allenamento**: opzioni per palestra, casa o outdoor.
-  - **🔁 Esercizio di riferimento**: alternative intelligenti per esercizi specifici.
+### Prerequisites
+- Node.js (v18+)
+- MongoDB Atlas cluster or local MongoDB instance
+- Google Gemini API key
 
+### 1. Clone the repository
+```bash
+git clone [https://github.com/huraken00/FitDia_Allenamento.git](https://github.com/huraken00/FitDia_Allenamento.git)
+cd FitDia_Allenamento
+```
 
+### 2. Configure and run the backend
+```bash
+cd backend
+npm install
+```
 
+Create a `.env` file inside `backend/` (see `backend/.env.example`):
+```env
+MONGODB_URI=your_mongodb_connection_string
+PORT=5000
+SECRET_KEY=your_jwt_secret_key
+GEMINI_API_KEY=your_google_gemini_api_key
+```
+
+Start the server:
+```bash
+npm start
+```
+
+### 3. Run the frontend
+```bash
+cd ../frontend
+npm install
+npm run dev
+```
